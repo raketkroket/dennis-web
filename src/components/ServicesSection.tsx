@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bath, Toilet, Home, Layers, Paintbrush, Grid3x3, Waves, ChevronRight } from 'lucide-react';
+import { sitePhotos } from '../data/sitePhotos';
 
 const services = [
   { icon: Bath, title: 'Badkamerrenovatie', desc: 'Complete renovatie van A tot Z. Stijlvol, modern en luxe.', path: '/badkamerrenovatie' },
@@ -121,7 +122,7 @@ export default function ServicesSection() {
             {/* Decorative image */}
             <div className="mt-6 rounded-2xl overflow-hidden h-48">
               <img
-                src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80"
+                src={sitePhotos[1]}
                 alt="Luxe badkamer detail met marmeren tegels"
                 width={800}
                 height={400}

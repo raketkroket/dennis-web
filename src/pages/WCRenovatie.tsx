@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 
 const features = [
   'Sloopwerkzaamheden',
@@ -18,7 +19,7 @@ const features = [
 
 const projects = [
   {
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
+    image: sitePhotos[12],
     title: 'WC-renovatie Amsterdam',
     desc: 'Modern en stijlvol, zwarte accenten',
   },
@@ -75,7 +76,7 @@ export default function WCRenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=900&q=85"
+                  src={sitePhotos[12]}
                   alt="Moderne WC-renovatie met stijlvolle afwerking"
                   width={900}
                   height={675}

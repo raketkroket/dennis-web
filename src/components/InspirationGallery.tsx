@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { sitePhotos } from '../data/sitePhotos';
 
 const images = [
-  { src: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80', alt: 'Vrijstaand bad in luxe badkamer', span: 'col-span-1 row-span-2' },
-  { src: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80', alt: 'Marmeren badkamer detail', span: 'col-span-1' },
-  { src: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80', alt: 'Moderne WC renovatie', span: 'col-span-1' },
-  { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80', alt: 'Luxe woonkamer interieur', span: 'col-span-1' },
-  { src: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80', alt: 'Moderne badkamer met inloopdouche', span: 'col-span-1' },
-  { src: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80', alt: 'Houten badkamer meubel detail', span: 'col-span-1' },
+  { src: sitePhotos[5], alt: 'Badkamer projectfoto', span: 'col-span-1 row-span-2' },
+  { src: sitePhotos[6], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[7], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[8], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[9], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[10], alt: 'Badkamer projectfoto', span: 'col-span-1' },
 ];
 
 export default function InspirationGallery() {

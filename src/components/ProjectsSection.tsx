@@ -2,27 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { sitePhotos } from '../data/sitePhotos';
 
 const projects = [
   {
     id: 1,
     title: 'Luxe badkamer Almere',
     category: 'Complete renovatie',
-    image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
+    image: sitePhotos[2],
     tag: 'Badkamer',
   },
   {
     id: 2,
     title: 'WC-renovatie Amsterdam',
     category: 'Modern en stijlvol',
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
+    image: sitePhotos[3],
     tag: 'WC',
   },
   {
     id: 3,
     title: 'Binnenrenovatie Almere Poort',
     category: 'Stucwerk, vloeren en schilderwerk',
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+    image: sitePhotos[4],
     tag: 'Binnen',
   },
 ];

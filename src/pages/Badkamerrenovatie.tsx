@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 
 const features = [
   'Complete sloopwerkzaamheden',
@@ -21,7 +22,7 @@ const features = [
 
 const projects = [
   {
-    image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
+    image: sitePhotos[11],
     title: 'Luxe badkamer Almere',
     desc: 'Vrijstaand bad, marmeren tegels, houten accenten',
   },
@@ -84,7 +85,7 @@ export default function Badkamerrenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=900&q=85"
+                  src={sitePhotos[11]}
                   alt="Luxe badkamerrenovatie met vrijstaand bad"
                   width={900}
                   height={675}

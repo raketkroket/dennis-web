@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
+import heroImage from '../../headerimg.png';
+
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden" aria-label="Hero sectie">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="headerimg.png"
+          src={heroImage}
           alt="Luxe badkamer met vrijstaand bad en houten accenten"
           width={1800}
           height={1200}
