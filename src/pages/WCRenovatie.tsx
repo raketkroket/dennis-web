@@ -76,8 +76,8 @@ export default function WCRenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src={sitePhotos[12]}
-                  alt="Moderne WC-renovatie met stijlvolle afwerking"
+                  src={sitePhotos[11]}
+                  alt="Luxe badkamerrenovatie met vrijstaand bad"
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
