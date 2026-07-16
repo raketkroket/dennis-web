@@ -16,14 +16,14 @@ const projects = [
     id: 2,
     title: 'Binnenrenovatie Almere Poort',
     category: 'Stucwerk, vloeren en schilderwerk',
-    image: sitePhotos[4],
+    image: sitePhotos[3],
     tag: 'Binnen',
   },
   {
     id: 3,
     title: 'WC-renovatie Amsterdam',
     category: 'Modern en stijlvol',
-    image: sitePhotos[3],
+    image: sitePhotos[4],
     tag: 'WC',
   },
 ];

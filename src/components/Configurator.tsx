@@ -30,11 +30,7 @@ const badkamerOptions: ConfigOption[] = [
   { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
   { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
   { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
-  { id: 'pvc_vloer', label: 'PVC-vloer', price: 650, note: 'Inclusief: Plaatsing. Opmerking: Niet aanbevolen in de badkamercalculator.' },
-  { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
-  { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
-  { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
-  { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
+  { id: 'sloopcontainer', label: 'Sloopcontainer', price: 250, note: 'Inclusief: Plaatsing en afvoer.' },
 ];
 
 const wcOptions: ConfigOption[] = [
@@ -48,7 +44,7 @@ const wcOptions: ConfigOption[] = [
   { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
   { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
   { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
-  { id: 'pvc_vloer', label: 'PVC-vloer', price: 650, note: 'Inclusief: Plaatsing. Opmerking: Niet aanbevolen in de badkamercalculator.' },
+  { id: 'sloopcontainer', label: 'Sloopcontainer', price: 250, note: 'Inclusief: Plaatsing en afvoer.' },
   { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
   { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
   { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
@@ -280,7 +276,7 @@ export default function Configurator() {
                   <span className="text-[#A89880] text-sm mb-1">indicatie</span>
                 </div>
                 <p className="text-xs text-[#7A6A58] mb-6">
-                  Inclusief materiaal en arbeid. Exacte prijs na inspectie ter plaatse.
+                  Inclusief bouwmaterialen. Exclusief sanitair en tegels.
                 </p>
                 <Link
                   to="/contact"
