@@ -12,28 +12,47 @@ interface ConfigState {
   options: string[];
 }
 
-const badkamerOptions = [
-  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 800 },
-  { id: 'spotjes', label: 'Spotjes', price: 350 },
-  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600 },
-  { id: 'niche', label: 'Niche', price: 450 },
-  { id: 'drain', label: 'Drain', price: 300 },
-  { id: 'inbouwkranen', label: 'Inbouwkranen', price: 500 },
-  { id: 'stucwerk', label: 'Stucwerk', price: 400 },
-  { id: 'schilderwerk', label: 'Schilderwerk', price: 350 },
-  { id: 'vloerverwarming', label: 'Vloerverwarming', price: 900 },
-  { id: 'elektra', label: 'Elektra', price: 600 },
-  { id: 'pvc_vloer', label: 'PVC vloer', price: 500 },
+interface ConfigOption {
+  id: string;
+  label: string;
+  price: number;
+  note?: string;
+}
+
+const badkamerOptions: ConfigOption[] = [
+  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
+  { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
+  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
+  { id: 'niche', label: 'Niche', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
+  { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
+  { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
+  { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
+  { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
+  { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
+  { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
+  { id: 'pvc_vloer', label: 'PVC-vloer', price: 650, note: 'Inclusief: Plaatsing. Opmerking: Niet aanbevolen in de badkamercalculator.' },
+  { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
+  { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
+  { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
+  { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
 ];
 
-const wcOptions = [
-  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 400 },
-  { id: 'spotjes', label: 'Spotjes', price: 200 },
-  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 300 },
-  { id: 'stucwerk', label: 'Stucwerk', price: 250 },
-  { id: 'schilderwerk', label: 'Schilderwerk', price: 200 },
-  { id: 'elektra', label: 'Elektra', price: 300 },
-  { id: 'pvc_vloer', label: 'PVC vloer', price: 250 },
+const wcOptions: ConfigOption[] = [
+  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
+  { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
+  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
+  { id: 'niche', label: 'Niche', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
+  { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
+  { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
+  { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
+  { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
+  { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
+  { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
+  { id: 'pvc_vloer', label: 'PVC-vloer', price: 650, note: 'Inclusief: Plaatsing. Opmerking: Niet aanbevolen in de badkamercalculator.' },
+  { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
+  { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
+  { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
+  { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
 ];
 
 const BASE_PRICE_PER_M2: Record<RoomType, number> = {
@@ -233,16 +252,23 @@ export default function Configurator() {
                       }`}
                     >
                       <span className="text-sm font-medium text-[#2C2416]">{option.label}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs text-[#8A7A6A]">+€{option.price}</span>
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#D5C0A7] bg-[#D5C0A7]' : 'border-[#D4C5A9]'}`}>
-                          {isSelected && <Check size={10} className="text-white" />}
+                      <div className="text-right">
+                        <div className="flex items-center gap-3 justify-end">
+                          <span className="text-xs text-[#8A7A6A]">+€{option.price}</span>
+                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#D5C0A7] bg-[#D5C0A7]' : 'border-[#D4C5A9]'}`}>
+                            {isSelected && <Check size={10} className="text-white" />}
+                          </div>
                         </div>
+                        {option.note && <p className="mt-1 text-[11px] leading-snug text-[#8A7A6A] max-w-[14rem]">{option.note}</p>}
                       </div>
                     </button>
                   );
                 })}
               </div>
+
+              <p className="text-xs text-[#8A7A6A] mb-6">
+                Prijsindicatie inclusief arbeid en standaard montagematerialen. Sanitair, tegels, kranen, badkamermeubels en overige zichtmaterialen zijn niet inbegrepen, tenzij expliciet vermeld. Definitieve prijs wordt vastgesteld na opname op locatie.
+              </p>
 
               {/* Price result */}
               <div className="bg-[#2C2416] rounded-2xl p-6 text-white">

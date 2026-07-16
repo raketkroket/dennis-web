@@ -30,6 +30,24 @@ const projects = [
   },
 ];
 
+const luxePricing = [
+  { label: 'Sloop en afvoer', price: '€300 tot €500' },
+  { label: 'Leidingwerk aanpassen', price: '€400 tot €900' },
+  { label: 'Geberit inbouwreservoir plaatsen', price: '€700 tot €1.000' },
+  { label: 'Hangtoilet monteren', price: '€250 tot €450' },
+  { label: 'Tegelwerk tot plafond', price: '€900 tot €1.500' },
+  { label: 'Stuc- en plafondafwerking', price: '€250 tot €450' },
+  { label: 'Kit- en afwerking', price: '€150 tot €300' },
+];
+
+const luxeAdvies = [
+  { label: 'Basisprijs', price: '€4.250' },
+  { label: 'Geberit Duofix inclusief montage', price: '+ €1.250' },
+  { label: 'Tegelwerk in verstek', price: '+ €350' },
+  { label: 'Nis', price: '+ €450' },
+  { label: 'Inbouwkraan fonteintje', price: '+ €350' },
+];
+
 export default function WCRenovatie() {
   return (
     <>
@@ -117,6 +135,71 @@ export default function WCRenovatie() {
                   <span className="text-sm font-medium text-[#4A3F35]">{f}</span>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-[#FAF8F5]" aria-labelledby="wc-luxe-heading">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="rounded-3xl bg-white border border-[#E8DDD0]/60 p-8 shadow-sm"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-6 h-px bg-[#8B6F47]" />
+                  <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Luxe toiletrenovatie</span>
+                </div>
+                <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-[#2C2416] mb-4">
+                  Indicatieve calculatorprijzen voor een luxe toiletrenovatie.
+                </h2>
+                <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-2xl">
+                  Werkzaamheden en prijsindicaties.
+                </p>
+                <div className="space-y-3">
+                  {luxePricing.map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex items-center justify-between gap-4 rounded-2xl border border-[#E8DDD0] bg-[#FAF8F5] px-4 py-3"
+                    >
+                      <p className="font-medium text-[#2C2416]">{item.label}</p>
+                      <p className="text-sm font-semibold text-[#8B6F47]">{item.price}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 rounded-2xl bg-[#2C2416] p-6 text-white">
+                  <p className="text-xs tracking-[0.2em] uppercase text-[#D5C0A7] mb-2">Totaal luxe toiletrenovatie</p>
+                  <p className="font-serif text-4xl font-semibold mb-2">€3.800 tot €5.200</p>
+                  <p className="text-sm text-[#B7A892]">Prijsindicatie op basis van de opgegeven werkzaamheden.</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="rounded-3xl bg-[#2C2416] p-8 text-white shadow-sm"
+              >
+                <p className="text-xs tracking-[0.2em] uppercase text-[#D5C0A7] mb-3">Advies calculator basisprijs Nivora</p>
+                <h3 className="font-serif text-3xl font-semibold mb-6">Luxe uitvoering totaal</h3>
+                <div className="space-y-4 mb-8">
+                  {luxeAdvies.map((item) => (
+                    <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
+                      <p className="text-sm text-[#E6DED1]">{item.label}</p>
+                      <p className="text-sm font-semibold text-white">{item.price}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-2xl bg-white/5 p-5">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#D5C0A7] mb-2">Luxe uitvoering totaal</p>
+                  <p className="font-serif text-4xl font-semibold">€5.500 tot €6.500</p>
+                </div>
+                <p className="mt-6 text-sm text-[#B7A892]">Basisprijs: €4.250. Geberit Duofix inclusief montage: + €1.250. Tegelwerk in verstek: + €350. Nis: + €450. Inbouwkraan fonteintje: + €350.</p>
+              </motion.div>
             </div>
           </div>
         </section>
