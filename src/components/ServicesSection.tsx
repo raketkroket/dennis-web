@@ -6,7 +6,7 @@ import { sitePhotos } from '../data/sitePhotos';
 
 const services = [
   { icon: Bath, title: 'Badkamerrenovatie', desc: 'Complete renovatie van A tot Z. Stijlvol, modern en luxe.', path: '/badkamerrenovatie' },
-  { icon: Waves, title: 'Vloeren leggen', desc: 'PVC, tegels, laminaat en visgraatpatronen.', path: '/binnenrenovatie' },
+  { icon: Waves, title: 'Vloeren leggen', desc: 'Tegels, laminaat en visgraatpatronen.', path: '/binnenrenovatie' },
   { icon: Toilet, title: 'WC-renovatie', desc: 'Maak van je toilet een stijlvolle en comfortabele ruimte.', path: '/wc-renovatie' },
   { icon: Paintbrush, title: 'Schilderwerk', desc: 'Perfect afgewerkt voor een duurzaam resultaat.', path: '/binnenrenovatie' },
   { icon: Layers, title: 'Stucwerk', desc: 'Strak afgewerkte wanden en plafonds.', path: '/binnenrenovatie' },

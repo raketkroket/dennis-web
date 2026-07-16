@@ -9,7 +9,7 @@ import WhatsAppButton from '../components/WhatsAppButton';
 const services = [
   { icon: Layers, title: 'Stucwerk', desc: 'Strak afgewerkte wanden en plafonds voor een moderne uitstraling.' },
   { icon: Paintbrush, title: 'Schilderwerk', desc: 'Perfect afgewerkt voor een duurzaam en mooi resultaat.' },
-  { icon: Waves, title: 'Vloeren leggen', desc: 'PVC, tegels, laminaat en visgraatpatronen op maat.' },
+  { icon: Waves, title: 'Vloeren leggen', desc: 'Tegels, laminaat en visgraatpatronen op maat.' },
   { icon: Grid3x3, title: 'Verlaagd plafond & spotjes', desc: 'Voor sfeer, functionaliteit en een moderne uitstraling.' },
 ];
 

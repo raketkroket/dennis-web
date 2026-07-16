@@ -16,7 +16,7 @@ const features = [
   'Vloerverwarming',
   'Niche en inbouwkranen',
   'Elektra en ventilatie',
-  'PVC of tegelvloer',
+  'Tegelvloer',
   'Stucwerk en schilderwerk',
 ];
 

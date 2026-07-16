@@ -14,7 +14,7 @@ const features = [
   'Verlaagd plafond met spotjes',
   'Stucwerk en schilderwerk',
   'Elektra en ventilatie',
-  'PVC of tegelvloer',
+  'Tegelvloer',
 ];
 
 const projects = [
