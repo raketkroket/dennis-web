@@ -53,7 +53,7 @@ export default function WCRenovatie() {
     <>
       <Header />
       <main>
-        <section className="relative pt-40 pb-24 bg-[#FAF8F5]" aria-label="WC-renovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f6f0e8]" aria-label="WC-renovatie hero">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -62,10 +62,10 @@ export default function WCRenovatie() {
                 transition={{ duration: 0.7 }}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-6 h-px bg-[#8B6F47]" />
-                  <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Stijlvol toilet</span>
+                  <div className="denra-line" />
+                  <span className="denra-label">Stijlvol toilet</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#2C2416] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                   WC-renovatie
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-lg">
@@ -74,14 +74,14 @@ export default function WCRenovatie() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/configurator"
-                    className="inline-flex items-center justify-center gap-2 bg-[#8B6F47] text-white font-medium px-8 py-4 rounded-full hover:bg-[#7A5F3A] hover:scale-105 transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
                     Prijs berekenen
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 border border-[#2C2416]/20 text-[#2C2416] font-medium px-8 py-4 rounded-full hover:bg-[#2C2416] hover:text-white transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
                   >
                     Plan adviesgesprek
                   </Link>
@@ -105,7 +105,7 @@ export default function WCRenovatie() {
           </div>
         </section>
 
-        <section className="py-20 bg-white" aria-labelledby="wc-features-heading">
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-features-heading">
           <div className="max-w-4xl mx-auto px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -114,7 +114,7 @@ export default function WCRenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-[#2C2416] mb-4">
+              <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
                 Wat is inbegrepen?
               </h2>
               <p className="text-[#6B5D50]">Complete WC-renovatie van A tot Z, zonder verrassingen.</p>
@@ -127,10 +127,10 @@ export default function WCRenovatie() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.06 }}
-                  className="flex items-center gap-3 p-4 bg-[#FAF8F5] rounded-xl"
+                  className="flex items-center gap-3 p-4 bg-[#faf6f0] rounded-sm border border-[#cfbca7]/55"
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#8B6F47]/15 flex items-center justify-center shrink-0">
-                    <Check size={12} className="text-[#8B6F47]" />
+                  <div className="w-6 h-6 rounded-full bg-[#e8ddcf] flex items-center justify-center shrink-0">
+                    <Check size={12} className="text-[#7a6552]" />
                   </div>
                   <span className="text-sm font-medium text-[#4A3F35]">{f}</span>
                 </motion.div>
@@ -139,7 +139,7 @@ export default function WCRenovatie() {
           </div>
         </section>
 
-        <section className="py-20 bg-[#FAF8F5]" aria-labelledby="wc-luxe-heading">
+        <section className="py-20 bg-[#f6f0e8]" aria-labelledby="wc-luxe-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
               <motion.div
@@ -147,13 +147,13 @@ export default function WCRenovatie() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="rounded-3xl bg-white border border-[#E8DDD0]/60 p-8 shadow-sm"
+                className="rounded-sm bg-[#faf6f0] border border-[#cfbca7]/55 p-8"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-6 h-px bg-[#8B6F47]" />
-                  <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Luxe toiletrenovatie</span>
+                  <div className="denra-line" />
+                  <span className="denra-label">Luxe toiletrenovatie</span>
                 </div>
-                <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-[#2C2416] mb-4">
+                <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
                   Indicatieve calculatorprijzen voor een luxe toiletrenovatie.
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-2xl">
@@ -163,15 +163,15 @@ export default function WCRenovatie() {
                   {luxePricing.map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-center justify-between gap-4 rounded-2xl border border-[#E8DDD0] bg-[#FAF8F5] px-4 py-3"
+                      className="flex items-center justify-between gap-4 rounded-sm border border-[#cfbca7] bg-[#f6f0e8] px-4 py-3"
                     >
-                      <p className="font-medium text-[#2C2416]">{item.label}</p>
-                      <p className="text-sm font-semibold text-[#8B6F47]">{item.price}</p>
+                      <p className="font-medium text-[#231A12]">{item.label}</p>
+                      <p className="text-sm font-semibold text-[#7a6552]">{item.price}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 rounded-2xl bg-[#2C2416] p-6 text-white">
-                  <p className="text-xs tracking-[0.2em] uppercase text-[#D5C0A7] mb-2">Totaal luxe toiletrenovatie</p>
+                <div className="mt-8 rounded-sm bg-[#231A12] p-6 text-white">
+                  <p className="denra-label text-[#cfbca7] mb-2">Totaal luxe toiletrenovatie</p>
                   <p className="font-serif text-4xl font-semibold mb-2">€3.800 tot €5.200</p>
                   <p className="text-sm text-[#B7A892]">Prijsindicatie op basis van de opgegeven werkzaamheden.</p>
                 </div>
@@ -182,9 +182,9 @@ export default function WCRenovatie() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="rounded-3xl bg-[#2C2416] p-8 text-white shadow-sm"
+                className="rounded-sm bg-[#231A12] p-8 text-white"
               >
-                <p className="text-xs tracking-[0.2em] uppercase text-[#D5C0A7] mb-3">Advies calculator basisprijs Nivora</p>
+                <p className="denra-label text-[#cfbca7] mb-3">Advies calculator basisprijs DENRA</p>
                 <h3 className="font-serif text-3xl font-semibold mb-6">Luxe uitvoering totaal</h3>
                 <div className="space-y-4 mb-8">
                   {luxeAdvies.map((item) => (
@@ -195,7 +195,7 @@ export default function WCRenovatie() {
                   ))}
                 </div>
                 <div className="rounded-2xl bg-white/5 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#D5C0A7] mb-2">Luxe uitvoering totaal</p>
+                  <p className="denra-label text-[#cfbca7] mb-2">Luxe uitvoering totaal</p>
                   <p className="font-serif text-4xl font-semibold">€5.500 tot €6.500</p>
                 </div>
                 <p className="mt-6 text-sm text-[#B7A892]">Basisprijs: €4.250. Geberit Duofix inclusief montage: + €1.250. Tegelwerk in verstek: + €350. Nis: + €450. Inbouwkraan fonteintje: + €350.</p>
@@ -204,7 +204,7 @@ export default function WCRenovatie() {
           </div>
         </section>
 
-        <section className="py-20 bg-[#FAF8F5]" aria-labelledby="wc-projecten-heading">
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -213,7 +213,7 @@ export default function WCRenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-14"
             >
-              <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-[#2C2416]">
+              <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
                 Gerealiseerde WC's
               </h2>
             </motion.div>
@@ -236,7 +236,7 @@ export default function WCRenovatie() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
-                  <h3 className="font-serif text-lg font-semibold text-[#2C2416] mb-1">{p.title}</h3>
+                  <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
                   <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
                 </motion.div>
               ))}

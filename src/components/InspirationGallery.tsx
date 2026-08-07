@@ -16,7 +16,7 @@ export default function InspirationGallery() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <section className="py-24 bg-[#FAF8F5]" aria-labelledby="inspiratie-heading">
+    <section className="py-24 bg-transparent" aria-labelledby="inspiratie-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -26,11 +26,11 @@ export default function InspirationGallery() {
           className="text-center mb-14"
         >
           <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="w-6 h-px bg-[#D5C0A7]" />
-            <span className="text-xs tracking-[0.25em] uppercase text-[#D5C0A7] font-medium">Inspiratie</span>
-            <div className="w-6 h-px bg-[#D5C0A7]" />
+            <div className="denra-line" />
+            <span className="denra-label">Inspiratie</span>
+            <div className="denra-line" />
           </div>
-          <h2 id="inspiratie-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#2C2416] leading-tight">
+          <h2 id="inspiratie-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight">
             Laat je inspireren
           </h2>
         </motion.div>
@@ -43,7 +43,7 @@ export default function InspirationGallery() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className={`${img.span} overflow-hidden rounded-2xl group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D5C0A7] focus:ring-offset-2`}
+              className={`${img.span} overflow-hidden rounded-sm group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#5c5147] focus:ring-offset-2`}
               onClick={() => setSelected(img.src)}
               aria-label={`Bekijk foto: ${img.alt}`}
             >
@@ -66,11 +66,11 @@ export default function InspirationGallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6"
+            className="fixed inset-0 z-50 bg-[#120d09]/92 flex items-center justify-center p-6"
             onClick={() => setSelected(null)}
           >
             <button
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors duration-200"
+              className="absolute top-6 right-6 w-10 h-10 rounded-sm bg-white/8 flex items-center justify-center text-white hover:bg-white/16 transition-colors duration-200"
               onClick={() => setSelected(null)}
               aria-label="Sluiten"
             >
@@ -84,7 +84,7 @@ export default function InspirationGallery() {
               alt="Vergroot afbeelding"
               width={1200}
               height={800}
-              className="max-w-full max-h-[85vh] object-contain rounded-xl"
+              className="max-w-full max-h-[85vh] object-contain rounded-sm"
               onClick={(e) => e.stopPropagation()}
             />
           </motion.div>

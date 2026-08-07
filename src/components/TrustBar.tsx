@@ -12,9 +12,9 @@ const items = [
 
 export default function TrustBar() {
   return (
-    <section className="bg-white border-y border-[#E8DDD0]/60" aria-label="Onze beloftes">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+    <section className="bg-transparent border-y border-[#5c5147]/12" aria-label="Onze beloftes">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
           {items.map((item, i) => (
             <motion.div
               key={item.title}
@@ -24,12 +24,10 @@ export default function TrustBar() {
               transition={{ duration: 0.5, delay: i * 0.08 }}
               className="flex flex-col items-start gap-3"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#F5EFE6] flex items-center justify-center">
-                <item.icon size={18} className="text-[#8B6F47]" />
-              </div>
+              <div className="denra-line" />
               <div>
-                <p className="text-sm font-semibold text-[#2C2416] leading-snug">{item.title}</p>
-                <p className="text-xs text-[#8A7A6A] mt-1 leading-relaxed">{item.desc}</p>
+                <p className="text-sm font-semibold text-[#1d1712] leading-snug">{item.title}</p>
+                <p className="text-xs text-[#5f544a] mt-1 leading-relaxed">{item.desc}</p>
               </div>
             </motion.div>
           ))}

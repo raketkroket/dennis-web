@@ -48,13 +48,16 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        nivora: {
-          sand: '#FAF8F5',
-          beige: '#F5EFE6',
-          tan: '#F3EDE6',
-          bronze: '#D5C0A7',
-          dark: '#2C2416',
-          muted: '#6B5D50',
+        denra: {
+          ivory: '#F6F0E8',
+          cream: '#FAF6F0',
+          limestone: '#EEE6DA',
+          sand: '#E8DDCF',
+          greige: '#CBB9A5',
+          taupe: '#8E7A68',
+          bronze: '#7A6552',
+          espresso: '#231A12',
+          charcoal: '#2D261F',
         }
       },
       borderRadius: {

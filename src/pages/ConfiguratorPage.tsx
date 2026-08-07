@@ -10,7 +10,7 @@ export default function ConfiguratorPage() {
     <>
       <Header />
       <main>
-        <section className="pt-40 pb-24 bg-[#FAF8F5]" aria-label="Prijscalculator">
+        <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label="Prijscalculator">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               <motion.div
@@ -19,10 +19,10 @@ export default function ConfiguratorPage() {
                 transition={{ duration: 0.7 }}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-6 h-px bg-[#8B6F47]" />
-                  <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Binnen 2 minuten</span>
+                  <div className="denra-line" />
+                  <span className="denra-label">Binnen 2 minuten</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#2C2416] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                   Bereken uw<br />renovatieprijs
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-md">
@@ -35,9 +35,9 @@ export default function ConfiguratorPage() {
                     { step: '03', title: 'Selecteer opties', desc: 'Extra\'s naar wens' },
                   ].map((item) => (
                     <div key={item.step} className="flex items-start gap-4">
-                      <span className="font-serif text-2xl font-semibold text-[#8B6F47]/30 w-10 shrink-0">{item.step}</span>
+                      <span className="font-serif text-2xl font-semibold text-[#7a6552]/30 w-10 shrink-0">{item.step}</span>
                       <div>
-                        <p className="font-semibold text-[#2C2416] text-sm">{item.title}</p>
+                        <p className="font-semibold text-[#231A12] text-sm">{item.title}</p>
                         <p className="text-xs text-[#8A7A6A]">{item.desc}</p>
                       </div>
                     </div>

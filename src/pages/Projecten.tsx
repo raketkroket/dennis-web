@@ -26,7 +26,7 @@ export default function Projecten() {
     <>
       <Header />
       <main>
-        <section className="pt-40 pb-16 bg-[#FAF8F5]" aria-label="Projecten header">
+        <section className="pt-40 pb-16 bg-[#f6f0e8]" aria-label="Projecten header">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -35,11 +35,11 @@ export default function Projecten() {
               className="text-center"
             >
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-6 h-px bg-[#8B6F47]" />
-                <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Portfolio</span>
-                <div className="w-6 h-px bg-[#8B6F47]" />
+                <div className="denra-line" />
+                <span className="denra-label">Portfolio</span>
+                <div className="denra-line" />
               </div>
-              <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#2C2416] leading-tight mb-6">
+              <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                 Onze projecten
               </h1>
               <p className="text-[#6B5D50] max-w-xl mx-auto leading-relaxed">
@@ -49,7 +49,7 @@ export default function Projecten() {
           </div>
         </section>
 
-        <section className="py-16 bg-white" aria-labelledby="projecten-grid-heading">
+        <section className="py-16 bg-[#faf6f0]" aria-labelledby="projecten-grid-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             {/* Filter */}
             <div className="flex items-center gap-3 mb-12 flex-wrap" role="group" aria-label="Filter projecten">
@@ -57,10 +57,10 @@ export default function Projecten() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8B6F47] focus:ring-offset-2 ${
+                  className={`px-5 py-2 rounded-sm text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
                     activeCategory === cat
-                      ? 'bg-[#8B6F47] text-white'
-                      : 'border border-[#D4C5A9] text-[#4A3F35] hover:border-[#8B6F47] hover:text-[#8B6F47]'
+                      ? 'bg-[#231A12] text-[#F6F0E8]'
+                      : 'border border-[#cfbca7] text-[#4A3F35] hover:border-[#7a6552] hover:text-[#231A12]'
                   }`}
                   aria-pressed={activeCategory === cat}
                 >
@@ -88,15 +88,15 @@ export default function Projecten() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="text-xs bg-white/90 text-[#8B6F47] px-3 py-1 rounded-full font-medium">
+                      <span className="text-xs bg-[#f7f1e8]/90 text-[#7a6552] px-3 py-1 rounded-sm font-medium">
                         {project.category}
                       </span>
-                      <span className="text-xs bg-white/90 text-[#4A3F35] px-3 py-1 rounded-full">
+                        <span className="text-xs bg-[#f7f1e8]/90 text-[#4A3F35] px-3 py-1 rounded-sm">
                         {project.location}
                       </span>
                     </div>
                   </div>
-                  <h3 className="font-serif text-xl font-semibold text-[#2C2416] mb-1 group-hover:text-[#8B6F47] transition-colors duration-200">
+                    <h3 className="font-serif text-xl font-semibold text-[#231A12] mb-1 group-hover:text-[#7a6552] transition-colors duration-200">
                     {project.title}
                   </h3>
                   <p className="text-sm text-[#8A7A6A]">{project.desc}</p>

@@ -18,8 +18,8 @@ const Contact = lazy(() => import('./src/pages/Contact'));
 const ConfiguratorPage = lazy(() => import('./src/pages/ConfiguratorPage'));
 
 const PageLoader = () => (
-  <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
-    <div className="w-8 h-8 border-2 border-[#8B6F47]/30 border-t-[#8B6F47] rounded-full animate-spin" />
+  <div className="min-h-screen bg-[#F5EFE6] flex items-center justify-center">
+    <div className="w-8 h-8 border border-[#8E7A68]/20 border-t-[#231A12] rounded-full animate-spin" />
   </div>
 );
 

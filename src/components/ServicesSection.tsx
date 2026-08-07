@@ -15,9 +15,9 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="py-24 bg-[#FAF8F5]" aria-labelledby="diensten-heading">
+    <section className="py-24 lg:py-28 bg-transparent" aria-labelledby="diensten-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-16 items-start">
           {/* Left */}
           <div>
             <motion.div
@@ -27,18 +27,18 @@ export default function ServicesSection() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-6 h-px bg-[#D5C0A7]" />
-                <span className="text-xs tracking-[0.25em] uppercase text-[#D5C0A7] font-medium">Onze diensten</span>
+                <div className="denra-line" />
+                <span className="denra-label">Onze diensten</span>
               </div>
-              <h2 id="diensten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#2C2416] leading-tight mb-6">
-                Voor elke ruimte<br />de perfecte oplossing
+              <h2 id="diensten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight mb-6">
+                Voor elke ruimte<br />een rustig en precies resultaat
               </h2>
-              <p className="text-[#6B5D50] leading-relaxed mb-10 max-w-md">
-                Van badkamerrenovatie tot complete binnenrenovaties. Wij leveren maatwerk met oog voor detail en gebruiken alleen materialen van de hoogste kwaliteit.
+              <p className="text-[#5f544a] leading-relaxed mb-10 max-w-md">
+                Van badkamerrenovatie tot complete binnenrenovaties. Alles wordt opgebouwd met aandacht voor materiaal, verhoudingen en afwerking.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {services.map((service, i) => (
                 <motion.div
                   key={service.title}
@@ -49,14 +49,14 @@ export default function ServicesSection() {
                 >
                   <Link
                     to={service.path}
-                    className="group flex items-start gap-4 p-5 rounded-2xl bg-white border border-[#E8DDD0]/60 hover:border-[#D5C0A7]/30 hover:shadow-md transition-all duration-300"
+                    className="group flex items-start gap-4 p-5 bg-[#d8cdbd]/42 border border-[#5c5147]/12 hover:border-[#5c5147]/22 transition-all duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-[#F5EFE6] flex items-center justify-center shrink-0 group-hover:bg-[#D5C0A7]/10 transition-colors duration-300">
-                      <service.icon size={18} className="text-[#D5C0A7]" />
+                    <div className="w-10 h-10 border border-[#5c5147]/14 flex items-center justify-center shrink-0 group-hover:border-[#5c5147]/28 transition-colors duration-300">
+                      <service.icon size={18} className="text-[#302922]" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#2C2416] mb-1">{service.title}</p>
-                      <p className="text-xs text-[#8A7A6A] leading-relaxed">{service.desc}</p>
+                      <p className="text-sm font-semibold text-[#1d1712] mb-1">{service.title}</p>
+                      <p className="text-xs text-[#5f544a] leading-relaxed">{service.desc}</p>
                     </div>
                   </Link>
                 </motion.div>
@@ -72,7 +72,7 @@ export default function ServicesSection() {
             >
               <Link
                 to="/projecten"
-                className="inline-flex items-center gap-2 text-sm font-medium text-[#D5C0A7] border border-[#D5C0A7]/40 px-6 py-3 rounded-full hover:bg-[#D5C0A7] hover:text-[#2C2416] transition-all duration-200"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[#1d1712] border border-[#5c5147]/18 px-6 py-3 rounded-sm tracking-[0.16em] uppercase hover:bg-[#d8d0c4] transition-all duration-200"
               >
                 Bekijk alle diensten
                 <ChevronRight size={16} />
@@ -88,22 +88,22 @@ export default function ServicesSection() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="bg-[#2C2416] rounded-3xl p-10 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#D5C0A7]/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#D5C0A7]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+            <div className="bg-[#1b1611] p-10 text-white relative overflow-hidden rounded-sm">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 translate-y-1/2 -translate-x-1/2" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-6 h-px bg-[#D5C0A7]" />
-                  <span className="text-xs tracking-[0.25em] uppercase text-[#D5C0A7] font-medium">Binnen 2 minuten een indicatie</span>
+                  <div className="w-6 h-px bg-white/30" />
+                  <span className="denra-label text-white/55">Binnen 2 minuten een indicatie</span>
                 </div>
-                <h3 className="font-serif text-3xl font-semibold leading-tight mb-6">
+                <h3 className="font-serif text-3xl font-semibold leading-tight mb-6 text-[#f7f2ea]">
                   Bereken eenvoudig<br />jouw renovatieprijs
                 </h3>
                 <ul className="space-y-3 mb-8">
                   {['Vul de afmetingen in', 'Kies jouw wensen en extra\'s', 'Ontvang direct een prijsindicatie'].map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-sm text-[#C4A882]">
-                      <div className="w-5 h-5 rounded-full bg-[#D5C0A7]/30 flex items-center justify-center shrink-0">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#D5C0A7]" />
+                    <li key={item} className="flex items-center gap-3 text-sm text-white/70">
+                      <div className="w-5 h-5 border border-white/18 flex items-center justify-center shrink-0">
+                        <div className="w-1.5 h-px bg-white/60" />
                       </div>
                       {item}
                     </li>
@@ -111,7 +111,7 @@ export default function ServicesSection() {
                 </ul>
                 <Link
                   to="/configurator"
-                  className="inline-flex items-center gap-2 bg-[#D5C0A7] text-[#2C2416] font-medium px-8 py-4 rounded-full hover:bg-[#C7AF94] hover:scale-105 transition-all duration-200 text-sm tracking-wide w-full justify-center"
+                  className="inline-flex items-center gap-2 bg-[#f6f0e8] text-[#1d1712] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#e0d6c7] transition-all duration-200 text-sm w-full justify-center"
                 >
                   Start prijsberekening
                   <ChevronRight size={16} />
@@ -120,7 +120,7 @@ export default function ServicesSection() {
             </div>
 
             {/* Decorative image */}
-            <div className="mt-6 rounded-2xl overflow-hidden h-48">
+            <div className="mt-6 overflow-hidden h-48 border border-[#5c5147]/12">
               <img
                 src={sitePhotos[1]}
                 alt="Luxe badkamer detail met marmeren tegels"

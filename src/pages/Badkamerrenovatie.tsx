@@ -44,7 +44,7 @@ export default function Badkamerrenovatie() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="relative pt-40 pb-24 bg-[#FAF8F5] overflow-hidden" aria-label="Badkamerrenovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f6f0e8] overflow-hidden" aria-label="Badkamerrenovatie hero">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -53,10 +53,10 @@ export default function Badkamerrenovatie() {
                 transition={{ duration: 0.7 }}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-6 h-px bg-[#8B6F47]" />
-                  <span className="text-xs tracking-[0.25em] uppercase text-[#8B6F47] font-medium">Onze specialiteit</span>
+                  <div className="denra-line" />
+                  <span className="denra-label">Onze specialiteit</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#2C2416] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                   Badkamer&shy;renovatie
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-lg">
@@ -65,14 +65,14 @@ export default function Badkamerrenovatie() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/configurator"
-                    className="inline-flex items-center justify-center gap-2 bg-[#8B6F47] text-white font-medium px-8 py-4 rounded-full hover:bg-[#7A5F3A] hover:scale-105 transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
                     Prijs berekenen
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 border border-[#2C2416]/20 text-[#2C2416] font-medium px-8 py-4 rounded-full hover:bg-[#2C2416] hover:text-white transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
                   >
                     Plan adviesgesprek
                   </Link>
@@ -97,7 +97,7 @@ export default function Badkamerrenovatie() {
         </section>
 
         {/* Features */}
-        <section className="py-20 bg-white" aria-labelledby="features-heading">
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="features-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -106,7 +106,7 @@ export default function Badkamerrenovatie() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 id="features-heading" className="font-serif text-4xl font-semibold text-[#2C2416] mb-6">
+                <h2 id="features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
                   Alles inbegrepen,<br />niets vergeten
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8">
@@ -122,8 +122,8 @@ export default function Badkamerrenovatie() {
                       transition={{ duration: 0.4, delay: i * 0.05 }}
                       className="flex items-center gap-3"
                     >
-                      <div className="w-5 h-5 rounded-full bg-[#8B6F47]/15 flex items-center justify-center shrink-0">
-                        <Check size={11} className="text-[#8B6F47]" />
+                      <div className="w-5 h-5 rounded-full bg-[#e8ddcf] flex items-center justify-center shrink-0">
+                        <Check size={11} className="text-[#7a6552]" />
                       </div>
                       <span className="text-sm text-[#4A3F35]">{f}</span>
                     </motion.div>
@@ -150,7 +150,7 @@ export default function Badkamerrenovatie() {
         </section>
 
         {/* Projects */}
-        <section className="py-20 bg-[#FAF8F5]" aria-labelledby="badkamer-projecten-heading">
+        <section className="py-20 bg-[#f6f0e8]" aria-labelledby="badkamer-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ export default function Badkamerrenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-14"
             >
-              <h2 id="badkamer-projecten-heading" className="font-serif text-4xl font-semibold text-[#2C2416]">
+              <h2 id="badkamer-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
                 Gerealiseerde badkamers
               </h2>
             </motion.div>
@@ -182,7 +182,7 @@ export default function Badkamerrenovatie() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
-                  <h3 className="font-serif text-lg font-semibold text-[#2C2416] mb-1">{p.title}</h3>
+                  <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
                   <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
                 </motion.div>
               ))}

@@ -2,16 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const stats = [
-  { value: '100+', label: 'Tevreden klanten', color: 'text-[#8B6F47]' },
-  { value: '5+ jaar', label: 'Ervaring', color: 'text-[#8B6F47]' },
-  { value: 'Premium', label: 'Materialen', color: 'text-[#8B6F47]' },
-  { value: 'Garantie', label: 'Op al ons werk', color: 'text-[#8B6F47]' },
-  { value: '5 sterren', label: 'Google reviews', color: 'text-[#8B6F47]' },
+  { value: '100+', label: 'Tevreden klanten' },
+  { value: '5+ jaar', label: 'Ervaring' },
+  { value: 'Premium', label: 'Materialen' },
+  { value: 'Garantie', label: 'Op al ons werk' },
+  { value: '5 sterren', label: 'Google reviews' },
 ];
 
 export default function StatsSection() {
   return (
-    <section className="py-20 bg-[#FAF8F5] border-y border-[#E8DDD0]/60" aria-label="Statistieken">
+    <section className="py-20 bg-transparent border-y border-[#5c5147]/12" aria-label="Statistieken">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
           {stats.map((stat, i) => (
@@ -23,10 +23,11 @@ export default function StatsSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="text-center"
             >
-              <div className={`font-serif text-3xl md:text-4xl font-semibold mb-2 ${stat.color}`}>
+              <div className="denra-line mx-auto mb-4" />
+              <div className="font-serif text-3xl md:text-4xl font-semibold mb-2 text-[#1d1712]">
                 {stat.value}
               </div>
-              <div className="text-sm text-[#8A7A6A]">{stat.label}</div>
+              <div className="text-sm text-[#5f544a]">{stat.label}</div>
             </motion.div>
           ))}
         </div>

@@ -7,31 +7,31 @@ import heroImage from '../../headerimg.png';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-end overflow-hidden" aria-label="Hero sectie">
+    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Hero sectie">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
-          alt="Luxe badkamer met vrijstaand bad en houten accenten"
+          alt="Luxe badkamer met vrijstaand bad en warme materialen"
           width={1800}
           height={1200}
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center brightness-[0.78] contrast-[0.92] saturate-[0.88]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1208]/80 via-[#1A1208]/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1208]/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#120d09]/82 via-[#120d09]/42 to-[#120d09]/18" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#120d09]/58 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pb-24 pt-40 w-full">
-        <div className="max-w-2xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-28 md:py-32 w-full">
+        <div className="max-w-xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="flex items-center gap-3 mb-8"
           >
-            <div className="w-8 h-px bg-[#8B6F47]" />
-            <span className="text-xs tracking-[0.3em] uppercase text-[#C4A882] font-medium">
+            <div className="w-10 h-px bg-[#f3ece2]/50" />
+            <span className="text-xs tracking-[0.34em] uppercase text-[#f3ece2]/78 font-medium">
               Luxe badkamer- en binnenrenovaties
             </span>
           </motion.div>
@@ -40,21 +40,20 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif text-5xl md:text-6xl lg:text-7xl font-semibold text-white leading-[1.05] mb-6"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[22rem]"
           >
-            Vakmanschap.
+            Warm architectural luxury.
             <br />
-            <span className="text-[#C4A882]">Tot in detail.</span>
+            <span className="text-[#ddd3c5]">Voor badkamers met rust.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-base md:text-lg text-[#D4C5A9]/80 leading-relaxed mb-10 max-w-lg"
+            className="text-base md:text-lg text-[#efe8df]/88 leading-relaxed mb-10 max-w-md"
           >
-            Wij creëren badkamers en interieurs die rust, luxe en functionaliteit perfect combineren.
-            Van ontwerp tot complete realisatie.
+            Wij creëren badkamers en interieurs met natuurlijke materialen, sterke lijnen en een kalme, hoogwaardige uitstraling.
           </motion.p>
 
           <motion.div
@@ -65,14 +64,14 @@ export default function HeroSection() {
           >
             <Link
               to="/configurator"
-              className="inline-flex items-center justify-center gap-2 bg-[#8B6F47] text-white font-medium px-8 py-4 rounded-full hover:bg-[#7A5F3A] hover:scale-105 transition-all duration-200 text-sm tracking-wide"
+              className="inline-flex items-center justify-center gap-2 bg-[#f4eee5] text-[#120d09] font-medium px-8 py-4 rounded-sm hover:bg-[#e5dbcd] transition-all duration-200 text-sm tracking-[0.16em] uppercase"
             >
               Prijs berekenen
               <ArrowRight size={16} />
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 border border-white/40 text-white font-medium px-8 py-4 rounded-full hover:bg-white/10 hover:border-white/70 transition-all duration-200 text-sm tracking-wide backdrop-blur-sm"
+              className="inline-flex items-center justify-center gap-2 border border-[#f4eee5]/34 text-[#f4eee5] font-medium px-8 py-4 rounded-sm hover:bg-[#f4eee5] hover:text-[#120d09] transition-all duration-200 text-sm tracking-[0.16em] uppercase backdrop-blur-sm"
             >
               Plan adviesgesprek
             </Link>
@@ -87,8 +86,8 @@ export default function HeroSection() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 right-8 hidden lg:flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] tracking-[0.25em] uppercase text-white/40 rotate-90 origin-center mb-4">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/40 to-transparent" />
+        <span className="text-[10px] tracking-[0.28em] uppercase text-white/30 rotate-90 origin-center mb-4">Scroll</span>
+        <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
       </motion.div>
     </section>
   );

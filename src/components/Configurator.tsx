@@ -102,9 +102,9 @@ export default function Configurator() {
     parseFloat(config.width) > 0;
 
   return (
-    <div className="bg-white rounded-3xl border border-[#E8DDD0]/60 shadow-sm overflow-hidden">
+    <div className="bg-[#f8f3ec] rounded-sm border border-[#cfbca7]/55 overflow-hidden">
       {/* Progress */}
-      <div className="bg-[#FAF8F5] px-8 py-6 border-b border-[#E8DDD0]/60">
+      <div className="bg-[#f4ede4] px-8 py-6 border-b border-[#cfbca7]/60">
         <div className="flex items-center gap-4">
           {[1, 2, 3].map((s) => (
             <React.Fragment key={s}>
@@ -112,19 +112,19 @@ export default function Configurator() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
                     step > s
-                      ? 'bg-[#D5C0A7] text-[#2C2416]'
+                        ? 'bg-[#231A12] text-[#F6F0E8]'
                       : step === s
-                      ? 'bg-[#2C2416] text-white'
-                      : 'bg-[#E8DDD0] text-[#8A7A6A]'
+                        ? 'bg-[#7a6552] text-[#F6F0E8]'
+                        : 'bg-[#e8ddcf] text-[#8A7A6A]'
                   }`}
                 >
                   {step > s ? <Check size={14} /> : s}
                 </div>
-                <span className={`text-xs font-medium hidden sm:block ${step >= s ? 'text-[#2C2416]' : 'text-[#8A7A6A]'}`}>
+                <span className={`text-xs font-medium hidden sm:block ${step >= s ? 'text-[#231A12]' : 'text-[#8A7A6A]'}`}>
                   {s === 1 ? 'Ruimte' : s === 2 ? 'Afmetingen' : 'Opties'}
                 </span>
               </div>
-              {s < 3 && <div className={`flex-1 h-px transition-colors duration-300 ${step > s ? 'bg-[#D5C0A7]' : 'bg-[#E8DDD0]'}`} />}
+              {s < 3 && <div className={`flex-1 h-px transition-colors duration-300 ${step > s ? 'bg-[#7a6552]' : 'bg-[#e8ddcf]'}`} />}
             </React.Fragment>
           ))}
         </div>
@@ -141,7 +141,7 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#2C2416] mb-2">Welke ruimte wilt u renoveren?</h3>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Welke ruimte wilt u renoveren?</h3>
               <p className="text-sm text-[#8A7A6A] mb-8">Selecteer het type ruimte voor een nauwkeurige prijsindicatie.</p>
               <div className="grid grid-cols-2 gap-4">
                 {([
@@ -151,16 +151,16 @@ export default function Configurator() {
                   <button
                     key={type}
                     onClick={() => setConfig((prev) => ({ ...prev, roomType: type, options: [] }))}
-                    className={`p-6 rounded-2xl border-2 text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#D5C0A7] focus:ring-offset-2 ${
+                    className={`p-6 rounded-sm border text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
                       config.roomType === type
-                        ? 'border-[#D5C0A7] bg-[#D5C0A7]/5'
-                        : 'border-[#E8DDD0] hover:border-[#D5C0A7]/40'
+                        ? 'border-[#7a6552] bg-[#e8ddcf]/30'
+                        : 'border-[#cfbca7] hover:border-[#7a6552]/50'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${config.roomType === type ? 'bg-[#D5C0A7]' : 'bg-[#F5EFE6]'}`}>
-                      <Icon size={22} className={config.roomType === type ? 'text-[#2C2416]' : 'text-[#D5C0A7]'} />
+                    <div className={`w-12 h-12 rounded-sm flex items-center justify-center mb-4 ${config.roomType === type ? 'bg-[#231A12]' : 'bg-[#f4ede4]'}`}>
+                      <Icon size={22} className={config.roomType === type ? 'text-[#F6F0E8]' : 'text-[#7a6552]'} />
                     </div>
-                    <p className="font-semibold text-[#2C2416] mb-1">{label}</p>
+                    <p className="font-semibold text-[#231A12] mb-1">{label}</p>
                     <p className="text-xs text-[#8A7A6A]">{desc}</p>
                   </button>
                 ))}
@@ -177,11 +177,11 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#2C2416] mb-2">Wat zijn de afmetingen?</h3>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Wat zijn de afmetingen?</h3>
               <p className="text-sm text-[#8A7A6A] mb-8">Voer de lengte en breedte in meters in voor een nauwkeurige berekening.</p>
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="length" className="block text-sm font-medium text-[#2C2416] mb-2">
+                  <label htmlFor="length" className="block text-sm font-medium text-[#231A12] mb-2">
                     Lengte (m)
                   </label>
                   <input
@@ -193,11 +193,11 @@ export default function Configurator() {
                     value={config.length}
                     onChange={(e) => setConfig((prev) => ({ ...prev, length: e.target.value }))}
                     placeholder="bijv. 3.5"
-                    className="w-full border border-[#D4C5A9]/60 rounded-xl px-4 py-3 text-[#2C2416] placeholder-[#C4B8A8] focus:outline-none focus:ring-2 focus:ring-[#D5C0A7]/50 focus:border-[#D5C0A7] transition-all duration-200"
+                    className="denra-field"
                   />
                 </div>
                 <div>
-                  <label htmlFor="width" className="block text-sm font-medium text-[#2C2416] mb-2">
+                  <label htmlFor="width" className="block text-sm font-medium text-[#231A12] mb-2">
                     Breedte (m)
                   </label>
                   <input
@@ -209,7 +209,7 @@ export default function Configurator() {
                     value={config.width}
                     onChange={(e) => setConfig((prev) => ({ ...prev, width: e.target.value }))}
                     placeholder="bijv. 2.0"
-                    className="w-full border border-[#D4C5A9]/60 rounded-xl px-4 py-3 text-[#2C2416] placeholder-[#C4B8A8] focus:outline-none focus:ring-2 focus:ring-[#D5C0A7]/50 focus:border-[#D5C0A7] transition-all duration-200"
+                    className="denra-field"
                   />
                 </div>
               </div>
@@ -217,10 +217,10 @@ export default function Configurator() {
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 bg-[#F5EFE6] rounded-xl"
+                  className="mt-6 p-4 bg-[#f4ede4] rounded-sm border border-[#cfbca7]/55"
                 >
                   <p className="text-sm text-[#6B5D50]">
-                    Oppervlakte: <span className="font-semibold text-[#2C2416]">{(parseFloat(config.length) * parseFloat(config.width)).toFixed(2)} m²</span>
+                    Oppervlakte: <span className="font-semibold text-[#231A12]">{(parseFloat(config.length) * parseFloat(config.width)).toFixed(2)} m²</span>
                   </p>
                 </motion.div>
               )}
@@ -236,7 +236,7 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#2C2416] mb-2">Welke opties wenst u?</h3>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Welke opties wenst u?</h3>
               <p className="text-sm text-[#8A7A6A] mb-8">Selecteer de gewenste extra's voor uw renovatie.</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                 {currentOptions.map((option) => {
@@ -245,17 +245,17 @@ export default function Configurator() {
                     <button
                       key={option.id}
                       onClick={() => toggleOption(option.id)}
-                      className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-[#8B6F47] focus:ring-offset-1 ${
+                      className={`flex items-center justify-between p-4 rounded-sm border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-1 ${
                         isSelected
-                          ? 'border-[#D5C0A7] bg-[#D5C0A7]/5'
-                          : 'border-[#E8DDD0] hover:border-[#D5C0A7]/40'
+                          ? 'border-[#7a6552] bg-[#e8ddcf]/25'
+                          : 'border-[#cfbca7] hover:border-[#7a6552]/40'
                       }`}
                     >
-                      <span className="text-sm font-medium text-[#2C2416]">{option.label}</span>
+                      <span className="text-sm font-medium text-[#231A12]">{option.label}</span>
                       <div className="text-right">
                         <div className="flex items-center gap-3 justify-end">
                           <span className="text-xs text-[#8A7A6A]">+€{option.price}</span>
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#D5C0A7] bg-[#D5C0A7]' : 'border-[#D4C5A9]'}`}>
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#7a6552] bg-[#7a6552]' : 'border-[#cfbca7]'}`}>
                             {isSelected && <Check size={10} className="text-white" />}
                           </div>
                         </div>
@@ -271,20 +271,20 @@ export default function Configurator() {
               </p>
 
               {/* Price result */}
-              <div className="bg-[#2C2416] rounded-2xl p-6 text-white">
-                <p className="text-xs tracking-[0.2em] uppercase text-[#D5C0A7] mb-2">Uw prijsindicatie</p>
+              <div className="bg-[#231A12] rounded-sm p-6 text-white">
+                <p className="denra-label text-[#cfbca7] mb-2">Uw prijsindicatie</p>
                 <div className="flex items-end gap-2 mb-1">
                   <span className="font-serif text-4xl font-semibold">
                     €{price.toLocaleString('nl-NL')}
                   </span>
-                  <span className="text-[#A89880] text-sm mb-1">indicatie</span>
+                  <span className="text-[#b7a894] text-sm mb-1">indicatie</span>
                 </div>
-                <p className="text-xs text-[#7A6A58] mb-6">
+                <p className="text-xs text-[#b7a894] mb-6">
                   Inclusief bouwmaterialen. Exclusief sanitair en tegels.
                 </p>
                 <Link
                   to="/contact"
-                  className="flex items-center justify-center gap-2 bg-[#D5C0A7] text-[#2C2416] font-medium px-6 py-3.5 rounded-full hover:bg-[#C7AF94] hover:scale-105 transition-all duration-200 text-sm w-full"
+                  className="flex items-center justify-center gap-2 bg-[#f6f0e8] text-[#231A12] font-medium px-6 py-3.5 rounded-sm tracking-[0.16em] uppercase hover:bg-[#e8ddcf] transition-all duration-200 text-sm w-full"
                 >
                   Vraag vrijblijvende offerte aan
                   <ChevronRight size={16} />
@@ -295,11 +295,11 @@ export default function Configurator() {
         </AnimatePresence>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#E8DDD0]/60">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#cfbca7]/60">
           <button
             onClick={() => setStep((s) => Math.max(1, s - 1))}
             disabled={step === 1}
-            className="flex items-center gap-2 text-sm font-medium text-[#8A7A6A] hover:text-[#2C2416] disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
+            className="flex items-center gap-2 text-sm font-medium text-[#8A7A6A] hover:text-[#231A12] disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
           >
             <ChevronLeft size={16} />
             Vorige
@@ -308,7 +308,7 @@ export default function Configurator() {
             <button
               onClick={() => setStep((s) => Math.min(3, s + 1))}
               disabled={step === 1 ? !canProceedStep1 : !canProceedStep2}
-              className="flex items-center gap-2 bg-[#D5C0A7] text-[#2C2416] text-sm font-medium px-6 py-2.5 rounded-full hover:bg-[#C7AF94] hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200"
+              className="flex items-center gap-2 bg-[#231A12] text-[#F6F0E8] text-sm font-medium px-6 py-2.5 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200"
             >
               Volgende
               <ChevronRight size={16} />

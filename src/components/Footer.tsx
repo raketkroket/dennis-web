@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import logo from '../../fotos/Denralogo.png';
 
 const diensten = [
   { label: 'Badkamerrenovatie', path: '/badkamerrenovatie' },
@@ -24,30 +25,31 @@ const locaties = ['Almere', 'Amsterdam', 'Amstelveen', 'Lelystad', "'t Gooi", 'H
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-[#6B5D50] border-t border-[#E8DDD0]/70">
+    <footer className="bg-transparent text-[#5f544a] border-t border-[#5c5147]/12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="mb-4">
-              <span className="font-serif text-2xl font-semibold text-[#2C2416] tracking-wide">NIVORA</span>
-              <div className="text-[10px] tracking-[0.25em] text-[#8B6F47] uppercase font-medium mt-0.5">
-                Luxe Renovaties
+            <div className="mb-5 flex flex-col items-start gap-3">
+              <img src={logo} alt="DENRA Badkamers" className="h-12 w-auto object-contain" />
+              <div className="flex items-center gap-3">
+                <span className="denra-line" />
+                <div className="denra-label">Warm architectural luxury</div>
               </div>
             </div>
-            <p className="text-sm text-[#6B5D50] leading-relaxed max-w-xs mb-6">
-              Luxe badkamer- en binnenrenovaties in Almere en Amsterdam. Vakmanschap tot in detail.
+            <p className="text-sm text-[#5f544a] leading-relaxed max-w-sm mb-6">
+              Luxe badkamer- en binnenrenovaties in Almere en Amsterdam. Rustige afwerking, sterke detaillering en een heldere manier van werken.
             </p>
-            <p className="text-xs text-[#8A7A6A] mb-6">
-              Uitvoering door <span className="text-[#2C2416] font-medium">Denra Montage en Onderhoud</span>
+            <p className="text-xs text-[#71665b] mb-6">
+              Uitvoering door <span className="text-[#1d1712] font-medium">Denra Montage en Onderhoud</span>
             </p>
             <div className="flex items-center gap-4">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Nivora op Instagram"
-                className="w-9 h-9 rounded-full border border-[#E8DDD0] flex items-center justify-center text-[#8A7A6A] hover:border-[#D5C0A7] hover:text-[#8B6F47] transition-all duration-200"
+                aria-label="DENRA op Instagram"
+                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <Instagram size={16} />
               </a>
@@ -55,17 +57,17 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Nivora op Facebook"
-                className="w-9 h-9 rounded-full border border-[#E8DDD0] flex items-center justify-center text-[#8A7A6A] hover:border-[#D5C0A7] hover:text-[#8B6F47] transition-all duration-200"
+                aria-label="DENRA op Facebook"
+                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <Facebook size={16} />
               </a>
               <a
-                href="https://wa.me/31612345678"
+                href="https://wa.me/31614966756"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Nivora op WhatsApp"
-                className="w-9 h-9 rounded-full border border-[#E8DDD0] flex items-center justify-center text-[#8A7A6A] hover:border-[#D5C0A7] hover:text-[#8B6F47] transition-all duration-200"
+                aria-label="DENRA op WhatsApp"
+                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <MessageCircle size={16} />
               </a>
@@ -74,13 +76,13 @@ export default function Footer() {
 
           {/* Diensten */}
           <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-[#8B6F47] font-medium mb-6">Diensten</h3>
+            <h3 className="denra-label mb-6">Diensten</h3>
             <ul className="space-y-3">
               {diensten.map((item) => (
                 <li key={item.label}>
                   <Link
                     to={item.path}
-                    className="text-sm text-[#6B5D50] hover:text-[#8B6F47] transition-colors duration-200"
+                    className="text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -91,13 +93,13 @@ export default function Footer() {
 
           {/* Informatie */}
           <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-[#8B6F47] font-medium mb-6">Informatie</h3>
+            <h3 className="denra-label mb-6">Informatie</h3>
             <ul className="space-y-3">
               {informatie.map((item) => (
                 <li key={item.label}>
                   <Link
                     to={item.path}
-                    className="text-sm text-[#6B5D50] hover:text-[#8B6F47] transition-colors duration-200"
+                    className="text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -108,38 +110,38 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-[#8B6F47] font-medium mb-6">Contact</h3>
+            <h3 className="denra-label mb-6">Contact</h3>
             <ul className="space-y-4">
               <li>
                 <a
-                  href="tel:+31612345678"
-                  className="flex items-center gap-3 text-sm text-[#6B5D50] hover:text-[#8B6F47] transition-colors duration-200"
+                  href="tel:+31614966756"
+                  className="flex items-center gap-3 text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
                 >
-                  <Phone size={14} className="text-[#8B6F47] shrink-0" />
-                  06 123 45 678
+                  <Phone size={14} className="text-[#5c5147] shrink-0" />
+                  +31 6 14 96 67 56
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@nivora.nl"
-                  className="flex items-center gap-3 text-sm text-[#6B5D50] hover:text-[#8B6F47] transition-colors duration-200"
+                  href="mailto:info@denra.nl"
+                  className="flex items-center gap-3 text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
                 >
-                  <Mail size={14} className="text-[#8B6F47] shrink-0" />
-                  info@nivora.nl
+                  <Mail size={14} className="text-[#5c5147] shrink-0" />
+                  info@denra.nl
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-sm text-[#6B5D50]">
-                <MapPin size={14} className="text-[#8B6F47] shrink-0 mt-0.5" />
+              <li className="flex items-start gap-3 text-sm text-[#5f544a]">
+                <MapPin size={14} className="text-[#5c5147] shrink-0 mt-0.5" />
                 Almere & Amsterdam
               </li>
             </ul>
             <div className="mt-6">
-              <h4 className="text-xs tracking-[0.15em] uppercase text-[#8B6F47] font-medium mb-3">Locaties</h4>
+              <h4 className="denra-label mb-3">Locaties</h4>
               <div className="flex flex-wrap gap-1.5">
                 {locaties.map((loc) => (
                   <span
                     key={loc}
-                    className="text-xs text-[#6B5D50] bg-[#FAF8F5] border border-[#E8DDD0] px-2.5 py-1 rounded-full"
+                    className="text-xs text-[#5f544a] bg-[#e5ddcf] border border-[#5c5147]/12 px-2.5 py-1 rounded-sm"
                   >
                     {loc}
                   </span>
@@ -147,10 +149,10 @@ export default function Footer() {
               </div>
             </div>
             <a
-              href="https://wa.me/31612345678"
+              href="https://wa.me/31614966756"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex items-center justify-center gap-2 bg-[#8B6F47] text-white text-sm font-medium px-5 py-3 rounded-full hover:bg-[#7A5F3A] hover:scale-105 transition-all duration-200 w-full"
+              className="mt-6 flex items-center justify-center gap-2 bg-[#1d1712] text-[#F6F0E8] text-sm font-medium px-5 py-3 rounded-sm tracking-[0.14em] uppercase hover:bg-[#0f0d0b] transition-all duration-200 w-full"
             >
               <MessageCircle size={16} />
               WhatsApp ons
@@ -160,16 +162,16 @@ export default function Footer() {
       </div>
 
       {/* Sub-footer */}
-      <div className="border-t border-[#E8DDD0]/70">
+      <div className="border-t border-[#5c5147]/12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#8A7A6A]">
-            &copy; 2026 Nivora. Alle rechten voorbehouden.
+          <p className="text-xs text-[#71665b]">
+            &copy; 2026 DENRA. Alle rechten voorbehouden.
           </p>
           <div className="flex items-center gap-6">
-            <Link to="/privacy" className="text-xs text-[#8A7A6A] hover:text-[#8B6F47] transition-colors duration-200">
+            <Link to="/privacy" className="text-xs text-[#71665b] hover:text-[#1d1712] transition-colors duration-200">
               Privacyverklaring
             </Link>
-            <Link to="/algemene-voorwaarden" className="text-xs text-[#8A7A6A] hover:text-[#8B6F47] transition-colors duration-200">
+            <Link to="/algemene-voorwaarden" className="text-xs text-[#71665b] hover:text-[#1d1712] transition-colors duration-200">
               Algemene voorwaarden
             </Link>
           </div>
