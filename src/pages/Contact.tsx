@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
-import { sitePhotos } from '../data/sitePhotos';
+import denraLogoBg from '../../fotos/denralogobg.png';
 
 const contactInfo = [
   { icon: Phone, label: 'Telefoon', value: '+31 6 14 96 67 56', href: 'tel:+31614966756' },
@@ -59,13 +59,13 @@ export default function Contact() {
                   ))}
                 </div>
 
-                <div className="rounded-2xl overflow-hidden aspect-[16/9]">
+                <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-[#f1e7dc] border border-[#cfbca7]/55 flex items-center justify-center p-6">
                   <img
-                    src={sitePhotos[11]}
-                    alt="DENRA showroom interieur"
+                    src={denraLogoBg}
+                    alt="DENRA achtergrondlogo"
                     width={800}
                     height={450}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain opacity-80"
                   />
                 </div>
               </motion.div>
