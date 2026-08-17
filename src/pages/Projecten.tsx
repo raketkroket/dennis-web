@@ -60,7 +60,7 @@ export default function Projecten() {
                   onClick={() => setActiveCategory(cat)}
                   className={`px-5 py-2 rounded-sm text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
                     activeCategory === cat
-                      ? 'bg-[#231A12] text-[#F6F0E8]'
+                      ? 'bg-[#231A12] text-[#F6F0E8] shadow-[0_8px_18px_rgba(29,23,18,0.12)]'
                       : 'border border-[#cfbca7] text-[#4A3F35] hover:border-[#7a6552] hover:text-[#231A12]'
                   }`}
                   aria-pressed={activeCategory === cat}
@@ -71,36 +71,39 @@ export default function Projecten() {
             </div>
 
             <h2 id="projecten-grid-heading" className="sr-only">Projecten overzicht</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filtered.map((project, i) => (
                 <motion.article
                   key={project.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="group"
+                  className="group h-full"
                 >
-                  <div className="relative overflow-hidden rounded-2xl aspect-[4/3] mb-4">
+                  <div className="relative overflow-hidden rounded-[20px] aspect-[4/3] mb-4 border border-[#dccdb4] bg-[#f3ebdf] shadow-[0_16px_36px_rgba(29,23,18,0.04)]">
                     <img
                       src={project.image}
                       alt={project.title}
                       width={800}
                       height={600}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1d1712]/30 via-transparent to-transparent opacity-80" />
                     <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="text-xs bg-[#f7f1e8]/90 text-[#7a6552] px-3 py-1 rounded-sm font-medium">
+                      <span className="text-[10px] bg-[#f7f1e8]/90 text-[#7a6552] px-3 py-1 rounded-sm font-medium tracking-[0.14em] uppercase">
                         {project.category}
                       </span>
-                        <span className="text-xs bg-[#f7f1e8]/90 text-[#4A3F35] px-3 py-1 rounded-sm">
+                      <span className="text-[10px] bg-[#f7f1e8]/90 text-[#4A3F35] px-3 py-1 rounded-sm tracking-[0.14em] uppercase">
                         {project.location}
                       </span>
                     </div>
                   </div>
-                    <h3 className="font-serif text-xl font-semibold text-[#231A12] mb-1 group-hover:text-[#7a6552] transition-colors duration-200">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-[#8A7A6A]">{project.desc}</p>
+                  <div className="px-1">
+                    <h3 className="font-serif text-xl md:text-[1.7rem] font-semibold text-[#231A12] mb-1 leading-tight group-hover:text-[#7a6552] transition-colors duration-200">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-[#8A7A6A] leading-relaxed">{project.desc}</p>
+                  </div>
                 </motion.article>
               ))}
             </div>

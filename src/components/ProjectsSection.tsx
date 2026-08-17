@@ -63,7 +63,7 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-7">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
@@ -73,24 +73,26 @@ export default function ProjectsSection() {
               transition={{ duration: 0.6, delay: i * 0.12 }}
               className="group cursor-pointer"
             >
-              <Link to="/projecten" className="block">
-                <div className="relative overflow-hidden rounded-sm aspect-[4/3] mb-4">
+              <Link to="/projecten" className="block h-full">
+                <div className="relative overflow-hidden rounded-[18px] aspect-[4/3] mb-4 border border-[#d9cdb8] bg-[#efe6dc] shadow-[0_12px_30px_rgba(29,23,18,0.03)]">
                   <img
                     src={project.image}
                     alt={project.title}
                     width={800}
                     height={600}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1d1712]/34 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="absolute top-4 left-4 text-xs tracking-[0.18em] uppercase bg-[#f4ede4]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1d1712]/30 via-transparent to-transparent opacity-80" />
+                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
                     {project.tag}
                   </span>
                 </div>
-                <h3 className="font-serif text-xl font-semibold text-[#1d1712] mb-1 group-hover:text-[#3c342c] transition-colors duration-200">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-[#5f544a]">{project.category}</p>
+                <div className="px-1">
+                  <h3 className="font-serif text-xl md:text-[1.6rem] font-semibold text-[#1d1712] mb-1 leading-tight group-hover:text-[#3c342c] transition-colors duration-200">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-[#5f544a] leading-relaxed">{project.category}</p>
+                </div>
               </Link>
             </motion.div>
           ))}
