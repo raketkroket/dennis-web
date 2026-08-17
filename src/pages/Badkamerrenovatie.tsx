@@ -22,19 +22,19 @@ const features = [
 
 const projects = [
   {
-    image: sitePhotos[11],
+    image: sitePhotos[0],
     title: 'Luxe badkamer Almere',
-    desc: 'Vrijstaand bad, marmeren tegels, houten accenten',
+    desc: 'Vrijstaand bad, natuurstenen details en warme verlichting',
   },
   {
-    image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80',
+    image: sitePhotos[1],
     title: 'Moderne badkamer Amsterdam',
-    desc: 'Inloopdouche, verlaagd plafond, vloerverwarming',
+    desc: 'Strakke lijnen, zachte materialen en een rustige luxe sfeer',
   },
   {
-    image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&q=80',
+    image: sitePhotos[2],
     title: 'Japandi badkamer Almere Poort',
-    desc: 'Houten meubel, ronde spiegel, naturel tinten',
+    desc: 'Houten accenten, ronde vormen en natuurlijke texturen',
   },
 ];
 
@@ -85,8 +85,8 @@ export default function Badkamerrenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src={sitePhotos[12]}
-                  alt="Moderne WC-renovatie met stijlvolle afwerking"
+                  src={sitePhotos[9]}
+                  alt="Moderne badkamer met warme, elegante afwerking"
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -138,8 +138,8 @@ export default function Badkamerrenovatie() {
                 className="rounded-3xl overflow-hidden aspect-square"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80"
-                  alt="Moderne badkamer met inloopdouche en marmeren tegels"
+                  src={sitePhotos[8]}
+                  alt="Moderne badkamer met natuurlijke materialen en rustige uitstraling"
                   width={800}
                   height={800}
                   className="w-full h-full object-cover"

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 
 const services = [
   { icon: Layers, title: 'Stucwerk', desc: 'Strak afgewerkte wanden en plafonds voor een moderne uitstraling.' },
@@ -59,8 +60,8 @@ export default function Binnenrenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=85"
-                  alt="Luxe binnenrenovatie woonkamer met stucwerk en houten vloer"
+                  src={sitePhotos[4]}
+                  alt="Luxe binnenrenovatie woonkamer met stucwerk en natuurlijke materialen"
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"

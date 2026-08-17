@@ -5,11 +5,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 
 const contactInfo = [
   { icon: Phone, label: 'Telefoon', value: '+31 6 14 96 67 56', href: 'tel:+31614966756' },
   { icon: Mail, label: 'E-mail', value: 'info@denra.nl', href: 'mailto:info@denra.nl' },
-  { icon: MapPin, label: 'Werkgebied', value: 'Almere & Amsterdam', href: undefined },
+  { icon: MapPin, label: 'Bedrijfsadres', value: 'Almere, Noord-Holland, Nederland', href: undefined },
   { icon: Clock, label: 'Bereikbaar', value: 'Ma–Za: 08:00–18:00', href: undefined },
 ];
 
@@ -60,7 +61,7 @@ export default function Contact() {
 
                 <div className="rounded-2xl overflow-hidden aspect-[16/9]">
                   <img
-                    src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&q=80"
+                    src={sitePhotos[10]}
                     alt="DENRA showroom interieur"
                     width={800}
                     height={450}

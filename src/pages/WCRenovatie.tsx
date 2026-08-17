@@ -19,14 +19,14 @@ const features = [
 
 const projects = [
   {
-    image: sitePhotos[12],
+    image: sitePhotos[6],
     title: 'WC-renovatie Amsterdam',
-    desc: 'Modern en stijlvol, zwarte accenten',
+    desc: 'Modern en stijlvol, warme stenen tonen en vaste afwerking',
   },
   {
-    image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
+    image: sitePhotos[7],
     title: 'WC-renovatie Almere',
-    desc: 'Naturel tinten, marmerlook tegels',
+    desc: 'Naturel tinten, lichte materialen en een luxe uitstraling',
   },
 ];
 
@@ -94,8 +94,8 @@ export default function WCRenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src={sitePhotos[11]}
-                  alt="Luxe badkamerrenovatie met vrijstaand bad"
+                  src={sitePhotos[5]}
+                  alt="Luxe WC-renovatie met serene, hoogwaardige afwerking"
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"

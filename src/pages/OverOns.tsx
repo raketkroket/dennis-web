@@ -82,7 +82,7 @@ export default function OverOns() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
                   {[
                     { value: '100+', label: 'Tevreden klanten' },
-                    { value: '5+ jaar', label: 'Ervaring' },
+                    { value: '10+ jaar', label: 'Ervaring' },
                     { value: 'Premium', label: 'Materialen' },
                   ].map((item) => (
                     <div

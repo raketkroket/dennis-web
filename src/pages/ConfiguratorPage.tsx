@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Configurator from '../components/Configurator';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 
 export default function ConfiguratorPage() {
   return (
@@ -46,7 +47,7 @@ export default function ConfiguratorPage() {
 
                 <div className="mt-10 rounded-2xl overflow-hidden aspect-[16/9]">
                   <img
-                    src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80"
+                    src={sitePhotos[2]}
                     alt="Luxe badkamer als inspiratie voor uw renovatie"
                     width={800}
                     height={450}

@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 const stats = [
   { value: '100+', label: 'Tevreden klanten' },
-  { value: '5+ jaar', label: 'Ervaring' },
+  { value: '10+ jaar', label: 'Ervaring' },
   { value: 'Premium', label: 'Materialen' },
-  { value: 'Garantie', label: 'Op al ons werk' },
+  { value: 'Strak', label: 'Ontwerp' },
   { value: '5 sterren', label: 'Google reviews' },
 ];
 

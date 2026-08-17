@@ -22,6 +22,7 @@ const informatie = [
 ];
 
 const locaties = ['Almere', 'Amsterdam', 'Amstelveen', 'Lelystad', "'t Gooi", 'Haarlem'];
+const bedrijfsAdres = 'Almere, Noord-Holland, Nederland';
 
 export default function Footer() {
   return (
@@ -132,7 +133,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3 text-sm text-[#5f544a]">
                 <MapPin size={14} className="text-[#5c5147] shrink-0 mt-0.5" />
-                Almere & Amsterdam
+                <span>{bedrijfsAdres}</span>
               </li>
             </ul>
             <div className="mt-6">
