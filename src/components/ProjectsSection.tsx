@@ -23,7 +23,7 @@ const projects = [
     id: 3,
     title: 'WC-renovatie Amsterdam',
     category: 'Modern en stijlvol',
-    image: sitePhotos[4],
+    image: sitePhotos[7],
     tag: 'WC',
   },
 ];
