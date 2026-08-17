@@ -11,20 +11,47 @@ const projects = [
     category: 'Complete renovatie',
     image: sitePhotos[0],
     tag: 'Badkamer',
+    location: 'Almere',
   },
   {
     id: 2,
-    title: 'Binnenrenovatie Almere Poort',
-    category: 'Stucwerk, vloeren en schilderwerk',
-    image: sitePhotos[5],
-    tag: 'Binnen',
+    title: 'Japandi badkamer Amsterdam',
+    category: 'Houten detail & zachte neutraliteit',
+    image: sitePhotos[1],
+    tag: 'Badkamer',
+    location: 'Amsterdam',
   },
   {
     id: 3,
+    title: 'Moderne badkamer Lelystad',
+    category: 'Inloopdouche & premium afwerking',
+    image: sitePhotos[3],
+    tag: 'Badkamer',
+    location: 'Lelystad',
+  },
+  {
+    id: 4,
+    title: 'Binnenrenovatie Almere Poort',
+    category: 'Stucwerk, vloeren & schilderwerk',
+    image: sitePhotos[5],
+    tag: 'Binnen',
+    location: 'Almere',
+  },
+  {
+    id: 5,
+    title: 'Woonkamer renovatie Almere',
+    category: 'Licht, luxe & functioneel',
+    image: sitePhotos[6],
+    tag: 'Binnen',
+    location: 'Almere',
+  },
+  {
+    id: 6,
     title: 'WC-renovatie Amsterdam',
     category: 'Modern en stijlvol',
     image: sitePhotos[8],
     tag: 'WC',
+    location: 'Amsterdam',
   },
 ];
 
@@ -63,14 +90,14 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-7">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.12 }}
+              transition={{ duration: 0.6, delay: i * 0.08 }}
               className="group cursor-pointer"
             >
               <Link to="/projecten" className="block h-full">
@@ -85,6 +112,9 @@ export default function ProjectsSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1d1712]/30 via-transparent to-transparent opacity-80" />
                   <span className="absolute top-4 left-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
                     {project.tag}
+                  </span>
+                  <span className="absolute top-4 right-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
+                    {project.location}
                   </span>
                 </div>
                 <div className="px-1">
