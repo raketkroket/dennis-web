@@ -46,20 +46,21 @@ export default function Badkamerrenovatie() {
         {/* Hero */}
         <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label="Badkamerrenovatie hero">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-14 xl:gap-20 items-center">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
+                className="max-w-xl"
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
                   <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">Onze specialiteit</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
                   Badkamer&shy;renovatie
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-lg">
+                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
                   Wij realiseren complete badkamerrenovaties in Almere en Amsterdam. Van ontwerp tot oplevering — stijlvol, luxe en binnen budget. Uw droomkamer in vakkundige handen.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -82,8 +83,9 @@ export default function Badkamerrenovatie() {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="rounded-[28px] overflow-hidden aspect-[4/3] border border-[#d6c3a9] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#efe4d5]"
+                className="relative rounded-[32px] overflow-hidden aspect-[4/3] border border-[#d6c3a9] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#efe4d5]"
               >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/10 to-transparent" />
                 <img
                   src={sitePhotos[0]}
                   alt="Moderne badkamer met warme, elegante afwerking"

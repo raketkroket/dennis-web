@@ -55,20 +55,35 @@ export default function WCRenovatie() {
       <main>
         <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label="WC-renovatie hero">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="order-2 lg:order-1 rounded-[30px] overflow-hidden aspect-[4/3] border border-[#d3c5b6] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e9dfd3]"
+              >
+                <img
+                  src={sitePhotos[8]}
+                  alt="Luxe WC-renovatie met serene, hoogwaardige afwerking"
+                  width={900}
+                  height={675}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
+                className="order-1 lg:order-2 max-w-xl ml-auto"
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
                   <span className="denra-label bg-[#e6ddd3] text-[#42362d]">Stijlvol toilet</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
                   WC-renovatie
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-lg">
+                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
                   Maak van uw toilet een stijlvolle en comfortabele ruimte. Wij verzorgen complete WC-renovaties in Almere en Amsterdam — snel, netjes en binnen budget.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -86,20 +101,6 @@ export default function WCRenovatie() {
                     Plan adviesgesprek
                   </Link>
                 </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="rounded-[28px] overflow-hidden aspect-[4/3] border border-[#d3c5b6] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e9dfd3]"
-              >
-                <img
-                  src={sitePhotos[8]}
-                  alt="Luxe WC-renovatie met serene, hoogwaardige afwerking"
-                  width={900}
-                  height={675}
-                  className="w-full h-full object-cover"
-                />
               </motion.div>
             </div>
           </div>
