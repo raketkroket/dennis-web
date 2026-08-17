@@ -19,12 +19,12 @@ const features = [
 
 const projects = [
   {
-    image: sitePhotos[6],
+    image: sitePhotos[7],
     title: 'WC-renovatie Amsterdam',
     desc: 'Modern en stijlvol, warme stenen tonen en vaste afwerking',
   },
   {
-    image: sitePhotos[7],
+    image: sitePhotos[6],
     title: 'WC-renovatie Almere',
     desc: 'Naturel tinten, lichte materialen en een luxe uitstraling',
   },
