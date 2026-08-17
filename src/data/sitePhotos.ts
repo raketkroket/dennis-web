@@ -1,25 +1,27 @@
-import denrapicca1 from '../../fotos/denrapicca1.jpeg';
-import denrapicca2 from '../../fotos/denrapicca2.jpeg';
-import denrapicca3 from '../../fotos/denrapicca3.jpeg';
-import denrapicca4 from '../../fotos/denrapicca4.jpeg';
-import denrapicca5 from '../../fotos/denrapicca5.png';
-import denrapicca6 from '../../fotos/denrapicca6.png';
-import denrapicca7 from '../../fotos/denrapicca7.png';
-import denrapicca8 from '../../fotos/denrapicca8.png';
-import denrapicca9 from '../../fotos/denrapicca9.png';
-import denrapicca10 from '../../fotos/denrapicca10.png';
-import denrapicca11 from '../../fotos/denrapicca11.png';
+import badkamer1 from '../../fotos/badkamer1.png';
+import badkamer2 from '../../fotos/badkamer2.png';
+import badkamer3 from '../../fotos/badkamer3.png';
+import badkamer5 from '../../fotos/badkamer5.jpeg';
+import badkamer7 from '../../fotos/badkamer7.jpeg';
+import binnenrenovatie1 from '../../fotos/binnenrenovatie1.png';
+import binnenrenovatie2 from '../../fotos/binnenrenovatie2.png';
+import binnenrenovatie3 from '../../fotos/binnenrenovatie3.png';
+import wc5 from '../../fotos/wc5.jpeg';
+import wc6 from '../../fotos/wc6.jpeg';
+import wc8 from '../../fotos/wc8.png';
+import wcreno1 from '../../fotos/wcreno1.png';
 
 export const sitePhotos = [
-  denrapicca1,
-  denrapicca2,
-  denrapicca3,
-  denrapicca4,
-  denrapicca5,
-  denrapicca6,
-  denrapicca7,
-  denrapicca8,
-  denrapicca9,
-  denrapicca10,
-  denrapicca11,
+  badkamer1,
+  badkamer2,
+  badkamer3,
+  badkamer5,
+  badkamer7,
+  binnenrenovatie1,
+  binnenrenovatie2,
+  binnenrenovatie3,
+  wc5,
+  wc6,
+  wc8,
+  wcreno1,
 ];

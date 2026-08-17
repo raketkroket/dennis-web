@@ -7,11 +7,11 @@ import { sitePhotos } from '../data/sitePhotos';
 
 const allProjects = [
   { id: 1, title: 'Luxe badkamer Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[0], desc: 'Complete renovatie met luxe materialen en een rustige uitstraling' },
-  { id: 2, title: 'WC-renovatie Amsterdam', category: 'WC', location: 'Amsterdam', image: sitePhotos[7], desc: 'Modern en stijlvol met warme stenen tinten' },
-  { id: 3, title: 'Binnenrenovatie Almere Poort', category: 'Binnen', location: 'Almere', image: sitePhotos[3], desc: 'Stucwerk, vloeren en een heldere, natuurlijke finish' },
+  { id: 2, title: 'WC-renovatie Amsterdam', category: 'WC', location: 'Amsterdam', image: sitePhotos[8], desc: 'Modern en stijlvol met warme stenen tinten' },
+  { id: 3, title: 'Binnenrenovatie Almere Poort', category: 'Binnen', location: 'Almere', image: sitePhotos[5], desc: 'Stucwerk, vloeren en een heldere, natuurlijke finish' },
   { id: 4, title: 'Japandi badkamer Amsterdam', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[1], desc: 'Houten detail, ronde vormen en een zachte neutraliteit' },
-  { id: 5, title: 'Moderne badkamer Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[8], desc: 'Inloopdouche, warm licht en tijdloze afwerking' },
-  { id: 6, title: 'Woonkamer renovatie Almere', category: 'Binnen', location: 'Almere', image: sitePhotos[4], desc: 'Helder, luxe en functioneel met een premium interieurgevoel' },
+  { id: 5, title: 'Moderne badkamer Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[3], desc: 'Inloopdouche, warm licht en tijdloze afwerking' },
+  { id: 6, title: 'Woonkamer renovatie Almere', category: 'Binnen', location: 'Almere', image: sitePhotos[6], desc: 'Helder, luxe en functioneel met een premium interieurgevoel' },
 ];
 
 const categories = ['Alle', 'Badkamer', 'WC', 'Binnen'];

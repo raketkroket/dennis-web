@@ -61,7 +61,7 @@ export default function Contact() {
 
                 <div className="rounded-2xl overflow-hidden aspect-[16/9]">
                   <img
-                    src={sitePhotos[10]}
+                    src={sitePhotos[11]}
                     alt="DENRA showroom interieur"
                     width={800}
                     height={450}

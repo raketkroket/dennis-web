@@ -60,7 +60,7 @@ export default function Binnenrenovatie() {
                 className="rounded-3xl overflow-hidden aspect-[4/3]"
               >
                 <img
-                  src={sitePhotos[4]}
+                  src={sitePhotos[5]}
                   alt="Luxe binnenrenovatie woonkamer met stucwerk en natuurlijke materialen"
                   width={900}
                   height={675}

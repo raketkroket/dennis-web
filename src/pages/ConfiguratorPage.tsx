@@ -47,7 +47,7 @@ export default function ConfiguratorPage() {
 
                 <div className="mt-10 rounded-2xl overflow-hidden aspect-[16/9]">
                   <img
-                    src={sitePhotos[2]}
+                    src={sitePhotos[0]}
                     alt="Luxe badkamer als inspiratie voor uw renovatie"
                     width={800}
                     height={450}

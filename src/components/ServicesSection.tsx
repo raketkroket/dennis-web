@@ -122,7 +122,7 @@ export default function ServicesSection() {
             {/* Decorative image */}
             <div className="mt-6 overflow-hidden h-48 border border-[#5c5147]/12">
               <img
-                src={sitePhotos[1]}
+                src={sitePhotos[0]}
                 alt="Luxe badkamer detail met marmeren tegels"
                 width={800}
                 height={400}

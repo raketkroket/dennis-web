@@ -4,12 +4,12 @@ import { X } from 'lucide-react';
 import { sitePhotos } from '../data/sitePhotos';
 
 const images = [
-  { src: sitePhotos[5], alt: 'Badkamer projectfoto', span: 'col-span-1 row-span-2' },
-  { src: sitePhotos[6], alt: 'Badkamer projectfoto', span: 'col-span-1' },
-  { src: sitePhotos[7], alt: 'Badkamer projectfoto', span: 'col-span-1' },
-  { src: sitePhotos[8], alt: 'Badkamer projectfoto', span: 'col-span-1' },
-  { src: sitePhotos[9], alt: 'Badkamer projectfoto', span: 'col-span-1' },
-  { src: sitePhotos[10], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[3], alt: 'Badkamer projectfoto', span: 'col-span-1 row-span-2' },
+  { src: sitePhotos[4], alt: 'Badkamer projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[5], alt: 'Binnenrenovatie projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[6], alt: 'Binnenrenovatie projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[8], alt: 'WC projectfoto', span: 'col-span-1' },
+  { src: sitePhotos[9], alt: 'WC projectfoto', span: 'col-span-1' },
 ];
 
 export default function InspirationGallery() {

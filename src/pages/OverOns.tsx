@@ -114,7 +114,7 @@ export default function OverOns() {
                   <div className="grid gap-4">
                     <div className="rounded-sm overflow-hidden h-[250px] border border-[#cfbca7]/55">
                       <img
-                        src={sitePhotos[4]}
+                        src={sitePhotos[3]}
                         alt="Strakke renovatie details en afwerking"
                         className="w-full h-full object-cover"
                       />
