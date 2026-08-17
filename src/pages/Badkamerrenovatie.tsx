@@ -44,7 +44,7 @@ export default function Badkamerrenovatie() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="relative pt-40 pb-24 bg-[#f6f0e8] overflow-hidden" aria-label="Badkamerrenovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label="Badkamerrenovatie hero">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -54,7 +54,7 @@ export default function Badkamerrenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label">Onze specialiteit</span>
+                  <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">Onze specialiteit</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                   Badkamer&shy;renovatie
@@ -82,10 +82,10 @@ export default function Badkamerrenovatie() {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="rounded-3xl overflow-hidden aspect-[4/3]"
+                className="rounded-[28px] overflow-hidden aspect-[4/3] border border-[#d6c3a9] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#efe4d5]"
               >
                 <img
-                  src={sitePhotos[9]}
+                  src={sitePhotos[0]}
                   alt="Moderne badkamer met warme, elegante afwerking"
                   width={900}
                   height={675}
