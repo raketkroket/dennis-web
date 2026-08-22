@@ -51,7 +51,8 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-base md:text-lg text-[#efe8df]/88 leading-relaxed mb-10 max-w-md"
+            className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
+            style={{ textShadow: '0 2px 8px rgba(18, 13, 9, 0.72)' }}
           >
             Wij creëren badkamers en interieurs met natuurlijke materialen, sterke lijnen en een kalme, hoogwaardige uitstraling.
           </motion.p>
