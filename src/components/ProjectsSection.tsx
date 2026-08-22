@@ -7,51 +7,45 @@ import { sitePhotos } from '../data/sitePhotos';
 const projects = [
   {
     id: 1,
-    title: 'Luxe badkamer Almere',
+    title: 'Luxe badkamer',
     category: 'Complete renovatie',
     image: sitePhotos[0],
     tag: 'Badkamer',
-    location: 'Almere',
   },
   {
     id: 2,
-    title: 'Japandi badkamer Amsterdam',
+    title: 'Japandi badkamer',
     category: 'Houten detail & zachte neutraliteit',
     image: sitePhotos[1],
     tag: 'Badkamer',
-    location: 'Amsterdam',
   },
   {
     id: 3,
-    title: 'Moderne badkamer Lelystad',
+    title: 'Moderne badkamer',
     category: 'Inloopdouche & premium afwerking',
     image: sitePhotos[3],
     tag: 'Badkamer',
-    location: 'Lelystad',
   },
   {
     id: 4,
-    title: 'Binnenrenovatie Almere Poort',
+    title: 'Binnenrenovatie',
     category: 'Stucwerk, vloeren & schilderwerk',
     image: sitePhotos[5],
     tag: 'Binnen',
-    location: 'Almere',
   },
   {
     id: 5,
-    title: 'Woonkamer renovatie Almere',
+    title: 'Woonkamer renovatie',
     category: 'Licht, luxe & functioneel',
     image: sitePhotos[6],
     tag: 'Binnen',
-    location: 'Almere',
   },
   {
     id: 6,
-    title: 'WC-renovatie Amsterdam',
+    title: 'WC-renovatie',
     category: 'Modern en stijlvol',
     image: sitePhotos[8],
     tag: 'WC',
-    location: 'Amsterdam',
   },
 ];
 
@@ -111,9 +105,6 @@ export default function ProjectsSection() {
                   />
                   <span className="absolute top-4 left-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
                     {project.tag}
-                  </span>
-                  <span className="absolute top-4 right-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
-                    {project.location}
                   </span>
                 </div>
                 <div className="px-1">

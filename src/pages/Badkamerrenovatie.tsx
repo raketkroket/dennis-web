@@ -23,17 +23,17 @@ const features = [
 const projects = [
   {
     image: sitePhotos[0],
-    title: 'Luxe badkamer Almere',
+    title: 'Luxe badkamer',
     desc: 'Vrijstaand bad, natuurstenen details en warme verlichting',
   },
   {
     image: sitePhotos[1],
-    title: 'Moderne badkamer Amsterdam',
+    title: 'Moderne badkamer',
     desc: 'Strakke lijnen, zachte materialen en een rustige luxe sfeer',
   },
   {
     image: sitePhotos[2],
-    title: 'Japandi badkamer Almere Poort',
+    title: 'Japandi badkamer',
     desc: 'Houten accenten, ronde vormen en natuurlijke texturen',
   },
 ];

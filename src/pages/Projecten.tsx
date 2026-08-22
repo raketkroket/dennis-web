@@ -135,7 +135,7 @@ export default function Projecten() {
                   </button>
                   <div className="px-1">
                     <h3 className="font-serif text-xl md:text-[1.7rem] font-semibold text-[#231A12] mb-1 leading-tight group-hover:text-[#7a6552] transition-colors duration-200">
-                      {project.title.replace(/ (Almere Poort|Almere|Amsterdam|Lelystad|Haarlem|Utrecht)( 2)?$/, '')}
+                      {project.title}
                     </h3>
                     <p className="text-sm text-[#8A7A6A] leading-relaxed">{project.desc}</p>
                   </div>
