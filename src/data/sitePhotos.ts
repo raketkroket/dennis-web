@@ -30,6 +30,7 @@ import badkamer67 from '../../fotos/badkamer67.jpeg';
 import badkamer89 from '../../fotos/badkamer89.jpeg';
 import binnen22 from '../../fotos/binnen 22.jpeg';
 import binnen223 from '../../fotos/binnen 223.jpeg';
+import binnen890 from '../../fotos/binnen890.jpeg';
 import binnen34 from '../../fotos/binnen 34.jpeg';
 import binnen56 from '../../fotos/binnen 56.jpeg';
 import binnenSlaapkamer1 from '../../fotos/binnen slaapkamer 1 .jpeg';
@@ -74,6 +75,7 @@ export const sitePhotos = [
   badkamer89,
   binnen22,
   binnen223,
+  binnen890,
   binnen34,
   binnen56,
   binnenSlaapkamer1,
