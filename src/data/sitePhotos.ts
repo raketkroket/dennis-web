@@ -39,6 +39,7 @@ import binnen from '../../fotos/binnen.jpeg';
 import wc4 from '../../fotos/wc 4.png';
 import wc534 from '../../fotos/wc534.png';
 import wc980 from '../../fotos/wc980.jpeg';
+import wc72934 from '../../fotos/wc72934.jpeg';
 
 export const sitePhotos = [
   badkamer1,
@@ -82,4 +83,5 @@ export const sitePhotos = [
   wc4,
   wc534,
   wc980,
+  wc72934,
 ];
