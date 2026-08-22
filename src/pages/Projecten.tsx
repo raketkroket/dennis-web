@@ -23,6 +23,12 @@ const allProjects = [
   { id: 15, title: 'Badkamerproject Haarlem', category: 'Badkamer', location: 'Haarlem', image: sitePhotos[21], desc: 'Luxe badkamer met duidelijke verticale lijnen en rust' },
   { id: 16, title: 'Badkamerproject Utrecht', category: 'Badkamer', location: 'Utrecht', image: sitePhotos[22], desc: 'Premium badkamer met een warme natuurlijke sfeer' },
   { id: 17, title: 'Badkamerproject Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[23], desc: 'Een duurzamer, stijlvol en functioneel badkamerconcept' },
+  { id: 25, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Almere', image: sitePhotos[24], desc: 'Warme materialen, zacht licht en een rustige afwerking' },
+  { id: 26, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[25], desc: 'Tijdloos sanitair met een verfijnde, moderne uitstraling' },
+  { id: 27, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[26], desc: 'Luxe details en een heldere, functionele indeling' },
+  { id: 28, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Almere Poort', image: sitePhotos[27], desc: 'Zachte tinten en hoogwaardige afwerking voor dagelijks comfort' },
+  { id: 29, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Haarlem', image: sitePhotos[28], desc: 'Een elegante badkamer met sterke lijnen en warme details' },
+  { id: 30, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Utrecht', image: sitePhotos[29], desc: 'Rustige materialen en een moderne, praktische indeling' },
   { id: 18, title: 'WC-renovatie Amsterdam', category: 'WC', location: 'Amsterdam', image: sitePhotos[8], desc: 'Modern en stijlvol met warme stenen tinten' },
   { id: 19, title: 'WC-renovatie Haarlem', category: 'WC', location: 'Haarlem', image: sitePhotos[9], desc: 'Functioneel, elegant en compact met luxe details' },
   { id: 20, title: 'WC-renovatie Utrecht', category: 'WC', location: 'Utrecht', image: sitePhotos[10], desc: 'Een nobele uitstraling met warme natuurlijke texturen' },
@@ -30,6 +36,14 @@ const allProjects = [
   { id: 22, title: 'Binnenrenovatie Almere Poort', category: 'Binnen', location: 'Almere', image: sitePhotos[5], desc: 'Stucwerk, vloeren en een heldere, natuurlijke finish' },
   { id: 23, title: 'Woonkamer renovatie Almere', category: 'Binnen', location: 'Almere', image: sitePhotos[6], desc: 'Helder, luxe en functioneel met een premium interieurgevoel' },
   { id: 24, title: 'Binnenrenovatie Amsterdam', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[7], desc: 'Lichte ruimtes, natuurlijke materialen en een warme sfeer' },
+  { id: 31, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[30], desc: 'Strakke wanden, natuurlijke vloeren en een lichte woonbasis' },
+  { id: 32, title: 'Binnenrenovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[31], desc: 'Een frisse interieurafwerking met aandacht voor proportie' },
+  { id: 33, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere Poort', image: sitePhotos[32], desc: 'Licht, ruimte en een rustige afwerking van vloer tot plafond' },
+  { id: 34, title: 'Binnenrenovatie', category: 'Binnen', location: 'Lelystad', image: sitePhotos[33], desc: 'Zorgvuldig gelegd vloerwerk voor een warme basis' },
+  { id: 35, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[34], desc: 'Een serene slaapkamer met een hoogwaardige afwerking' },
+  { id: 36, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[35], desc: 'Rustige kleuren en maatwerkdetails voor meer comfort' },
+  { id: 37, title: 'Woonkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[36], desc: 'Een lichte leefruimte met natuurlijke materialen' },
+  { id: 38, title: 'Binnenrenovatie', category: 'Binnen', location: 'Utrecht', image: sitePhotos[37], desc: 'Een compleet vernieuwd interieur met tijdloze uitstraling' },
 ];
 
 const categories = ['Alle', 'Badkamer', 'WC', 'Binnen'];
