@@ -8,6 +8,7 @@ import { sitePhotos } from '../data/sitePhotos';
 
 const allProjects = [
   { id: 1, title: 'Luxe badkamer', category: 'Badkamer', image: sitePhotos[0], desc: 'Complete renovatie met luxe materialen en een rustige uitstraling' },
+  { id: 30, title: 'Badkamer renovatie', category: 'Badkamer', image: sitePhotos[4], desc: 'Zachte materialen en een rustige premium uitstraling' },
   { id: 44, title: 'Badkamerproject', category: 'Badkamer', image: sitePhotos[20], desc: 'Warme materialen, zachte verlichting en een verfijnde afwerking' },
   { id: 45, title: 'Badkamerproject', category: 'Badkamer', image: sitePhotos[21], desc: 'Een rustige badkamer met natuurlijke tinten en luxe details' },
   { id: 46, title: 'Badkamerproject', category: 'Badkamer', image: sitePhotos[26], desc: 'Een moderne badkamer met donkere tegels en warme accenten' },
@@ -25,7 +26,6 @@ const allProjects = [
   { id: 48, title: 'Badkamerproject', category: 'Badkamer', image: sitePhotos[43], desc: 'Een stijlvolle badkamer met rustige materialen en een verfijnde afwerking' },
   { id: 25, title: 'Badkamer renovatie', category: 'Badkamer', image: sitePhotos[24], desc: 'Warme materialen, zacht licht en een rustige afwerking' },
   { id: 28, title: 'Badkamer renovatie', category: 'Badkamer', image: sitePhotos[27], desc: 'Zachte tinten en hoogwaardige afwerking voor dagelijks comfort' },
-  { id: 30, title: 'Badkamer renovatie', category: 'Badkamer', image: sitePhotos[4], desc: 'Zachte materialen en een rustige premium uitstraling' },
   { id: 50, title: 'Badkamer renovatie', category: 'Badkamer', image: sitePhotos[45], desc: 'Zachte materialen en een rustige premium uitstraling' },
   { id: 18, title: 'WC-renovatie', category: 'WC', image: sitePhotos[8], desc: 'Een sfeervolle WC met warme natuursteenlook en zachte verlichting.' },
   { id: 19, title: 'WC-renovatie', category: 'WC', image: sitePhotos[9], desc: 'Een compacte WC met luxe materialen en een rustige uitstraling.' },
