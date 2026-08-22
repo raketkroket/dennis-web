@@ -29,7 +29,6 @@ const allProjects = [
   { id: 19, title: 'WC-renovatie', category: 'WC', image: sitePhotos[9], desc: 'Een compacte WC met luxe materialen en een rustige uitstraling.' },
   { id: 21, title: 'WC-renovatie', category: 'WC', image: sitePhotos[11], desc: 'Een minimalistische WC met verfijnde details en warme tinten.' },
   { id: 26, title: 'WC-renovatie', category: 'WC', image: sitePhotos[25], desc: 'Een tijdloze WC met marmerlook, gouden kraan en sfeervolle nisverlichting.' },
-  { id: 29, title: 'WC-renovatie', category: 'WC', image: sitePhotos[28], desc: 'Een elegante WC met strakke lijnen en natuurlijke materialen.' },
   { id: 40, title: 'WC-renovatie', category: 'WC', image: sitePhotos[39], desc: 'Een warme WC met houten wand, nisverlichting en decoratieve details.' },
   { id: 41, title: 'WC-renovatie', category: 'WC', image: sitePhotos[40], desc: 'Een stijlvolle WC met zachte tegels, nis en moderne afwerking.' },
   { id: 42, title: 'WC-renovatie', category: 'WC', image: sitePhotos[41], desc: 'Een moderne WC met marmerlook, wit sanitair en warme accessoires.' },
