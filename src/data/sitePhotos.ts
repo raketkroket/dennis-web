@@ -36,6 +36,9 @@ import binnenSlaapkamer1 from '../../fotos/binnen slaapkamer 1 .jpeg';
 import binnenSlaapkamer99 from '../../fotos/binnen slaapkamere 99.jpeg';
 import binnenWoonkamer56 from '../../fotos/binnen woonkamer 56.jpeg';
 import binnen from '../../fotos/binnen.jpeg';
+import wc4 from '../../fotos/wc 4.png';
+import wc534 from '../../fotos/wc534.png';
+import wc980 from '../../fotos/wc980.jpeg';
 
 export const sitePhotos = [
   badkamer1,
@@ -76,4 +79,7 @@ export const sitePhotos = [
   binnenSlaapkamer99,
   binnenWoonkamer56,
   binnen,
+  wc4,
+  wc534,
+  wc980,
 ];
