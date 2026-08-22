@@ -44,9 +44,9 @@ const allProjects = [
   { id: 31, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[30], desc: 'Strakke wanden, natuurlijke vloeren en een lichte woonbasis' },
   { id: 32, title: 'Binnenrenovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[31], desc: 'Een frisse interieurafwerking met aandacht voor proportie' },
   { id: 33, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere Poort', image: sitePhotos[32], desc: 'Licht, ruimte en een rustige afwerking van vloer tot plafond' },
-  { id: 35, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[34], desc: 'Een serene slaapkamer met een hoogwaardige afwerking' },
+  { id: 35, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[37], desc: 'Een serene slaapkamer met een hoogwaardige afwerking' },
   { id: 36, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[35], desc: 'Rustige kleuren en maatwerkdetails voor meer comfort' },
-  { id: 38, title: 'Binnenrenovatie', category: 'Binnen', location: 'Utrecht', image: sitePhotos[37], desc: 'Een compleet vernieuwd interieur met tijdloze uitstraling' },
+  { id: 38, title: 'Binnenrenovatie', category: 'Binnen', location: 'Utrecht', image: sitePhotos[34], desc: 'Een compleet vernieuwd interieur met tijdloze uitstraling' },
 ];
 
 const categories = ['Alle', 'Badkamer', 'WC', 'Binnen'];
