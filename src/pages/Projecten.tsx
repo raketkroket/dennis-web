@@ -6,44 +6,44 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 
 const allProjects = [
-  { id: 1, title: 'Luxe badkamer', category: 'Badkamer', ', image: sitePhotos[0], desc: 'Complete renovatie met luxe materialen en een rustige uitstraling' },
-  { id: 2, title: 'Japandi badkamer ', category: 'Badkamer',  image: sitePhotos[1], desc: 'Houten detail, ronde vormen en een zachte neutraliteit' },
-  { id: 3, title: 'Badkamer renovatie', category: 'Badkamer', 'image: sitePhotos[2], desc: 'Warm, licht en tijdloos met hoogwaardige afwerking' },
-  { id: 4, title: 'Moderne badkamer', category: 'Badkamer', ' image: sitePhotos[3], desc: 'Inloopdouche, warm licht en luxe details' },
-  { id: 5, title: 'Boutique badkamer', category: 'Badkamer', ' image: sitePhotos[4], desc: 'Zachte materialen en een rustige premium uitstraling' },
-  { id: 6, title: 'Badkamerproject', category: 'Badkamer', ', image: sitePhotos[12], desc: 'Premium badkamer met een rustige, luxe materialenmix' },
-  { id: 7, title: 'Badkamerproject ', category: 'Badkamer', image: sitePhotos[13], desc: 'Houten accenten en een tijdloze, warme uitstraling' },
-  { id: 8, title: 'Badkamerproject ', category: 'Badkamer', ' image: sitePhotos[14], desc: 'Natuurlijke afwerkingen en een moderne ruimtelijke indeling' },
-  { id: 9, title: 'Badkamerproject ', category: 'Badkamer', ' image: sitePhotos[15], desc: 'Licht, elegant en functioneel in een moderne badkamer' },
-  { id: 10, title: 'Badkamerproject', category: 'Badkamer', ' image: sitePhotos[16], desc: 'Premium materiaalgebruik en zachte neutraliteit' },
-  { id: 11, title: 'Badkamerproject ', category: 'Badkamer',  image: sitePhotos[17], desc: 'Minimalistisch en strak met warme materialen' },
-  { id: 12, title: 'Badkamerproject', category: 'Badkamer', ' image: sitePhotos[18], desc: 'Luxe badkamer met subtiele natuurlijke details' },
-  { id: 13, title: 'Badkamerproject', category: 'Badkamer', ' image: sitePhotos[19], desc: 'Zachte texturen en verfijnde, functionele badkamerarchitectuur' },
-  { id: 14, title: 'Badkamerproject ', category: 'Badkamer',  image: sitePhotos[20], desc: 'Warmte, rust en hoogwaardige afwerking in een compacte ruimte' },
-  { id: 15, title: 'Badkamerproject ', category: 'Badkamer',' image: sitePhotos[21], desc: 'Luxe badkamer met duidelijke verticale lijnen en rust' },
-  { id: 16, title: 'Badkamerproject ', category: 'Badkamer', image: sitePhotos[22], desc: 'Premium badkamer met een warme natuurlijke sfeer' },
-  { id: 17, title: 'Badkamerproject', category: 'Badkamer', ' image: sitePhotos[23], desc: 'Een duurzamer, stijlvol en functioneel badkamerconcept' },
-  { id: 25, title: 'Badkamer renovatie', category: 'Badkamer', ' image: sitePhotos[24], desc: 'Warme materialen, zacht licht en een rustige afwerking' },
-  { id: 26, title: 'Badkamer renovatie', category: 'Badkamer',' image: sitePhotos[25], desc: 'Tijdloos sanitair met een verfijnde, moderne uitstraling' },
-  { id: 27, title: 'Badkamer renovatie', category: 'Badkamer', 'image: sitePhotos[26], desc: 'Luxe details en een heldere, functionele indeling' },
-  { id: 28, title: 'Badkamer renovatie', category: 'Badkamer',   image: sitePhotos[27], desc: 'Zachte tinten en hoogwaardige afwerking voor dagelijks comfort' },
-  { id: 29, title: 'Badkamer renovatie', category: 'Badkamer',  image: sitePhotos[28], desc: 'Een elegante badkamer met sterke lijnen en warme details' },
-  { id: 30, title: 'Badkamer renovatie', category: 'Badkamer',  image: sitePhotos[29], desc: 'Rustige materialen en een moderne, praktische indeling' },
-  { id: 18, title: 'WC-renovatie ', category: 'WC', ' image: sitePhotos[8], desc: 'Modern en stijlvol met warme stenen tinten' },
-  { id: 19, title: 'WC-renovatie ', category: 'WC',' image: sitePhotos[9], desc: 'Functioneel, elegant en compact met luxe details' },
-  { id: 20, title: 'WC-renovatie ', category: 'WC', ' image: sitePhotos[10], desc: 'Een nobele uitstraling met warme natuurlijke texturen' },
-  { id: 21, title: 'WC-renovatie  2', category: 'WC', ' image: sitePhotos[11], desc: 'Minimalistisch en premium met een zachtere materiaalkeuze' },
-  { id: 22, title: 'Binnenrenovatie' , category: 'Binnen', 'image: sitePhotos[5], desc: 'Stucwerk, vloeren en een heldere, natuurlijke finish' },
-  { id: 23, title: 'Woonkamer renovatie', category: 'Binnen', ' image: sitePhotos[6], desc: 'Helder, luxe en functioneel met een premium interieurgevoel' },
-  { id: 24, title: 'Binnenrenovatie ', category: 'Binnen',  'image: sitePhotos[7], desc: 'Lichte ruimtes, natuurlijke materialen en een warme sfeer' },
-  { id: 31, title: 'Binnenrenovatie', category: 'Binnen', ' image: sitePhotos[30], desc: 'Strakke wanden, natuurlijke vloeren en een lichte woonbasis' },
-  { id: 32, title: 'Binnenrenovatie', category: 'Binnen',  image: sitePhotos[31], desc: 'Een frisse interieurafwerking met aandacht voor proportie' },
-  { id: 33, title: 'Binnenrenovatie', category: 'Binnen',  ' image: sitePhotos[32], desc: 'Licht, ruimte en een rustige afwerking van vloer tot plafond' },
-  { id: 34, title: 'Binnenrenovatie', category: 'Binnen', ' image: sitePhotos[33], desc: 'Zorgvuldig gelegd vloerwerk voor een warme basis' },
-  { id: 35, title: 'Slaapkamer renovatie', category: 'Binnen', ', image: sitePhotos[34], desc: 'Een serene slaapkamer met een hoogwaardige afwerking' },
-  { id: 36, title: 'Slaapkamer renovatie', category: 'Binnen', image: sitePhotos[35], desc: 'Rustige kleuren en maatwerkdetails voor meer comfort' },
-  { id: 37, title: 'Woonkamer renovatie', category: 'Binnen', ', image: sitePhotos[36], desc: 'Een lichte leefruimte met natuurlijke materialen' },
-  { id: 38, title: 'Binnenrenovatie', category: 'Binnen', ' image: sitePhotos[37], desc: 'Een compleet vernieuwd interieur met tijdloze uitstraling' },
+  { id: 1, title: 'Luxe badkamer Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[0], desc: 'Complete renovatie met luxe materialen en een rustige uitstraling' },
+  { id: 2, title: 'Japandi badkamer Amsterdam', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[1], desc: 'Houten detail, ronde vormen en een zachte neutraliteit' },
+  { id: 3, title: 'Badkamer renovatie Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[2], desc: 'Warm, licht en tijdloos met hoogwaardige afwerking' },
+  { id: 4, title: 'Moderne badkamer Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[3], desc: 'Inloopdouche, warm licht en luxe details' },
+  { id: 5, title: 'Boutique badkamer Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[4], desc: 'Zachte materialen en een rustige premium uitstraling' },
+  { id: 6, title: 'Badkamerproject Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[12], desc: 'Premium badkamer met een rustige, luxe materialenmix' },
+  { id: 7, title: 'Badkamerproject Amsterdam', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[13], desc: 'Houten accenten en een tijdloze, warme uitstraling' },
+  { id: 8, title: 'Badkamerproject Almere Poort', category: 'Badkamer', location: 'Almere', image: sitePhotos[14], desc: 'Natuurlijke afwerkingen en een moderne ruimtelijke indeling' },
+  { id: 9, title: 'Badkamerproject Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[15], desc: 'Licht, elegant en functioneel in een moderne badkamer' },
+  { id: 10, title: 'Badkamerproject Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[16], desc: 'Premium materiaalgebruik en zachte neutraliteit' },
+  { id: 11, title: 'Badkamerproject Amsterdam', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[17], desc: 'Minimalistisch en strak met warme materialen' },
+  { id: 12, title: 'Badkamerproject Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[18], desc: 'Luxe badkamer met subtiele natuurlijke details' },
+  { id: 13, title: 'Badkamerproject Lelystad', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[19], desc: 'Zachte texturen en verfijnde, functionele badkamerarchitectuur' },
+  { id: 14, title: 'Badkamerproject Amsterdam', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[20], desc: 'Warmte, rust en hoogwaardige afwerking in een compacte ruimte' },
+  { id: 15, title: 'Badkamerproject Haarlem', category: 'Badkamer', location: 'Haarlem', image: sitePhotos[21], desc: 'Luxe badkamer met duidelijke verticale lijnen en rust' },
+  { id: 16, title: 'Badkamerproject Utrecht', category: 'Badkamer', location: 'Utrecht', image: sitePhotos[22], desc: 'Premium badkamer met een warme natuurlijke sfeer' },
+  { id: 17, title: 'Badkamerproject Almere', category: 'Badkamer', location: 'Almere', image: sitePhotos[23], desc: 'Een duurzamer, stijlvol en functioneel badkamerconcept' },
+  { id: 25, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Almere', image: sitePhotos[24], desc: 'Warme materialen, zacht licht en een rustige afwerking' },
+  { id: 26, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Amsterdam', image: sitePhotos[25], desc: 'Tijdloos sanitair met een verfijnde, moderne uitstraling' },
+  { id: 27, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Lelystad', image: sitePhotos[26], desc: 'Luxe details en een heldere, functionele indeling' },
+  { id: 28, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Almere Poort', image: sitePhotos[27], desc: 'Zachte tinten en hoogwaardige afwerking voor dagelijks comfort' },
+  { id: 29, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Haarlem', image: sitePhotos[28], desc: 'Een elegante badkamer met sterke lijnen en warme details' },
+  { id: 30, title: 'Badkamer renovatie', category: 'Badkamer', location: 'Utrecht', image: sitePhotos[29], desc: 'Rustige materialen en een moderne, praktische indeling' },
+  { id: 18, title: 'WC-renovatie Amsterdam', category: 'WC', location: 'Amsterdam', image: sitePhotos[8], desc: 'Modern en stijlvol met warme stenen tinten' },
+  { id: 19, title: 'WC-renovatie Haarlem', category: 'WC', location: 'Haarlem', image: sitePhotos[9], desc: 'Functioneel, elegant en compact met luxe details' },
+  { id: 20, title: 'WC-renovatie Utrecht', category: 'WC', location: 'Utrecht', image: sitePhotos[10], desc: 'Een nobele uitstraling met warme natuurlijke texturen' },
+  { id: 21, title: 'WC-renovatie Amsterdam 2', category: 'WC', location: 'Amsterdam', image: sitePhotos[11], desc: 'Minimalistisch en premium met een zachtere materiaalkeuze' },
+  { id: 22, title: 'Binnenrenovatie Almere Poort', category: 'Binnen', location: 'Almere', image: sitePhotos[5], desc: 'Stucwerk, vloeren en een heldere, natuurlijke finish' },
+  { id: 23, title: 'Woonkamer renovatie Almere', category: 'Binnen', location: 'Almere', image: sitePhotos[6], desc: 'Helder, luxe en functioneel met een premium interieurgevoel' },
+  { id: 24, title: 'Binnenrenovatie Amsterdam', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[7], desc: 'Lichte ruimtes, natuurlijke materialen en een warme sfeer' },
+  { id: 31, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[30], desc: 'Strakke wanden, natuurlijke vloeren en een lichte woonbasis' },
+  { id: 32, title: 'Binnenrenovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[31], desc: 'Een frisse interieurafwerking met aandacht voor proportie' },
+  { id: 33, title: 'Binnenrenovatie', category: 'Binnen', location: 'Almere Poort', image: sitePhotos[32], desc: 'Licht, ruimte en een rustige afwerking van vloer tot plafond' },
+  { id: 34, title: 'Binnenrenovatie', category: 'Binnen', location: 'Lelystad', image: sitePhotos[33], desc: 'Zorgvuldig gelegd vloerwerk voor een warme basis' },
+  { id: 35, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[34], desc: 'Een serene slaapkamer met een hoogwaardige afwerking' },
+  { id: 36, title: 'Slaapkamer renovatie', category: 'Binnen', location: 'Amsterdam', image: sitePhotos[35], desc: 'Rustige kleuren en maatwerkdetails voor meer comfort' },
+  { id: 37, title: 'Woonkamer renovatie', category: 'Binnen', location: 'Almere', image: sitePhotos[36], desc: 'Een lichte leefruimte met natuurlijke materialen' },
+  { id: 38, title: 'Binnenrenovatie', category: 'Binnen', location: 'Utrecht', image: sitePhotos[37], desc: 'Een compleet vernieuwd interieur met tijdloze uitstraling' },
 ];
 
 const categories = ['Alle', 'Badkamer', 'WC', 'Binnen'];
@@ -76,7 +76,7 @@ export default function Projecten() {
                 Onze projecten
               </h1>
               <p className="text-[#6B5D50] max-w-xl mx-auto leading-relaxed">
-                Bekijk een selectie van onze gerealiseerde renovaties in,  en omgeving.
+                Bekijk een selectie van onze gerealiseerde renovaties.
               </p>
             </motion.div>
           </div>
@@ -125,14 +125,11 @@ export default function Projecten() {
                       <span className="text-[10px] bg-[#f7f1e8]/90 text-[#7a6552] px-3 py-1 rounded-sm font-medium tracking-[0.14em] uppercase">
                         {project.category}
                       </span>
-                      <span className="text-[10px] bg-[#f7f1e8]/90 text-[#4A3F35] px-3 py-1 rounded-sm tracking-[0.14em] uppercase">
-                        {project.location}
-                      </span>
                     </div>
                   </div>
                   <div className="px-1">
                     <h3 className="font-serif text-xl md:text-[1.7rem] font-semibold text-[#231A12] mb-1 leading-tight group-hover:text-[#7a6552] transition-colors duration-200">
-                      {project.title}
+                      {project.title.replace(/ (Almere Poort|Almere|Amsterdam|Lelystad|Haarlem|Utrecht)( 2)?$/, '')}
                     </h3>
                     <p className="text-sm text-[#8A7A6A] leading-relaxed">{project.desc}</p>
                   </div>
