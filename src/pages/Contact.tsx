@@ -9,7 +9,7 @@ import denraLogoBg from '../../fotos/denralogobg.png';
 
 const contactInfo = [
   { icon: Phone, label: 'Telefoon', value: '+31 6 14 96 67 56', href: 'tel:+31614966756' },
-  { icon: Mail, label: 'E-mail', value: 'info@denra.nl', href: 'mailto:info@denra.nl' },
+  { icon: Mail, label: 'E-mail', value: 'info@denrabadkamers.nl', href: 'mailto:info@denrabadkamers.nl' },
   { icon: MapPin, label: 'Bedrijfsadres', value: 'Almere, Noord-Holland, Nederland', href: undefined },
   { icon: Clock, label: 'Bereikbaar', value: 'Ma–Za: 08:00–18:00', href: undefined },
 ];

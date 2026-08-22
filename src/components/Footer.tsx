@@ -124,11 +124,11 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:info@denra.nl"
+                  href="mailto:info@denrabadkamers.nl"
                   className="flex items-center gap-3 text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
                 >
                   <Mail size={14} className="text-[#5c5147] shrink-0" />
-                  info@denra.nl
+                  info@denrabadkamers.nl
                 </a>
               </li>
               <li className="flex items-start gap-3 text-sm text-[#5f544a]">
