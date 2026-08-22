@@ -41,6 +41,9 @@ import wc4 from '../../fotos/wc 4.png';
 import wc534 from '../../fotos/wc534.png';
 import wc980 from '../../fotos/wc980.jpeg';
 import wc72934 from '../../fotos/wc72934.jpeg';
+import badkamerDenra5 from '../../fotos/badkamer denra 5.jpeg';
+import wc000 from '../../fotos/wc000.jpeg';
+import badkamer48 from '../../fotos/badkamer 48.jpeg';
 
 export const sitePhotos = [
   badkamer1,
@@ -86,4 +89,7 @@ export const sitePhotos = [
   wc534,
   wc980,
   wc72934,
+  badkamerDenra5,
+  wc000,
+  badkamer48,
 ];
