@@ -151,6 +151,28 @@ export default function Badkamerrenovatie() {
           </div>
         </section>
 
+        <section className="py-20 bg-[#f4efe8]" aria-labelledby="badkamer-begeleiding-heading">
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <div className="denra-line" />
+              <span className="denra-label">Van ontwerp tot oplevering</span>
+              <div className="denra-line" />
+            </div>
+            <h2 id="badkamer-begeleiding-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
+              Ook hulp nodig bij sanitair en tegels?
+            </h2>
+            <p className="text-[#6B5D50] leading-relaxed mb-4">
+              Ook voor sanitair en tegels voor uw nieuwe badkamer kunnen wij u uiteraard helpen. Via een van onze vaste partners kunnen wij dit voor u verzorgen en mogelijk een aantrekkelijkere prijs aanbieden.
+            </p>
+            <p className="text-[#6B5D50] leading-relaxed mb-4">
+              Daarnaast kunnen we een vakkundig badkamerontwerp inclusief 3D-tekening laten maken, zodat u vooraf een duidelijk beeld krijgt van het eindresultaat.
+            </p>
+            <p className="text-[#4A3F35] font-medium leading-relaxed">
+              Zo verzorgen wij het complete traject: van ontwerp, sanitair en tegels tot de volledige renovatie en oplevering.
+            </p>
+          </div>
+        </section>
+
         {/* Projects */}
         <section className="py-20 bg-[#f6f0e8]" aria-labelledby="badkamer-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
