@@ -58,10 +58,10 @@ export default function Badkamerrenovatie() {
                   <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">Onze specialiteit</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
-                  Badkamer&shy;renovatie
+                  Badkamer & WC Renovatie in Flevoland en Noord-Holland
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
-                  Wij realiseren complete badkamerrenovaties in Almere en Amsterdam. Van ontwerp tot oplevering — stijlvol, luxe en binnen budget. Uw droomkamer in vakkundige handen.
+                  Denra Badkamers is gespecialiseerd in complete badkamer- en WC-renovaties in Flevoland en Noord-Holland. Van sloopwerk, leidingwerk en tegelwerk tot sanitair, stucwerk en de complete afwerking: wij verzorgen uw renovatie van begin tot eind.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link

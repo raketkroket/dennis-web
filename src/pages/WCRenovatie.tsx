@@ -81,10 +81,10 @@ export default function WCRenovatie() {
                   <span className="denra-label bg-[#e6ddd3] text-[#42362d]">Stijlvol toilet</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
-                  WC-renovatie
+                  WC Renovatie Almere & Noord-Holland
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
-                  Maak van uw toilet een stijlvolle en comfortabele ruimte. Wij verzorgen complete WC-renovaties in Almere en Amsterdam — snel, netjes en binnen budget.
+                  Uw toilet of WC laten renoveren? Denra Badkamers verzorgt complete WC-renovaties, toiletverbouwingen en luxe sanitaire upgrades in Almere, Amsterdam en de regio. Van nieuwe tegels en sanitair tot complete afwerking met een strakke, moderne uitstraling.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link

@@ -40,11 +40,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[22rem]"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[26rem]"
           >
-            Warm architectural luxury.
+            Badkamer & WC Renovatie
             <br />
-            <span className="text-[#ddd3c5]">Voor badkamers met rust.</span>
+            <span className="text-[#ddd3c5]">in Flevoland en Noord-Holland</span>
           </motion.h1>
 
           <motion.p
@@ -54,7 +54,7 @@ export default function HeroSection() {
             className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
             style={{ textShadow: '0 2px 8px rgba(18, 13, 9, 0.72)' }}
           >
-            Wij creëren badkamers en interieurs met natuurlijke materialen, sterke lijnen en een kalme, hoogwaardige uitstraling.
+            Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Van sloopwerk en leidingwerk tot tegelwerk, sanitair en de volledige afwerking.
           </motion.p>
 
           <motion.div
