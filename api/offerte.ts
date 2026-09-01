@@ -82,9 +82,11 @@ export default async function handler(request: VercelRequest, response: VercelRe
       resend.emails.send({ from, to: recipient, replyTo: data.email, subject: `Nieuwe offerteaanvraag - ${data.name}`, html: adminQuoteRequestEmail(data, siteUrl) }),
       resend.emails.send({ from, to: data.email, subject: 'Bevestiging van uw offerteaanvraag | Denra Badkamers', html: customerConfirmationEmail(data, siteUrl) }),
     ]);
-    if (results.some((result) => result.error)) throw new Error('Resend kon de e-mail niet versturen.');
+    const failedEmail = results.find((result) => result.error);
+    if (failedEmail?.error) return response.status(502).json({ error: failedEmail.error.message });
     return response.status(200).json({ success: true });
-  } catch {
-    return response.status(502).json({ error: 'Versturen is niet gelukt. Probeer het opnieuw.' });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Versturen is niet gelukt. Probeer het opnieuw.';
+    return response.status(502).json({ error: message });
   }
 }
