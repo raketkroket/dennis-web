@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
 import denraLogoBg from '../../fotos/denralogobg.png';
+import type { QuoteConfiguration } from '../types/quote';
 
 const contactInfo = [
   { icon: Phone, label: 'Telefoon', value: '+31 6 14 96 67 56', href: 'tel:+31614966756' },
@@ -15,6 +17,9 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const location = useLocation();
+  const quoteConfiguration = (location.state as { quoteConfiguration?: QuoteConfiguration } | null)?.quoteConfiguration;
+
   return (
     <>
       <Header />
@@ -79,7 +84,7 @@ export default function Contact() {
               >
                   <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Stuur ons een bericht</h2>
                 <p className="text-sm text-[#8A7A6A] mb-8">Wij nemen binnen 24 uur contact met u op.</p>
-                <ContactForm />
+                <ContactForm quoteConfiguration={quoteConfiguration} />
               </motion.div>
             </div>
           </div>

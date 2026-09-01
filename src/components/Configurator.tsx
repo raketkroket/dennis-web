@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bath, Toilet, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import type { QuoteConfiguration } from '../types/quote';
 
 type RoomType = 'badkamer' | 'wc';
 
@@ -84,6 +85,18 @@ export default function Configurator() {
 
   const price = calculatePrice(config);
   const currentOptions = config.roomType === 'wc' ? wcOptions : badkamerOptions;
+  const quoteConfiguration: QuoteConfiguration | null = config.roomType && config.length && config.width
+    ? {
+        roomType: config.roomType,
+        length: parseFloat(config.length),
+        width: parseFloat(config.width),
+        area: Number((parseFloat(config.length) * parseFloat(config.width)).toFixed(2)),
+        selectedOptions: currentOptions
+          .filter((option) => config.options.includes(option.id))
+          .map(({ id, label, price: optionPrice }) => ({ id, label, price: optionPrice })),
+        totalPrice: price,
+      }
+    : null;
 
   const toggleOption = useCallback((id: string) => {
     setConfig((prev) => ({
@@ -284,6 +297,7 @@ export default function Configurator() {
                 </p>
                 <Link
                   to="/contact"
+                  state={{ quoteConfiguration }}
                   className="flex items-center justify-center gap-2 bg-[#f6f0e8] text-[#231A12] font-medium px-6 py-3.5 rounded-sm tracking-[0.16em] uppercase hover:bg-[#e8ddcf] transition-all duration-200 text-sm w-full"
                 >
                   Vraag vrijblijvende offerte aan

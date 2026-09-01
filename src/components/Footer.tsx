@@ -46,7 +46,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/@denrabadkamers"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="DENRA op Instagram"
@@ -55,7 +55,7 @@ export default function Footer() {
                 <Instagram size={16} />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://facebook.com/denrabadkamers"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="DENRA op Facebook"
