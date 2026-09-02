@@ -24,7 +24,7 @@ const badkamerOptions: ConfigOption[] = [
   { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
   { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
   { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
-  { id: 'niche', label: 'Niche', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
+  { id: 'niche', label: 'Nis', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
   { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
   { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
   { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
@@ -42,7 +42,7 @@ const wcOptions: ConfigOption[] = [
   { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
   { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
   { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
-  { id: 'niche', label: 'Niche', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
+  { id: 'niche', label: 'Nis', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
   { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
   { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
   { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
@@ -251,29 +251,29 @@ export default function Configurator() {
             >
               <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Welke opties wenst u?</h3>
               <p className="text-sm text-[#8A7A6A] mb-8">Selecteer de gewenste extra's voor uw renovatie.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+              <div className="grid grid-cols-1 gap-3 mb-8">
                 {currentOptions.map((option) => {
                   const isSelected = config.options.includes(option.id);
                   return (
                     <button
                       key={option.id}
                       onClick={() => toggleOption(option.id)}
-                      className={`flex items-center justify-between p-4 rounded-sm border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-1 ${
+                      className={`flex flex-col items-stretch gap-1 p-4 rounded-sm border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-1 ${
                         isSelected
                           ? 'border-[#7a6552] bg-[#e8ddcf]/25'
                           : 'border-[#cfbca7] hover:border-[#7a6552]/40'
                       }`}
                     >
-                      <span className="text-sm font-medium text-[#231A12]">{option.label}</span>
-                      <div className="text-right">
-                        <div className="flex items-center gap-3 justify-end">
+                      <div className="flex items-center justify-between gap-3 w-full">
+                        <span className="text-sm font-medium text-[#231A12] whitespace-nowrap">{option.label}</span>
+                        <div className="flex items-center gap-3 shrink-0">
                           <span className="text-xs text-[#8A7A6A]">+€{option.price}</span>
                           <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#7a6552] bg-[#7a6552]' : 'border-[#cfbca7]'}`}>
                             {isSelected && <Check size={10} className="text-white" />}
                           </div>
                         </div>
-                        {option.note && <p className="mt-1 text-[11px] leading-snug text-[#8A7A6A] max-w-[14rem]">{option.note}</p>}
                       </div>
+                      {option.note && <p className="w-full text-left text-[11px] leading-snug text-[#8A7A6A]">{option.note}</p>}
                     </button>
                   );
                 })}

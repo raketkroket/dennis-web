@@ -14,7 +14,7 @@ const features = [
   'Tegelwerk (ook in verstek)',
   'Verlaagd plafond met spotjes',
   'Vloerverwarming',
-  'Niche en inbouwkranen',
+  'Nis en inbouwkranen',
   'Elektra en ventilatie',
   'Tegelvloer',
   'Stucwerk en schilderwerk',
