@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../../fotos/Denralogo.png';
+import tiktokIcon from '../../fotos/tiktokicon.png';
 
 const diensten = [
   { label: 'Badkamerrenovatie', path: '/badkamerrenovatie' },
@@ -39,7 +40,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm text-[#5f544a] leading-relaxed max-w-sm mb-6">
-              Luxe badkamer- en binnenrenovaties in Almere en Amsterdam. Rustige afwerking, sterke detaillering en een heldere manier van werken.
+              Luxe badkamer- en binnenrenovaties in Flevoland en Noord-Holland. Rustige afwerking, sterke detaillering en een heldere manier van werken.
             </p>
             <p className="text-xs text-[#71665b] mb-6">
               Uitvoering door <span className="text-[#1d1712] font-medium">Denra Montage en Onderhoud</span>
@@ -71,6 +72,15 @@ export default function Footer() {
                 className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <MessageCircle size={16} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@denrabadkamers.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="DENRA op TikTok"
+                className="w-10 h-10 rounded-sm overflow-hidden transition-opacity duration-200 hover:opacity-75"
+              >
+                <img src={tiktokIcon} alt="" className="w-full h-full object-cover" />
               </a>
             </div>
           </div>
@@ -158,6 +168,12 @@ export default function Footer() {
               <MessageCircle size={16} />
               WhatsApp ons
             </a>
+            <Link
+              to="/algemene-voorwaarden"
+              className="mt-3 flex items-center justify-center border border-[#5c5147]/30 text-[#1d1712] text-sm font-medium px-5 py-3 rounded-sm tracking-[0.14em] uppercase hover:bg-[#e5ddcf] transition-all duration-200 w-full"
+            >
+              Algemene voorwaarden
+            </Link>
           </div>
         </div>
       </div>

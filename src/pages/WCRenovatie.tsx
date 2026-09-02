@@ -116,7 +116,7 @@ export default function WCRenovatie() {
               className="text-center mb-12"
             >
               <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
-                Wat is inbegrepen?
+                Alles onder één dak
               </h2>
               <p className="text-[#6B5D50]">Complete WC-renovatie van A tot Z, zonder verrassingen.</p>
             </motion.div>

@@ -109,7 +109,7 @@ export default function Badkamerrenovatie() {
                 transition={{ duration: 0.6 }}
               >
                 <h2 id="features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
-                  Alles inbegrepen,<br />niets vergeten
+                  Alles onder één dak,<br />niets vergeten
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8">
                   Onze complete badkamerrenovatie omvat alle werkzaamheden van A tot Z. U hoeft geen aparte aannemers in te schakelen — wij regelen alles.
