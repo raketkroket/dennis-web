@@ -56,16 +56,19 @@ const wcOptions: ConfigOption[] = [
   { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
 ];
 
-const BASE_PRICE_PER_M2: Record<RoomType, number> = {
-  badkamer: 1200,
-  wc: 900,
-};
-
 function calculatePrice(state: ConfigState): number {
   if (!state.roomType || !state.length || !state.width) return 0;
   const area = parseFloat(state.length) * parseFloat(state.width);
   if (isNaN(area) || area <= 0) return 0;
-  const base = area * BASE_PRICE_PER_M2[state.roomType];
+  const base = state.roomType === 'badkamer'
+    ? area <= 5
+      ? 7950
+      : area <= 8
+        ? 7950 + (area - 5) * 900
+        : 10650 + (area - 8) * 1100
+    : area <= 2
+      ? 3950
+      : 3950 + (area - 2) * 800;
   const options = state.roomType === 'badkamer' ? badkamerOptions : wcOptions;
   const extras = state.options.reduce((sum, id) => {
     const opt = options.find((o) => o.id === id);
@@ -280,7 +283,7 @@ export default function Configurator() {
               </div>
 
               <p className="text-xs text-[#8A7A6A] mb-6">
-                Prijsindicatie inclusief arbeid en standaard montagematerialen. Sanitair, tegels, kranen, badkamermeubels en overige zichtmaterialen zijn niet inbegrepen, tenzij expliciet vermeld. Definitieve prijs wordt vastgesteld na opname op locatie.
+                Vrijblijvende vanafprijs voor arbeid en normale bouwmaterialen. Sanitair, tegels, kranen, badkamermeubels en overige zichtmaterialen zijn niet inbegrepen, tenzij expliciet vermeld. Definitieve prijs wordt vastgesteld na opname op locatie.
               </p>
 
               {/* Price result */}
@@ -288,9 +291,9 @@ export default function Configurator() {
                 <p className="denra-label text-[#cfbca7] mb-2">Uw prijsindicatie</p>
                 <div className="flex items-end gap-2 mb-1">
                   <span className="font-serif text-4xl font-semibold">
-                    €{price.toLocaleString('nl-NL')}
+                    Vanaf €{price.toLocaleString('nl-NL')}
                   </span>
-                  <span className="text-[#b7a894] text-sm mb-1">indicatie</span>
+                  <span className="text-[#b7a894] text-sm mb-1">incl. btw</span>
                 </div>
                 <p className="text-xs text-[#b7a894] mb-6">
                   Inclusief bouwmaterialen. Exclusief sanitair en tegels.
