@@ -145,12 +145,19 @@ export default function AlgemeneVoorwaarden() {
                 <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-4">{title}</h2>
                 <div className="space-y-3 text-sm md:text-base leading-relaxed text-[#4A3F35]">
                   {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  {title === 'Artikel 4 - Herroeping bij consumenten' && (
+                    <p>
+                      <a href="#modelformulier-herroeping" className="font-medium text-[#231A12] underline underline-offset-4 hover:text-[#7a6552]">
+                        Bekijk het modelformulier voor herroeping
+                      </a>
+                    </p>
+                  )}
                 </div>
               </section>
             ))}
           </div>
 
-          <section className="mt-14 border-t border-[#cfbca7] pt-10">
+          <section id="modelformulier-herroeping" className="mt-14 border-t border-[#cfbca7] pt-10 scroll-mt-28">
             <p className="denra-label text-[#7a6552] mb-3">Bijlage</p>
             <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-4">Modelformulier voor herroeping</h2>
             <div className="bg-white/60 border border-[#cfbca7]/70 p-6 text-sm leading-relaxed text-[#4A3F35] space-y-3">
