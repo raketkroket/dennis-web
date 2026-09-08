@@ -46,6 +46,7 @@
     background-color: #ddd2c4;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 30%);
     color: #1d1712;
+    overflow-x: hidden;
   }
 
   html {
@@ -54,6 +55,24 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+  }
+
+  button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid #7a6552;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -80,7 +99,7 @@
   }
 
   .denra-label {
-    @apply text-[10px] uppercase tracking-[0.32em] text-[#4e443b];
+    @apply text-[10px] uppercase tracking-[0.2em] text-[#4e443b];
   }
 
   .denra-surface {
@@ -90,6 +109,18 @@
   }
 
   .denra-field {
-    @apply w-full bg-transparent border border-[#7b6a59]/45 rounded-sm px-4 py-3 text-[#1d1712] placeholder:text-[#7d7369] focus:outline-none focus:border-[#1d1712] transition-colors duration-200;
+    @apply w-full min-w-0 bg-transparent border border-[#7b6a59]/45 rounded-sm px-4 py-3 text-[#1d1712] placeholder:text-[#7d7369] focus:outline-none focus:border-[#1d1712] transition-colors duration-200;
+  }
+
+  .denra-button-primary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[#231A12] px-6 py-3 text-sm font-semibold text-[#F6F0E8] shadow-[0_8px_20px_rgba(35,26,18,0.13)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3a2d23] hover:shadow-[0_12px_28px_rgba(35,26,18,0.18)] active:translate-y-0 active:shadow-none;
+  }
+
+  .denra-button-secondary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-[#7a6552]/35 bg-white/20 px-6 py-3 text-sm font-semibold text-[#231A12] transition-all duration-200 hover:border-[#7a6552] hover:bg-white/60 active:bg-[#e8ddcf];
+  }
+
+  .denra-panel {
+    @apply rounded-sm border border-[#cfbca7]/60 bg-[#faf6f0] shadow-[0_12px_40px_rgba(35,26,18,0.08)];
   }
 }

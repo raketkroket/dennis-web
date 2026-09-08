@@ -87,7 +87,7 @@ export default function Footer() {
 
           {/* Diensten */}
           <div>
-            <h3 className="denra-label mb-6">Diensten</h3>
+            <h3 className="denra-label mb-5">Diensten</h3>
             <ul className="space-y-3">
               {diensten.map((item) => (
                 <li key={item.label}>
@@ -104,7 +104,7 @@ export default function Footer() {
 
           {/* Informatie */}
           <div>
-            <h3 className="denra-label mb-6">Informatie</h3>
+            <h3 className="denra-label mb-5">Juridisch & informatie</h3>
             <ul className="space-y-3">
               {informatie.map((item) => (
                 <li key={item.label}>
@@ -121,7 +121,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="denra-label mb-6">Contact</h3>
+            <h3 className="denra-label mb-5">Contact</h3>
             <ul className="space-y-4">
               <li>
                 <a
@@ -147,7 +147,7 @@ export default function Footer() {
               </li>
             </ul>
             <div className="mt-6">
-              <h4 className="denra-label mb-3">Locaties</h4>
+              <h4 className="denra-label mb-3">Regio's</h4>
               <div className="flex flex-wrap gap-1.5">
                 {locaties.map((loc) => (
                   <span
@@ -163,14 +163,14 @@ export default function Footer() {
               href="https://wa.me/31614966756"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex items-center justify-center gap-2 bg-[#1d1712] text-[#F6F0E8] text-sm font-medium px-5 py-3 rounded-sm tracking-[0.14em] uppercase hover:bg-[#0f0d0b] transition-all duration-200 w-full"
+              className="denra-button-primary mt-6 w-full"
             >
               <MessageCircle size={16} />
               WhatsApp ons
             </a>
             <Link
               to="/algemene-voorwaarden"
-              className="mt-3 flex items-center justify-center border border-[#5c5147]/30 text-[#1d1712] text-sm font-medium px-5 py-3 rounded-sm tracking-[0.14em] uppercase hover:bg-[#e5ddcf] transition-all duration-200 w-full"
+              className="denra-button-secondary mt-3 w-full"
             >
               Algemene voorwaarden
             </Link>

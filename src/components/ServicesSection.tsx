@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bath, Toilet, Home, Layers, Paintbrush, Grid3x3, Waves, ChevronRight } from 'lucide-react';
+import { Bath, Toilet, Layers, Paintbrush, Grid3x3, Waves, ChevronRight } from 'lucide-react';
 import { sitePhotos } from '../data/sitePhotos';
 
 const services = [
@@ -17,9 +17,9 @@ export default function ServicesSection() {
   return (
     <section className="py-24 lg:py-28 bg-transparent" aria-labelledby="diensten-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-16 items-start">
+        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 lg:gap-16 items-start">
           {/* Left */}
-          <div>
+          <div className="min-w-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -49,12 +49,12 @@ export default function ServicesSection() {
                 >
                   <Link
                     to={service.path}
-                    className="group flex items-start gap-4 p-5 bg-[#d8cdbd]/42 border border-[#5c5147]/12 hover:border-[#5c5147]/22 transition-all duration-300"
+                    className="group flex min-w-0 items-start gap-4 p-5 bg-[#d8cdbd]/42 border border-[#5c5147]/12 hover:border-[#5c5147]/22 transition-all duration-300"
                   >
                     <div className="w-10 h-10 border border-[#5c5147]/14 flex items-center justify-center shrink-0 group-hover:border-[#5c5147]/28 transition-colors duration-300">
                       <service.icon size={18} className="text-[#302922]" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-[#1d1712] mb-1">{service.title}</p>
                       <p className="text-xs text-[#5f544a] leading-relaxed">{service.desc}</p>
                     </div>
@@ -86,7 +86,7 @@ export default function ServicesSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="relative"
+            className="relative min-w-0"
           >
             <div className="bg-[#1b1611] p-10 text-white relative overflow-hidden rounded-sm">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 -translate-y-1/2 translate-x-1/2" />

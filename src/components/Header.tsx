@@ -45,7 +45,7 @@ export default function Header() {
         height: `${82 - scrollProgress * 8}px`
       }}
     >
-      <div className="max-w-7xl mx-auto px-3 lg:px-4 h-full">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 h-full">
         <div className="flex items-center justify-between h-full"
           style={{
             opacity: 1 - scrollProgress * 0.05,
@@ -63,7 +63,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Hoofdnavigatie">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-6" aria-label="Hoofdnavigatie">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -74,7 +74,7 @@ export default function Header() {
                     isActive ? 'text-[#12100d]' : 'text-[#4a4037] hover:text-[#12100d]'
                   }`}
                   style={{
-                    letterSpacing: `${0.16 + scrollProgress * 0.02}em`,
+                    letterSpacing: `${0.1 + scrollProgress * 0.02}em`,
                     transition: 'letter-spacing 0.3s ease-out'
                   }}
                 >
@@ -111,7 +111,7 @@ export default function Header() {
             </a>
             <Link
               to="/configurator"
-              className="text-[#f6f0e8] text-sm font-medium rounded-sm hover:bg-[#0f0d0b] transition-all duration-200 tracking-[0.18em] uppercase border border-[#12100d] bg-[#12100d]"
+              className="denra-button-primary min-h-0 px-5 py-2.5 text-[13px]"
               style={{
                 background: 'rgba(18, 16, 13, 0.98)',
                 padding: `${10 + scrollProgress * 2.5}px ${22 - scrollProgress * 4}px`,
@@ -124,7 +124,7 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 text-[#12100d] hover:text-[#4a4037] transition-colors duration-200"
+            className="lg:hidden flex h-11 w-11 items-center justify-center text-[#12100d] hover:text-[#4a4037] transition-colors duration-200"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? 'Menu sluiten' : 'Menu openen'}
             style={{
@@ -145,20 +145,20 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 top-20 bg-[#f6f0e8] z-40 lg:hidden min-h-screen"
+            className="fixed inset-0 top-[74px] bg-[#f6f0e8] z-40 lg:hidden min-h-[calc(100vh-74px)] shadow-[-12px_0_36px_rgba(35,26,18,0.1)]"
             role="dialog"
             aria-modal="true"
             aria-label="Mobiel menu"
             style={{ backgroundColor: '#f6f0e8' }}
           >
-            <nav className="flex flex-col px-8 py-10 gap-6" aria-label="Mobiele navigatie">
+            <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobiele navigatie">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`text-2xl font-serif font-medium transition-colors duration-200 ${
+                    className={`min-h-12 flex items-center text-xl font-serif font-medium transition-colors duration-200 ${
                         isActive ? 'text-[#12100d]' : 'text-[#4f4338] hover:text-[#12100d]'
                     }`}
                   >
@@ -166,10 +166,10 @@ export default function Header() {
                   </Link>
                 );
               })}
-              <div className="pt-6 border-t border-[#cbb9a5]/50 flex flex-col gap-4">
+              <div className="mt-5 pt-6 border-t border-[#cbb9a5]/50 flex flex-col gap-3">
                 <Link
                   to="/configurator"
-                    className="bg-[#12100d] text-[#F6F0E8] text-center font-medium px-6 py-3.5 rounded-sm tracking-[0.16em] uppercase hover:bg-[#0f0d0b] transition-all duration-200"
+                    className="denra-button-primary w-full"
                 >
                   Prijs berekenen
                 </Link>
@@ -177,7 +177,7 @@ export default function Header() {
                   href="https://wa.me/31614966756"
                   target="_blank"
                   rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 border border-[#12100d] text-[#12100d] font-medium px-6 py-3.5 rounded-sm tracking-[0.16em] uppercase hover:bg-[#ede3d7] transition-all duration-200"
+                    className="denra-button-secondary w-full"
                 >
                   <MessageCircle size={18} />
                   WhatsApp ons

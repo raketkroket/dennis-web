@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import Header from '../components/Header';
@@ -56,10 +56,26 @@ const categories = ['Alle', 'Badkamer', 'WC', 'Binnen'];
 export default function Projecten() {
   const [activeCategory, setActiveCategory] = useState('Alle');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const filtered = activeCategory === 'Alle'
     ? allProjects
     : allProjects.filter((p) => p.category === activeCategory);
+
+  useEffect(() => {
+    if (!selectedImage) return undefined;
+    const originalOverflow = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedImage(null);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    closeButtonRef.current?.focus();
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [selectedImage]);
 
   return (
     <>
@@ -91,15 +107,15 @@ export default function Projecten() {
         <section className="py-16 bg-[#faf6f0]" aria-labelledby="projecten-grid-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             {/* Filter */}
-            <div className="flex items-center gap-3 mb-12 flex-wrap" role="group" aria-label="Filter projecten">
+            <div className="-mx-6 px-6 sm:mx-0 sm:px-0 flex items-center gap-2 mb-12 overflow-x-auto pb-2" role="group" aria-label="Filter projecten">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2 rounded-sm text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
+                  className={`shrink-0 min-h-11 px-5 py-2 rounded-sm text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
                     activeCategory === cat
                       ? 'bg-[#231A12] text-[#F6F0E8] shadow-[0_8px_18px_rgba(29,23,18,0.12)]'
-                      : 'border border-[#cfbca7] text-[#4A3F35] hover:border-[#7a6552] hover:text-[#231A12]'
+                      : 'border border-[#cfbca7] bg-white/35 text-[#4A3F35] hover:border-[#7a6552] hover:bg-white/70 hover:text-[#231A12]'
                   }`}
                   aria-pressed={activeCategory === cat}
                 >
@@ -120,7 +136,7 @@ export default function Projecten() {
                 >
                   <button
                     type="button"
-                    className="relative block w-full overflow-hidden rounded-[20px] aspect-[4/3] mb-4 border border-[#dccdb4] bg-[#f3ebdf] shadow-[0_16px_36px_rgba(29,23,18,0.04)] focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2"
+                    className="relative block w-full overflow-hidden rounded-sm aspect-[4/3] mb-4 border border-[#dccdb4] bg-[#f3ebdf] shadow-[0_12px_30px_rgba(29,23,18,0.06)] transition-shadow duration-300 group-hover:shadow-[0_18px_38px_rgba(29,23,18,0.12)] focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2"
                     onClick={() => setSelectedImage(project.image)}
                     aria-label={`Bekijk foto: ${project.title}`}
                   >
@@ -150,7 +166,10 @@ export default function Projecten() {
         </section>
       </main>
       {selectedImage && (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-[#120d09]/90 p-6"
           role="dialog"
           aria-modal="true"
@@ -159,21 +178,25 @@ export default function Projecten() {
         >
           <button
             type="button"
-            className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-sm bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+            ref={closeButtonRef}
+            className="absolute right-4 top-4 sm:right-6 sm:top-6 flex h-11 w-11 items-center justify-center rounded-sm bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
             onClick={() => setSelectedImage(null)}
             aria-label="Sluit vergrote foto"
           >
             <X size={20} />
           </button>
-          <img
+          <motion.img
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }}
             src={selectedImage}
             alt="Vergrote projectfoto"
             width={1400}
             height={1000}
-            className="max-h-[90vh] max-w-full object-contain"
+            className="max-h-[86vh] max-w-full object-contain"
             onClick={(event) => event.stopPropagation()}
           />
-        </div>
+        </motion.div>
       )}
       <Footer />
       <WhatsAppButton />
