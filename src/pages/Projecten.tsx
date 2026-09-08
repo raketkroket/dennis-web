@@ -120,17 +120,17 @@ export default function Projecten() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
-              className="grid gap-12 border-b border-[#7a6552]/20 pb-12 lg:grid-cols-[minmax(0,1.45fr)_260px] lg:items-end lg:pb-16"
+              className="border-b border-[#7a6552]/20 pb-12 text-center lg:pb-16"
             >
               <div className="min-w-0">
-                <div className="flex items-center gap-3 mb-7"><span className="denra-line" /><span className="denra-label">Portfolio</span></div>
+                <div className="flex items-center justify-center gap-3 mb-7"><span className="denra-line" /><span className="denra-label">Portfolio</span><span className="denra-line" /></div>
                 <p className="denra-label mb-4">Onze projecten</p>
-                <h1 className="max-w-3xl font-serif text-5xl font-semibold leading-[0.9] text-[#231A12] sm:text-6xl lg:text-7xl">Ruimtes die<br />tot leven komen.</h1>
-                <p className="mt-7 max-w-xl text-lg leading-relaxed text-[#5f544a]">Bekijk ons werk: gerealiseerde badkamers, toiletten en verfijnde interieurs.</p>
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row"><button type="button" onClick={() => browseCategory('Badkamer')} className="denra-button-primary">Bekijk badkamers <ArrowRight size={16} /></button><button type="button" onClick={() => browseCategory('WC')} className="denra-portfolio-hero-action">Bekijk toiletten <ArrowRight size={16} /></button></div>
+                <h1 className="mx-auto max-w-3xl font-serif text-5xl font-semibold leading-[0.9] text-[#231A12] sm:text-6xl lg:text-7xl">Ruimtes die<br />tot leven komen.</h1>
+                <p className="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-[#5f544a]">Bekijk ons werk: gerealiseerde badkamers, toiletten en verfijnde interieurs.</p>
+                <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={() => browseCategory('Badkamer')} className="denra-button-primary">Bekijk badkamers <ArrowRight size={16} /></button><button type="button" onClick={() => browseCategory('WC')} className="denra-portfolio-hero-action">Bekijk toiletten <ArrowRight size={16} /></button></div>
               </div>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5 border-l border-[#7a6552]/20 pl-6 text-xs uppercase tracking-[0.14em] text-[#5f544a] sm:max-w-sm lg:grid-cols-1 lg:gap-4">
-                <span><strong className="block font-medium text-[#231A12]">{allProjects.length}</strong>Projecten</span><span>Badkamer</span><span>WC</span><span>Interieur</span>
+              <div className="mx-auto mt-10 flex max-w-lg flex-wrap justify-center gap-x-6 gap-y-2 border-t border-[#7a6552]/20 pt-5 text-xs uppercase tracking-[0.14em] text-[#5f544a]">
+                <span><strong className="mr-1 font-medium text-[#231A12]">{allProjects.length}</strong>Projecten</span><span>Badkamer</span><span>WC</span><span>Interieur</span>
               </div>
             </motion.div>
           </div>
