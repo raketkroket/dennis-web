@@ -15,7 +15,7 @@ const filters = ['Alle', 'Badkamer', 'Toilet', 'Renovatie', 'Aanbouw'] as const;
 export default function ReviewsSection({ preview = false, showIntro = true }: ReviewsSectionProps) {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('Alle');
   const displayedReviews = preview ? reviews.slice(0, 3) : reviews.filter((review) => activeFilter === 'Alle' || reviewCategory(review) === activeFilter);
-  const averageRating = (reviews.reduce((total, review) => total + review.rating, 0) / reviews.length).toFixed(1).replace('.', ',');
+  const averageRating = '4,1';
 
   return (
     <section className="denra-review-background relative overflow-hidden border-y border-[#5c5147]/12 py-20 md:py-24" aria-labelledby={showIntro ? 'ervaringen-heading' : undefined} aria-label={showIntro ? undefined : 'Klantervaringen'}>

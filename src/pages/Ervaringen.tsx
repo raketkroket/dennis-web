@@ -9,7 +9,7 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import { reviews } from '../data/reviews';
 
 export default function Ervaringen() {
-  const averageRating = (reviews.reduce((total, review) => total + review.rating, 0) / reviews.length).toFixed(1).replace('.', ',');
+  const averageRating = '4,1';
 
   return (
     <>
