@@ -34,7 +34,7 @@ export default function ReviewCard({ review, featured = false, compact = false }
   }, [review.images, selectedImage, selectedImageIndex]);
 
   return (
-    <article className={`denra-review-card group relative flex h-full flex-col overflow-hidden p-6 transition-all duration-500 motion-reduce:transform-none sm:p-7 ${featured ? 'md:p-9' : ''} ${compact ? 'p-6' : ''}`}>
+    <article className={`denra-review-card group relative flex flex-col overflow-hidden p-6 transition-all duration-500 motion-reduce:transform-none sm:p-7 ${featured ? 'md:p-9' : ''} ${compact ? 'p-6' : ''}`}>
       <div className="absolute inset-x-0 top-0 h-px bg-white/90" aria-hidden="true" />
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-1 text-[#8b6b45]" aria-label={`${review.rating} van 5 sterren`}>
