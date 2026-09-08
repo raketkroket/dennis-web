@@ -22,7 +22,24 @@ const informatie = [
   { label: 'Contact', path: '/contact' },
 ];
 
-const locaties = ['Almere', 'Amsterdam', 'Amstelveen', 'Lelystad', "'t Gooi", 'Haarlem'];
+const locaties = [
+  'Almere',
+  'Amsterdam',
+  'Amstelveen',
+  'Lelystad',
+  "'t Gooi",
+  'Haarlem',
+  'Blaricum',
+  'Hilversum',
+  'Laren',
+  'Weesp',
+  'Muiden',
+  'Eemnes',
+  'Diemen',
+  'Muiderberg',
+  'Naarden',
+  'Amersfoort',
+];
 const bedrijfsAdres = 'Almere, Noord-Holland, Nederland';
 
 export default function Footer() {

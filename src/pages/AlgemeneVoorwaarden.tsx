@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronDown, FileDown, ArrowUp } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
@@ -119,62 +120,136 @@ const sections = [
   ]],
 ] as const;
 
+const getArticleId = (index: number) => `artikel-${index + 1}`;
+
 export default function AlgemeneVoorwaarden() {
+  const [activeArticle, setActiveArticle] = useState(0);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [withdrawalOpen, setWithdrawalOpen] = useState(false);
+  const progressBar = useRef<HTMLDivElement>(null);
+  const backToTopButton = useRef<HTMLButtonElement>(null);
+  const withdrawalHeading = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const articles = sections.map((_, index) => document.getElementById(getArticleId(index))).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleArticle = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];
+        if (visibleArticle) setActiveArticle(Number(visibleArticle.target.dataset.articleIndex));
+      },
+      { rootMargin: '-96px 0px -68% 0px', threshold: 0 },
+    );
+
+    articles.forEach((article) => observer.observe(article));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let frameId = 0;
+    const updateProgress = () => {
+      frameId = 0;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? Math.min(window.scrollY / scrollableHeight, 1) : 0;
+      progressBar.current?.style.setProperty('transform', `scaleX(${progress})`);
+      backToTopButton.current?.toggleAttribute('data-visible', window.scrollY > 500);
+    };
+    const onScroll = () => {
+      if (!frameId) frameId = window.requestAnimationFrame(updateProgress);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateProgress();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  const scrollToArticle = (index: number) => {
+    document.getElementById(getArticleId(index))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTocOpen(false);
+  };
+
+  const openWithdrawalForm = () => {
+    setWithdrawalOpen(true);
+    window.requestAnimationFrame(() => {
+      document.getElementById('modelformulier-herroeping')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      withdrawalHeading.current?.focus({ preventScroll: true });
+    });
+  };
+
   return (
     <>
       <Header />
-      <main className="bg-[#f8f3ec] pt-32 pb-20">
-        <section className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="border-y border-[#cfbca7] py-6 mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="denra-label text-[#7a6552] mb-3">DENRA Badkamers & Renovaties</p>
-              <h1 className="font-serif text-4xl md:text-5xl font-semibold text-[#231A12]">Algemene voorwaarden</h1>
+      <div className="denra-legal-progress print:hidden" aria-hidden="true"><div ref={progressBar} /></div>
+      <main className="denra-legal-page pt-[74px] pb-20">
+        <section className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-12 lg:pt-24 lg:pb-20">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.65fr)_minmax(255px,0.7fr)] lg:items-end">
+            <div className="animate-fade-in">
+              <div className="flex items-center gap-3 mb-7"><span className="denra-line" /><p className="denra-label">DENRA Badkamers & Renovaties</p></div>
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[0.9] text-[#231A12] max-w-3xl">Algemene<br />voorwaarden.</h1>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-[#5f544a]">Duidelijke afspraken vormen de basis van een goede samenwerking.</p>
             </div>
-            <p className="text-sm text-[#6B5D50]">Versie 2 september 2026</p>
+            <aside className="denra-legal-info animate-fade-in" aria-label="Documentinformatie">
+              <p className="denra-label mb-5">Documentinformatie</p>
+              <dl className="space-y-4 text-sm">
+                <div><dt className="text-[#71665b]">KvK</dt><dd className="mt-1 font-medium text-[#231A12]">68670397</dd></div>
+                <div className="border-t border-[#7a6552]/15 pt-4"><dt className="text-[#71665b]">Vestiging</dt><dd className="mt-1 font-medium leading-relaxed text-[#231A12]">Eva Besnyostraat 331<br />1087 LG Amsterdam</dd></div>
+                <div className="border-t border-[#7a6552]/15 pt-4"><dt className="text-[#71665b]">Versie</dt><dd className="mt-1 font-medium text-[#231A12]">2 september 2026</dd></div>
+              </dl>
+            </aside>
+          </div>
+        </section>
+
+        <section className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-y border-[#7a6552]/20 py-5">
+            <div><p className="denra-label">Algemene voorwaarden</p><p className="mt-1 text-sm text-[#5f544a]">26 artikelen · Consumenten & zakelijke opdrachtgevers · Nederland</p></div>
+            <button type="button" onClick={() => window.print()} className="denra-button-secondary print:hidden min-h-0 px-4 py-2.5 text-xs"><FileDown size={15} />Print / Bewaar als PDF</button>
           </div>
 
-          <div className="mb-12 border border-[#cfbca7]/70 bg-[#f4ede4] p-6 text-sm leading-relaxed text-[#4A3F35]">
-            <p><strong className="text-[#231A12]">KvK:</strong> 68670397</p>
-            <p><strong className="text-[#231A12]">Vestiging:</strong> Eva Besnyostraat 331, 1087 LG Amsterdam</p>
-            <p className="mt-4">Deze voorwaarden maken integraal deel uit van iedere overeenkomst waarop zij van toepassing zijn.</p>
+          <div className="mb-6 lg:hidden">
+            <button type="button" onClick={() => setTocOpen((open) => !open)} aria-expanded={tocOpen} aria-controls="mobile-legal-toc" className="flex w-full items-center justify-between border border-[#bda890]/55 bg-[#f8f4ee] px-5 py-4 text-left text-sm font-medium text-[#231A12] shadow-[0_5px_16px_rgba(45,31,20,0.06)]">
+              Bekijk inhoudsopgave <ChevronDown size={18} className={`transition-transform ${tocOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {tocOpen && <nav id="mobile-legal-toc" aria-label="Inhoudsopgave algemene voorwaarden" className="border-x border-b border-[#bda890]/55 bg-[#fbf8f3] px-3 py-3">
+              {sections.map(([title], index) => <button key={title} type="button" onClick={() => scrollToArticle(index)} className="flex w-full items-start gap-3 px-3 py-2 text-left text-sm leading-snug text-[#4A3F35] hover:bg-[#eee4d8] hover:text-[#231A12]"><span className="shrink-0 font-medium text-[#7a6552]">{String(index + 1).padStart(2, '0')}</span>{title.replace(/^Artikel \d+ - /, '')}</button>)}
+            </nav>}
           </div>
 
-          <div className="space-y-10">
-            {sections.map(([title, paragraphs]) => (
-              <section key={title}>
-                <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-4">{title}</h2>
-                <div className="space-y-3 text-sm md:text-base leading-relaxed text-[#4A3F35]">
-                  {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-                  {title === 'Artikel 4 - Herroeping bij consumenten' && (
-                    <p>
-                      <a href="#modelformulier-herroeping" className="font-medium text-[#231A12] underline underline-offset-4 hover:text-[#7a6552]">
-                        Bekijk het modelformulier voor herroeping
-                      </a>
-                    </p>
-                  )}
+          <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12">
+            <aside className="hidden lg:block">
+              <nav aria-label="Inhoudsopgave algemene voorwaarden" className="sticky top-[98px] border-l border-[#7a6552]/25 pl-5">
+                <p className="denra-label mb-4">Inhoud</p>
+                <ol className="space-y-1">
+                  {sections.map(([title], index) => <li key={title}><button type="button" onClick={() => scrollToArticle(index)} aria-current={activeArticle === index ? 'location' : undefined} className={`flex w-full items-start gap-3 py-1.5 text-left text-xs leading-snug transition-colors ${activeArticle === index ? 'font-medium text-[#231A12]' : 'text-[#71665b] hover:text-[#231A12]'}`}><span className="shrink-0">{String(index + 1).padStart(2, '0')}</span>{title.replace(/^Artikel \d+ - /, '')}</button></li>)}
+                </ol>
+              </nav>
+            </aside>
+
+            <article className="denra-legal-document">
+              <p className="mb-12 max-w-[70ch] text-[15px] leading-[1.8] text-[#4A3F35] md:text-base">Deze voorwaarden maken integraal deel uit van iedere overeenkomst waarop zij van toepassing zijn.</p>
+              {sections.map(([title, paragraphs], index) => (
+                <section id={getArticleId(index)} data-article-index={index} key={title} className={`denra-legal-article scroll-mt-[98px] ${activeArticle === index ? 'is-active' : ''}`}>
+                  <div className="flex gap-5 sm:gap-7"><span aria-hidden="true" className="w-9 shrink-0 pt-1 font-serif text-3xl text-[#a9937c]/80 sm:text-4xl">{String(index + 1).padStart(2, '0')}</span><div className="min-w-0 max-w-[72ch]"><p className="denra-label mb-2">Artikel {index + 1}</p><h2 className="font-serif text-2xl font-semibold leading-tight text-[#231A12] md:text-3xl">{title.replace(/^Artikel \d+ - /, '')}</h2><div className="mt-5 space-y-4 text-[15px] leading-[1.8] text-[#4A3F35] md:text-base">{paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{title === 'Artikel 4 - Herroeping bij consumenten' && <p><a href="#modelformulier-herroeping" onClick={(event) => { event.preventDefault(); openWithdrawalForm(); }} className="font-medium text-[#4A3F35] underline decoration-[#7a6552]/45 underline-offset-4 hover:text-[#231A12]">Bekijk modelformulier voor herroeping →</a></p>}</div></div></div>
+                </section>
+              ))}
+
+              <section id="modelformulier-herroeping" className="denra-withdrawal-form scroll-mt-[98px]">
+                <p className="denra-label mb-2">Bijlage</p>
+                <h2 ref={withdrawalHeading} tabIndex={-1} className="font-serif text-xl font-semibold text-[#231A12]">Modelformulier voor herroeping</h2>
+                <p className="mt-2 text-sm leading-relaxed text-[#5f544a]">Voor consumenten die gebruik willen maken van het wettelijke herroepingsrecht.</p>
+                <button type="button" onClick={() => setWithdrawalOpen((open) => !open)} aria-expanded={withdrawalOpen} aria-controls="withdrawal-form-content" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[#4A3F35] underline decoration-[#7a6552]/45 underline-offset-4 hover:text-[#231A12]">{withdrawalOpen ? 'Formulier sluiten' : 'Formulier bekijken'}<ChevronDown size={16} className={`transition-transform ${withdrawalOpen ? 'rotate-180' : ''}`} /></button>
+                <div id="withdrawal-form-content" aria-hidden={!withdrawalOpen} className={`denra-withdrawal-content ${withdrawalOpen ? 'is-open' : ''}`}>
+                  <div className="denra-withdrawal-paper text-[15px] leading-[1.8] text-[#4A3F35]">
+                  <p>Gebruik dit formulier alleen als u de overeenkomst wilt herroepen.</p><p className="mt-5 border-t border-[#8A7A6A]/35 pt-5">Aan: Denra Badkamers en Renovaties, Eva Besnyostraat 331, 1087 LG Amsterdam</p><p className="mt-5">Hierbij deel ik/wij (*) u mede dat ik/wij (*) onze overeenkomst betreffende de verrichting van de volgende dienst / de verkoop van de volgende goederen (*) herroep/herroepen (*):</p><p className="denra-form-line">&nbsp;</p><p>Overeenkomst gesloten op (*) / goederen ontvangen op (*):</p><p className="denra-form-line">&nbsp;</p><p>Naam consument(en):</p><p className="denra-form-line">&nbsp;</p><p>Adres consument(en):</p><p className="denra-form-line">&nbsp;</p><p>Handtekening consument(en), alleen wanneer dit formulier op papier wordt ingediend:</p><p className="denra-form-line">&nbsp;</p><p>Datum:</p><p className="denra-form-line">&nbsp;</p><p>(*) Doorhalen wat niet van toepassing is.</p>
+                  </div>
                 </div>
               </section>
-            ))}
+            </article>
           </div>
-
-          <section id="modelformulier-herroeping" className="mt-14 border-t border-[#cfbca7] pt-10 scroll-mt-28">
-            <p className="denra-label text-[#7a6552] mb-3">Bijlage</p>
-            <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-4">Modelformulier voor herroeping</h2>
-            <div className="bg-white/60 border border-[#cfbca7]/70 p-6 text-sm leading-relaxed text-[#4A3F35] space-y-3">
-              <p>Gebruik dit formulier alleen als u de overeenkomst wilt herroepen.</p>
-              <p>Aan: Denra Badkamers en Renovaties, Eva Besnyostraat 331, 1087 LG Amsterdam</p>
-              <p>Hierbij deel ik/wij (*) u mede dat ik/wij (*) onze overeenkomst betreffende de verrichting van de volgende dienst / de verkoop van de volgende goederen (*) herroep/herroepen (*):</p>
-              <p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>Overeenkomst gesloten op (*) / goederen ontvangen op (*):</p>
-              <p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>Naam consument(en):</p><p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>Adres consument(en):</p><p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>Handtekening consument(en), alleen wanneer dit formulier op papier wordt ingediend:</p><p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>Datum:</p><p className="border-b border-[#8A7A6A]/40 pb-5">&nbsp;</p>
-              <p>(*) Doorhalen wat niet van toepassing is.</p>
-            </div>
-          </section>
         </section>
+        <button ref={backToTopButton} type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="denra-back-top print:hidden" aria-label="Naar boven"><ArrowUp size={16} /><span>Naar boven</span></button>
       </main>
       <Footer />
       <WhatsAppButton />

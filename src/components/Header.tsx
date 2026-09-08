@@ -15,17 +15,17 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => {
-      // Calculate scroll progress (0 to 1) over 200px
-      const progress = Math.min(window.scrollY / 200, 1);
-      setScrollProgress(progress);
+      const nextIsScrolled = window.scrollY > 12;
+      setIsScrolled((currentIsScrolled) => currentIsScrolled === nextIsScrolled ? currentIsScrolled : nextIsScrolled);
     };
     window.addEventListener('scroll', onScroll);
+    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -35,29 +35,13 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-40"
-      style={{
-        backgroundColor: `rgba(234, 226, 214, ${0.5 + scrollProgress * 0.3})`,
-        backdropFilter: `blur(${10 + scrollProgress * 10}px)`,
-        boxShadow: scrollProgress > 0.1 ? `0 ${6 + scrollProgress * 10}px ${20 + scrollProgress * 18}px rgba(29, 23, 18, ${0.05 + scrollProgress * 0.05})` : 'none',
-        borderBottom: `1px solid rgba(92, 81, 71, ${0.1 + scrollProgress * 0.12})`,
-        transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        height: `${82 - scrollProgress * 8}px`
-      }}
+      className={`fixed inset-x-0 top-0 z-40 h-[74px] border-b backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled ? 'border-[#5c5147]/22 bg-[#eae2d6]/90 shadow-[0_10px_26px_rgba(29,23,18,0.1)]' : 'border-[#5c5147]/10 bg-[#eae2d6]/60'}`}
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-6 h-full">
-        <div className="flex items-center justify-between h-full"
-          style={{
-            opacity: 1 - scrollProgress * 0.05,
-          }}>
+        <div className="flex h-full items-center justify-between">
           <Link 
             to="/" 
-            className="flex items-center gap-3 group -ml-2 lg:-ml-3"
-            style={{
-              transform: `scale(${1 - scrollProgress * 0.08})`,
-              transformOrigin: 'left center',
-              transition: 'transform 0.3s ease-out'
-            }}
+            className="group -ml-2 flex items-center gap-3 lg:-ml-3"
           >
             <img src={logo} alt="DENRA Badkamers" className="h-16 lg:h-[4.75rem] w-auto max-w-none object-contain" />
           </Link>
@@ -70,13 +54,9 @@ export default function Header() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative text-[12px] font-medium uppercase transition-colors duration-200 group ${
+                  className={`group relative text-[12px] font-medium uppercase tracking-[0.1em] transition-colors duration-200 ${
                     isActive ? 'text-[#12100d]' : 'text-[#4a4037] hover:text-[#12100d]'
                   }`}
-                  style={{
-                    letterSpacing: `${0.1 + scrollProgress * 0.02}em`,
-                    transition: 'letter-spacing 0.3s ease-out'
-                  }}
                 >
                   {link.label}
                   <span
@@ -90,33 +70,19 @@ export default function Header() {
           </nav>
 
           {/* CTA */}
-          <div className="hidden lg:flex items-center gap-3"
-            style={{
-              transform: `scale(${1 - scrollProgress * 0.05})`,
-              transformOrigin: 'right center',
-              transition: 'transform 0.3s ease-out'
-            }}>
+          <div className="hidden items-center gap-3 lg:flex">
             <a
               href="https://wa.me/31614966756"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-[#4a4037] hover:text-[#12100d] transition-colors duration-200"
               aria-label="WhatsApp DENRA"
-              style={{
-                opacity: 1 - scrollProgress * 0.1,
-                transition: 'opacity 0.3s ease-out'
-              }}
             >
               <MessageCircle size={16} />
             </a>
             <Link
               to="/configurator"
               className="denra-button-primary min-h-0 px-5 py-2.5 text-[13px]"
-              style={{
-                background: 'rgba(18, 16, 13, 0.98)',
-                padding: `${10 + scrollProgress * 2.5}px ${22 - scrollProgress * 4}px`,
-                transition: 'padding 0.3s ease-out'
-              }}
             >
               Prijs berekenen
             </Link>
@@ -127,10 +93,6 @@ export default function Header() {
             className="lg:hidden flex h-11 w-11 items-center justify-center text-[#12100d] hover:text-[#4a4037] transition-colors duration-200"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? 'Menu sluiten' : 'Menu openen'}
-            style={{
-              opacity: 1 - scrollProgress * 0.08,
-              transition: 'opacity 0.3s ease-out'
-            }}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -151,8 +113,8 @@ export default function Header() {
             aria-label="Mobiel menu"
             style={{
               backgroundColor: '#f6f0e8',
-              top: `${82 - scrollProgress * 8}px`,
-              height: `calc(100dvh - ${82 - scrollProgress * 8}px)`,
+              top: '74px',
+              height: 'calc(100dvh - 74px)',
             }}
           >
             <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobiele navigatie">

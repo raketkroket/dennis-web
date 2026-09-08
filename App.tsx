@@ -18,6 +18,7 @@ const OverOns = lazy(() => import('./src/pages/OverOns'));
 const Contact = lazy(() => import('./src/pages/Contact'));
 const ConfiguratorPage = lazy(() => import('./src/pages/ConfiguratorPage'));
 const AlgemeneVoorwaarden = lazy(() => import('./src/pages/AlgemeneVoorwaarden'));
+const Ervaringen = lazy(() => import('./src/pages/Ervaringen'));
 
 const localPages = {
   badkamerAlmere: {
@@ -131,6 +132,7 @@ const App: React.FC = () => {
             <Route path="/over-ons" element={<OverOns />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/configurator" element={<ConfiguratorPage />} />
+            <Route path="/ervaringen" element={<Ervaringen />} />
             <Route path="/algemene-voorwaarden" element={<AlgemeneVoorwaarden />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

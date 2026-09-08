@@ -6,7 +6,7 @@ import TrustBar from '../components/TrustBar';
 import ServicesSection from '../components/ServicesSection';
 import ProjectsSection from '../components/ProjectsSection';
 import StatsSection from '../components/StatsSection';
-import InspirationGallery from '../components/InspirationGallery';
+import ReviewsSection from '../components/ReviewsSection';
 import CTASection from '../components/CTASection';
 import WhatsAppButton from '../components/WhatsAppButton';
 
@@ -18,9 +18,9 @@ export default function Home() {
         <HeroSection />
         <TrustBar />
         <ServicesSection />
-        <ProjectsSection />
         <StatsSection />
-        <InspirationGallery />
+        <ReviewsSection preview />
+        <ProjectsSection />
         <CTASection />
       </main>
       <Footer />

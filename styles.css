@@ -131,4 +131,77 @@
   .denra-panel {
     @apply rounded-sm border border-[#cfbca7]/60 bg-[#faf6f0] shadow-[0_12px_40px_rgba(35,26,18,0.08)];
   }
+
+  .denra-review-background {
+    background:
+      radial-gradient(ellipse 54% 38% at 8% 14%, rgba(255, 255, 255, 0.58), transparent 72%),
+      radial-gradient(ellipse 42% 30% at 92% 46%, rgba(202, 177, 145, 0.2), transparent 76%),
+      linear-gradient(135deg, #f7f1ea 0%, #f1e6da 52%, #f6f0e8 100%);
+  }
+
+  .denra-review-card {
+    background: linear-gradient(145deg, rgba(255, 254, 251, 0.84), rgba(248, 240, 231, 0.7));
+    border: 1px solid rgba(111, 89, 68, 0.14);
+    box-shadow: 0 1px 2px rgba(52, 36, 24, 0.04), 0 10px 28px rgba(68, 47, 31, 0.065), 0 26px 58px rgba(69, 48, 31, 0.045), inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+
+  .denra-review-card:hover {
+    border-color: rgba(100, 75, 54, 0.24);
+    box-shadow: 0 2px 4px rgba(52, 36, 24, 0.05), 0 16px 34px rgba(68, 47, 31, 0.1), 0 30px 64px rgba(69, 48, 31, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+
+  .denra-portfolio-hero { background: radial-gradient(ellipse 52% 52% at 88% 12%, rgba(255, 255, 255, 0.75), transparent 70%), linear-gradient(140deg, #f9f4ec 0%, #e8d9c9 100%); box-shadow: inset 0 -1px rgba(111, 86, 63, 0.16); }
+  .denra-portfolio-content { background: radial-gradient(ellipse 45% 20% at 15% 4%, rgba(255, 255, 255, 0.68), transparent 78%), linear-gradient(180deg, #faf7f2, #f1e7dc); }
+  .denra-portfolio-hero-action { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: 0.5rem; border: 1px solid rgba(86, 64, 47, 0.28); background: rgba(255, 253, 248, 0.58); padding: 0.75rem 1.25rem; color: #231A12; font-size: 0.875rem; font-weight: 600; box-shadow: 0 4px 10px rgba(35, 26, 18, 0.05), 0 12px 28px rgba(35, 26, 18, 0.07), inset 0 1px rgba(255, 255, 255, 0.78); transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease; }
+  .denra-portfolio-hero-action:hover { transform: translateY(-2px); background: #fffdf8; box-shadow: 0 8px 18px rgba(35, 26, 18, 0.08), 0 18px 38px rgba(35, 26, 18, 0.11); }
+  .denra-portfolio-toolbar { border: 1px solid rgba(119, 91, 66, 0.22); border-radius: 0.625rem; background: rgba(255, 253, 249, 0.82); padding: clamp(1.25rem, 3vw, 2rem); box-shadow: 0 3px 10px rgba(35, 26, 18, 0.06), 0 18px 45px rgba(35, 26, 18, 0.1), inset 0 1px rgba(255, 255, 255, 0.9); }
+  .denra-portfolio-filter { min-height: 2.65rem; border: 1px solid rgba(122, 101, 82, 0.28); background: #f6f0e8; padding: 0.5rem 1rem; color: #4a3f35; font-size: 0.875rem; font-weight: 600; transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease; }
+  .denra-portfolio-filter:hover { transform: translateY(-1px); background: #fffdf9; box-shadow: 0 5px 12px rgba(35, 26, 18, 0.09); }
+  .denra-portfolio-filter.is-active { border-color: #231A12; background: #231A12; color: #f6f0e8; box-shadow: 0 5px 12px rgba(35, 26, 18, 0.17), inset 0 1px rgba(255, 255, 255, 0.12); }
+  .denra-portfolio-style { display: flex; min-height: 2.65rem; align-items: center; gap: 0.75rem; border: 1px solid rgba(122, 101, 82, 0.28); background: #f8f3ec; padding: 0 0.85rem; box-shadow: inset 0 1px rgba(255, 255, 255, 0.7); }
+  .denra-portfolio-style select { min-width: 9rem; background: transparent; color: #231A12; outline: none; }
+  .denra-project-image { box-shadow: 0 3px 9px rgba(45, 30, 20, 0.08), 0 16px 36px rgba(45, 30, 20, 0.12), 0 38px 76px rgba(45, 30, 20, 0.08), inset 0 1px rgba(255, 255, 255, 0.4); transition: transform 360ms ease, box-shadow 360ms ease; }
+  .denra-project-image:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(45, 30, 20, 0.1), 0 26px 58px rgba(45, 30, 20, 0.16), 0 44px 90px rgba(45, 30, 20, 0.1); }
+  .denra-project-overlay { position: absolute; right: 0.75rem; bottom: 0.75rem; z-index: 1; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid rgba(255, 250, 244, 0.45); background: rgba(35, 26, 18, 0.66); padding: 0.5rem 0.65rem; color: #fffaf4; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18); transition: background-color 220ms ease, transform 220ms ease; }
+  .denra-project-image:hover .denra-project-overlay { transform: translateX(3px); background: rgba(35, 26, 18, 0.82); }
+  .denra-project-image::after { position: absolute; inset: 0; z-index: 0; content: ''; background: linear-gradient(180deg, transparent 56%, rgba(23, 17, 13, 0.2)); pointer-events: none; }
+  .denra-project-info { position: relative; }
+  .denra-project-featured .denra-project-info { max-width: 31rem; margin-left: 1.25rem; padding: 1.25rem; background: #fffdf9; box-shadow: 0 4px 12px rgba(45, 30, 20, 0.07), 0 20px 44px rgba(45, 30, 20, 0.1), inset 0 1px rgba(255, 255, 255, 0.9); }
+  .denra-project-link { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; border-bottom: 1px solid rgba(122, 101, 82, 0.55); padding-bottom: 0.2rem; color: #231A12; font-size: 0.8rem; font-weight: 600; transition: gap 180ms ease, border-color 180ms ease; }
+  .denra-project-link:hover { gap: 0.55rem; border-color: #231A12; }
+  @media (min-width: 640px) { .denra-project-featured { padding-bottom: 2rem; } .denra-project-featured .denra-project-info { transform: translateY(-2rem); } }
+  @media (max-width: 639px) { .denra-project-featured .denra-project-info { margin-left: 0; margin-top: 0.25rem; } }
+
+  .denra-legal-page {
+    background: radial-gradient(ellipse 58% 28% at 8% 4%, rgba(255, 255, 255, 0.72), transparent 75%), linear-gradient(145deg, #f7f1ea 0%, #eee4d8 100%);
+  }
+
+  .denra-legal-progress { position: fixed; top: 74px; left: 0; z-index: 50; width: 100%; height: 2px; background: rgba(122, 101, 82, 0.12); }
+  .denra-legal-progress > div { width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: #7a6552; }
+  .denra-legal-info { border: 1px solid rgba(120, 96, 73, 0.24); background: rgba(255, 253, 249, 0.58); padding: 1.5rem; box-shadow: 0 2px 5px rgba(53, 35, 21, 0.04), 0 14px 36px rgba(53, 35, 21, 0.08), inset 0 1px rgba(255, 255, 255, 0.78); }
+  .denra-legal-document { border: 1px solid rgba(120, 96, 73, 0.24); background: rgba(255, 253, 249, 0.84); padding: clamp(1.5rem, 4vw, 4rem); box-shadow: 0 1px 2px rgba(53, 35, 21, 0.05), 0 12px 30px rgba(53, 35, 21, 0.08), 0 30px 80px rgba(53, 35, 21, 0.07), inset 0 1px rgba(255, 255, 255, 0.82); }
+  .denra-legal-article { position: relative; padding: 0 0 3rem; margin: 0 0 3rem; border-bottom: 1px solid rgba(122, 101, 82, 0.2); transition: background-color 200ms ease; }
+  .denra-legal-article.is-active::before { position: absolute; top: 0; bottom: 3rem; left: -1rem; width: 2px; content: ''; background: #8d725a; }
+  .denra-withdrawal-form { max-width: 72ch; padding-top: 0.25rem; }
+  .denra-withdrawal-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 260ms ease, opacity 180ms ease; }
+  .denra-withdrawal-content.is-open { grid-template-rows: 1fr; opacity: 1; }
+  .denra-withdrawal-content > div { min-height: 0; overflow: hidden; }
+  .denra-withdrawal-paper { margin-top: 1.25rem; border-top: 1px solid rgba(138, 122, 106, 0.42); padding-top: 1.5rem; }
+  .denra-form-line { min-height: 2.5rem; margin: 0.5rem 0 1.5rem; border-bottom: 1px solid rgba(138, 122, 106, 0.55); }
+  .denra-back-top { position: fixed; right: 1.5rem; bottom: 6rem; z-index: 20; display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(122, 101, 82, 0.3); background: #fffdf9; padding: 0.65rem 0.8rem; color: #231A12; font-size: 0.75rem; box-shadow: 0 8px 20px rgba(35, 26, 18, 0.11); opacity: 0; pointer-events: none; transform: translateY(8px); transition: transform 200ms ease, opacity 200ms ease, background-color 200ms ease; }
+  .denra-back-top[data-visible] { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .denra-back-top:hover { transform: translateY(-2px); background: #f3eadf; }
+
+  @media print {
+    body, .denra-legal-page { background: #fff !important; color: #000 !important; }
+    header, footer, .print\:hidden, .denra-legal-progress, .denra-back-top, a[aria-label="Chat met DENRA via WhatsApp"], aside nav[aria-label="Inhoudsopgave algemene voorwaarden"] { display: none !important; }
+    .denra-legal-page { padding: 0 !important; }
+    .denra-legal-document, .denra-legal-info, .denra-withdrawal-form > div { border-color: #999 !important; background: #fff !important; box-shadow: none !important; }
+    .denra-legal-document { padding: 0 !important; border: 0 !important; }
+    .denra-legal-article, .denra-withdrawal-form, .denra-legal-info { break-inside: avoid; }
+    .denra-legal-article.is-active::before { display: none; }
+    .denra-withdrawal-content { display: block !important; opacity: 1 !important; }
+    .denra-withdrawal-content > div { overflow: visible !important; }
+    a { color: #000 !important; text-decoration: underline; }
+  }
 }
