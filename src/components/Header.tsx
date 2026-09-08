@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50"
+      className="fixed top-0 left-0 right-0 z-40"
       style={{
         backgroundColor: `rgba(234, 226, 214, ${0.5 + scrollProgress * 0.3})`,
         backdropFilter: `blur(${10 + scrollProgress * 10}px)`,
@@ -145,11 +145,15 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 top-[74px] bg-[#f6f0e8] z-40 lg:hidden min-h-[calc(100vh-74px)] shadow-[-12px_0_36px_rgba(35,26,18,0.1)]"
+            className="absolute inset-x-0 z-40 overflow-y-auto overscroll-contain bg-[#f6f0e8] shadow-[-12px_0_36px_rgba(35,26,18,0.1)] lg:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Mobiel menu"
-            style={{ backgroundColor: '#f6f0e8' }}
+            style={{
+              backgroundColor: '#f6f0e8',
+              top: `${82 - scrollProgress * 8}px`,
+              height: `calc(100dvh - ${82 - scrollProgress * 8}px)`,
+            }}
           >
             <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobiele navigatie">
               {navLinks.map((link) => {

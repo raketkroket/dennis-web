@@ -15,7 +15,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="py-24 lg:py-28 bg-transparent" aria-labelledby="diensten-heading">
+    <section className="py-24 lg:py-28 bg-transparent overflow-x-clip" aria-labelledby="diensten-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 lg:gap-16 items-start">
           {/* Left */}

@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat met DENRA via WhatsApp"
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#e7dfd2] border border-[#5c5147]/16 rounded-sm flex items-center justify-center hover:border-[#5c5147]/32 hover:scale-105 transition-all duration-300"
+          className="fixed bottom-4 right-4 z-30 h-14 w-14 bg-[#e7dfd2] border border-[#5c5147]/16 rounded-sm flex items-center justify-center hover:border-[#5c5147]/32 hover:scale-105 transition-all duration-300 sm:bottom-6 sm:right-6"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}

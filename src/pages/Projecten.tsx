@@ -109,7 +109,7 @@ export default function Projecten() {
         <section className="py-16 bg-[#faf6f0]" aria-labelledby="projecten-grid-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             {/* Filter */}
-            <div className="-mx-6 px-6 sm:mx-0 sm:px-0 flex items-center gap-2 mb-12 overflow-x-auto pb-2" role="group" aria-label="Filter projecten">
+            <div className="flex flex-wrap items-center gap-2 mb-12" role="group" aria-label="Filter projecten">
               {categories.map((cat) => (
                 <button
                   key={cat}
