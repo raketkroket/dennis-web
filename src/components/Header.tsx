@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'WC-renovatie', path: '/wc-renovatie' },
   { label: 'Binnenrenovatie', path: '/binnenrenovatie' },
   { label: 'Projecten', path: '/projecten' },
+  { label: 'Ervaringen', path: '/ervaringen' },
   { label: 'Over ons', path: '/over-ons' },
   { label: 'Contact', path: '/contact' },
 ];
@@ -32,6 +33,20 @@ export default function Header() {
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const originalOverflow = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [mobileOpen]);
 
   return (
     <header
@@ -91,8 +106,10 @@ export default function Header() {
           {/* Mobile toggle */}
           <button
             className="lg:hidden flex h-11 w-11 items-center justify-center text-[#12100d] hover:text-[#4a4037] transition-colors duration-200"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            onClick={() => setMobileOpen((isOpen) => !isOpen)}
             aria-label={mobileOpen ? 'Menu sluiten' : 'Menu openen'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -102,22 +119,21 @@ export default function Header() {
       {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="absolute inset-x-0 z-40 overflow-y-auto overscroll-contain bg-[#f6f0e8] shadow-[-12px_0_36px_rgba(35,26,18,0.1)] lg:hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobiel menu"
-            style={{
-              backgroundColor: '#f6f0e8',
-              top: '74px',
-              height: 'calc(100dvh - 74px)',
-            }}
-          >
-            <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobiele navigatie">
+          <>
+            <motion.button type="button" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-x-0 bottom-0 top-[74px] z-40 bg-[#231A12]/30 lg:hidden" onClick={() => setMobileOpen(false)} aria-label="Menu sluiten" />
+            <motion.div
+              id="mobile-navigation"
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-x-0 z-50 max-h-[calc(100dvh-74px)] overflow-y-auto overscroll-contain border-b border-[#cbb9a5]/50 bg-[#f6f0e8] shadow-[0_18px_36px_rgba(35,26,18,0.16)] lg:hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobiel menu"
+              style={{ top: '74px' }}
+            >
+            <nav className="flex flex-col gap-1 px-6 py-8" aria-label="Mobiele navigatie">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
@@ -150,7 +166,8 @@ export default function Header() {
                 </a>
               </div>
             </nav>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>
