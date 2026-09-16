@@ -6,39 +6,21 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
-
-const values = [
-  {
-    icon: ShieldCheck,
-    title: 'Rust en zekerheid',
-    desc: 'Duidelijke afspraken, vaste planning en een team dat doet wat het belooft.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Premium afwerking',
-    desc: 'Strakke details, verfijnde materialen en een resultaat dat meteen goed voelt.',
-  },
-  {
-    icon: Layers,
-    title: 'Totaalregie',
-    desc: 'Van voorbereiding tot oplevering houden wij het overzicht en de kwaliteit scherp.',
-  },
-];
-
-const promises = [
-  'Heldere communicatie van begin tot eind',
-  'Afspraken die we nakomen zonder gedoe',
-  'Een resultaat dat functioneel en stijlvol is',
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function OverOns() {
+  const { t } = useLanguage();
+  const valueTitles = t('aboutPage.values').split('|');
+  const valueDescriptions = t('aboutPage.valueDescriptions').split('|');
+  const values = [ShieldCheck, Sparkles, Layers].map((icon, index) => ({ icon, title: valueTitles[index], desc: valueDescriptions[index] }));
+  const promises = t('aboutPage.promises').split('|');
   return (
     <>
       <Header />
       <main>
         <section
           className="pt-36 pb-20 bg-[radial-gradient(circle_at_top_left,_rgba(203,185,165,0.18),_transparent_34%),linear-gradient(180deg,_#f6f0e8_0%,_#eee3d6_100%)] overflow-hidden"
-          aria-label="Over ons"
+          aria-label={t('aboutPage.heroAria')}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-14 items-center">
@@ -49,18 +31,16 @@ export default function OverOns() {
               >
                 <div className="inline-flex items-center gap-3 mb-6 rounded-sm border border-[#cfbca7]/70 bg-white/50 px-4 py-2 backdrop-blur-sm">
                   <Sparkles size={14} className="text-[#7a6552]" />
-                  <span className="text-[11px] tracking-[0.24em] uppercase text-[#7a6552] font-medium">Over DENRA</span>
+                  <span className="text-[11px] tracking-[0.24em] uppercase text-[#7a6552] font-medium">{t('aboutPage.label')}</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-semibold text-[#231A12] leading-[0.95] mb-6 max-w-xl">
-                  Renovaties die
-                  <span className="block text-[#7a6552]">rust en klasse</span>
-                  uitstralen.
+                  {t('aboutPage.title').split('|').map((line, index) => <React.Fragment key={line}>{index === 1 ? <span className="block text-[#7a6552]">{line}</span> : <>{line}{index === 0 && <br />}</>}</React.Fragment>)}
                 </h1>
                 <p className="text-[#6B5D50] text-lg leading-relaxed mb-6 max-w-xl">
-                  DENRA maakt badkamers, wc&apos;s en interieurs die strak aanvoelen, slim zijn opgebouwd en premium ogen zonder overdreven te worden.
+                  {t('aboutPage.description')}
                 </p>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-xl">
-                  Wij sturen op helderheid, afwerking en een proces dat soepel loopt. Geen opgeblazen praat, wel vakwerk, strakke communicatie en een eindresultaat waar u dagelijks plezier van heeft.
+                  {t('aboutPage.intro')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -68,22 +48,22 @@ export default function OverOns() {
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
-                    Plan een kennismaking
+                    {t('aboutPage.consultation')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/projecten"
                     className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-white/60 transition-all duration-200 text-sm"
                   >
-                    Bekijk projecten
+                    {t('aboutPage.viewProjects')}
                   </Link>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
                   {[
-                    { value: '100+', label: 'Tevreden klanten' },
-                    { value: '10+ jaar', label: 'Ervaring' },
-                    { value: 'Premium', label: 'Materialen' },
+                    { value: '100+', label: t('aboutPage.customers') },
+                    { value: '10+ jaar', label: t('aboutPage.experience') },
+                    { value: 'Premium', label: t('aboutPage.materials') },
                   ].map((item) => (
                     <div
                       key={item.label}
@@ -107,7 +87,7 @@ export default function OverOns() {
                     <div className="rounded-sm overflow-hidden min-h-[420px] border border-[#cfbca7]/55">
                     <img
                       src={sitePhotos[0]}
-                      alt="Afgewerkte luxe badkamer van DENRA"
+                      alt={t('aboutPage.imageBathroomAlt')}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -115,17 +95,17 @@ export default function OverOns() {
                     <div className="rounded-sm overflow-hidden h-[250px] border border-[#cfbca7]/55">
                       <img
                         src={sitePhotos[3]}
-                        alt="Strakke renovatie details en afwerking"
+                        alt={t('aboutPage.imageDetailsAlt')}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="rounded-sm bg-[#231A12] text-white p-6 flex flex-col justify-between min-h-[154px]">
                       <div className="flex items-center gap-2 text-[#cfbca7] text-xs tracking-[0.22em] uppercase">
                         <BadgeCheck size={14} />
-                        Vast, strak, betrouwbaar
+                        {t('aboutPage.badge')}
                       </div>
                       <p className="font-serif text-2xl leading-tight mt-4">
-                        Een renovatie moet niet alleen mooi zijn, maar ook logisch voelen.
+                        {t('aboutPage.quote')}
                       </p>
                     </div>
                   </div>
@@ -146,13 +126,13 @@ export default function OverOns() {
             >
               <div className="flex items-center gap-3 mb-5">
                   <div className="denra-line" />
-                  <span className="denra-label">Waarom DENRA</span>
+                  <span className="denra-label">{t('aboutPage.whyLabel')}</span>
               </div>
               <h2 id="waarom-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#231A12] leading-tight mb-5">
-                Minder chaos. Meer controle. Een resultaat dat blijft staan.
+                {t('aboutPage.whyTitle')}
               </h2>
               <p className="text-[#6B5D50] leading-relaxed text-lg">
-                Wij werken niet met losse beloftes, maar met een manier van bouwen die rust geeft: duidelijke keuzes, scherpe afwerking en een team dat het overzicht bewaakt.
+                {t('aboutPage.whyDescription')}
               </p>
             </motion.div>
 
@@ -191,19 +171,19 @@ export default function OverOns() {
               >
                 <div className="flex items-center gap-3 mb-5">
                   <div className="denra-line" />
-                  <span className="denra-label">Onze belofte</span>
+                  <span className="denra-label">{t('aboutPage.promiseLabel')}</span>
                 </div>
                 <h2 id="belofte-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#231A12] leading-tight mb-6">
-                  Wat u van ons mag verwachten
+                  {t('aboutPage.promiseTitle')}
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-lg">
-                  Wij houden het simpel: duidelijke verwachtingen, nette uitvoering en een afwerking waar u niet naar hoeft te kijken omdat alles vanzelf klopt.
+                  {t('aboutPage.promiseDescription')}
                 </p>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                 >
-                  Start uw project
+                  {t('aboutPage.startProject')}
                   <ArrowRight size={16} />
                 </Link>
               </motion.div>
@@ -229,7 +209,7 @@ export default function OverOns() {
           </div>
         </section>
 
-        <section className="py-20 bg-[#f6f0e8]" aria-label="Contact CTA">
+        <section className="py-20 bg-[#f6f0e8]" aria-label={t('aboutPage.ctaAria')}>
           <div className="max-w-5xl mx-auto px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -242,15 +222,15 @@ export default function OverOns() {
               <div className="relative">
                 <div className="flex items-center gap-3 mb-5 text-[#cfbca7]">
                   <div className="w-6 h-px bg-[#cfbca7]" />
-                  <span className="denra-label text-[#cfbca7]">Klaar om te starten?</span>
+                  <span className="denra-label text-[#cfbca7]">{t('aboutPage.ctaEyebrow')}</span>
                 </div>
                 <div className="grid md:grid-cols-[1.2fr_0.8fr] gap-8 items-end">
                   <div>
                     <h2 className="font-serif text-4xl md:text-5xl font-semibold leading-tight mb-5">
-                      Laat ons uw renovatie strak en zorgeloos uitvoeren.
+                      {t('aboutPage.ctaTitle')}
                     </h2>
                     <p className="text-white/75 leading-relaxed max-w-2xl">
-                      Als u zoekt naar een afwerking die luxe voelt zonder schreeuwerig te zijn, dan zitten we waarschijnlijk op dezelfde lijn.
+                      {t('aboutPage.ctaDescription')}
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row md:flex-col gap-4 md:justify-end">
@@ -258,14 +238,14 @@ export default function OverOns() {
                       to="/contact"
                       className="inline-flex items-center justify-center gap-2 bg-[#f6f0e8] text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#e8ddcf] transition-all duration-200 text-sm"
                     >
-                      Neem contact op
+                      {t('aboutPage.contact')}
                       <ArrowRight size={16} />
                     </Link>
                     <Link
                       to="/configurator"
                       className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-white/10 transition-all duration-200 text-sm"
                     >
-                      Prijs berekenen
+                      {t('aboutPage.calculate')}
                     </Link>
                   </div>
                 </div>

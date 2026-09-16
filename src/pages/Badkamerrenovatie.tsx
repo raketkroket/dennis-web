@@ -6,45 +6,21 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
-
-const features = [
-  'Complete sloopwerkzaamheden',
-  'Waterdichte afwerking (betegeling)',
-  'Installatie sanitair en kranen',
-  'Tegelwerk (ook in verstek)',
-  'Verlaagd plafond met spotjes',
-  'Vloerverwarming',
-  'Nis en inbouwkranen',
-  'Elektra en ventilatie',
-  'Tegelvloer',
-  'Stucwerk en schilderwerk',
-];
-
-const projects = [
-  {
-    image: sitePhotos[0],
-    title: 'Luxe badkamer',
-    desc: 'Vrijstaand bad, natuurstenen details en warme verlichting',
-  },
-  {
-    image: sitePhotos[1],
-    title: 'Moderne badkamer',
-    desc: 'Strakke lijnen, zachte materialen en een rustige luxe sfeer',
-  },
-  {
-    image: sitePhotos[2],
-    title: 'Japandi badkamer',
-    desc: 'Houten accenten, ronde vormen en natuurlijke texturen',
-  },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function Badkamerrenovatie() {
+  const { t } = useLanguage();
+  const features = t('bathroomPage.features').split('|');
+  const projectTitles = t('bathroomPage.projectTitles').split('|');
+  const projectDescriptions = t('bathroomPage.projectDescriptions').split('|');
+  const projects = [0, 1, 2].map((photoIndex, index) => ({ image: sitePhotos[photoIndex], title: projectTitles[index], desc: projectDescriptions[index] }));
+
   return (
     <>
       <Header />
       <main>
         {/* Hero */}
-        <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label="Badkamerrenovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label={t('bathroomPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-14 xl:gap-20 items-center">
               <motion.div
@@ -55,27 +31,27 @@ export default function Badkamerrenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">Onze specialiteit</span>
+                  <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">{t('bathroomPage.eyebrow')}</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
-                  Badkamer & WC Renovatie in Flevoland en Noord-Holland
+                  {t('bathroomPage.title')}
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
-                  Denra Badkamers is gespecialiseerd in complete badkamer- en WC-renovaties in Flevoland en Noord-Holland. Van sloopwerk, leidingwerk en tegelwerk tot sanitair, stucwerk en de complete afwerking: wij verzorgen uw renovatie van begin tot eind.
+                  {t('bathroomPage.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/configurator"
                     className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
-                    Prijs berekenen
+                    {t('common.calculatePrice')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
                   >
-                    Plan adviesgesprek
+                    {t('bathroomPage.consultation')}
                   </Link>
                 </div>
               </motion.div>
@@ -88,7 +64,7 @@ export default function Badkamerrenovatie() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/10 to-transparent" />
                 <img
                   src={sitePhotos[0]}
-                  alt="Moderne badkamer met warme, elegante afwerking"
+                  alt={t('bathroomPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -109,10 +85,10 @@ export default function Badkamerrenovatie() {
                 transition={{ duration: 0.6 }}
               >
                 <h2 id="features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
-                  Alles onder één dak,<br />niets vergeten
+                  {t('bathroomPage.featuresTitle').split('|').map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8">
-                  Onze complete badkamerrenovatie omvat alle werkzaamheden van A tot Z. U hoeft geen aparte aannemers in te schakelen — wij regelen alles.
+                  {t('bathroomPage.featuresDescription')}
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {features.map((f, i) => (
@@ -141,7 +117,7 @@ export default function Badkamerrenovatie() {
               >
                 <img
                   src={sitePhotos[8]}
-                  alt="Moderne badkamer met natuurlijke materialen en rustige uitstraling"
+                  alt={t('bathroomPage.featuresAlt')}
                   width={800}
                   height={800}
                   className="w-full h-full object-cover"
@@ -155,20 +131,20 @@ export default function Badkamerrenovatie() {
           <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="denra-line" />
-              <span className="denra-label">Van ontwerp tot oplevering</span>
+              <span className="denra-label">{t('bathroomPage.guidanceEyebrow')}</span>
               <div className="denra-line" />
             </div>
             <h2 id="badkamer-begeleiding-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
-              Ook hulp nodig bij sanitair en tegels?
+              {t('bathroomPage.guidanceTitle')}
             </h2>
             <p className="text-[#6B5D50] leading-relaxed mb-4">
-              Ook voor sanitair en tegels voor uw nieuwe badkamer kunnen wij u uiteraard helpen. Via een van onze vaste partners kunnen wij dit voor u verzorgen en mogelijk een aantrekkelijkere prijs aanbieden.
+              {t('bathroomPage.guidanceFirst')}
             </p>
             <p className="text-[#6B5D50] leading-relaxed mb-4">
-              Daarnaast kunnen we een vakkundig badkamerontwerp inclusief 3D-tekening laten maken, zodat u vooraf een duidelijk beeld krijgt van het eindresultaat.
+              {t('bathroomPage.guidanceSecond')}
             </p>
             <p className="text-[#4A3F35] font-medium leading-relaxed">
-              Zo verzorgen wij het complete traject: van ontwerp, sanitair en tegels tot de volledige renovatie en oplevering.
+              {t('bathroomPage.guidanceConclusion')}
             </p>
           </div>
         </section>
@@ -184,7 +160,7 @@ export default function Badkamerrenovatie() {
               className="text-center mb-14"
             >
               <h2 id="badkamer-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
-                Gerealiseerde badkamers
+                {t('bathroomPage.projectsTitle')}
               </h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

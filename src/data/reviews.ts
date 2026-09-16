@@ -10,6 +10,7 @@ import karinAmsterdam1 from '../../fotos/karin amsterdam1.jpg';
 import karinAmsterdam2 from '../../fotos/karinamsterdam2.jpg';
 import karinAmsterdam3 from '../../fotos/karinamsterdam 3.jpg';
 import joostAmsterdamReview from '../../fotos/joost amsterdam review.png';
+import type { Language } from '../i18n/translations';
 
 export interface Review {
   id: string;
@@ -63,6 +64,19 @@ export const reviews: Review[] = [
   { id: 'demo-omar-2025', name: 'Brian', city: 'Amsterdam Zuid', rating: 3, date: '7 maart 2025', project: 'Toilet verbouwen', text: 'Wij wilden een rustige uitstraling met een hangend toilet en lichte tegels. Er is goed geluisterd naar wat we voor ogen hadden. Het resultaat past precies.' },
   { id: 'demo-inge-2025', name: 'Inge', city: 'Almere Poort', rating: 2, date: '13 januari 2025', project: 'Toilet renovatie', text: 'Onze wc is klein, maar voelt nu veel ruimer. Mooie materialen gebruikt en de afwerking rondom de nis is echt fraai.' },
 ];
+
+const englishMonths: Record<string, string> = {
+  januari: 'January', februari: 'February', maart: 'March', april: 'April', mei: 'May', juni: 'June',
+  juli: 'July', augustus: 'August', september: 'September', oktober: 'October', november: 'November', december: 'December',
+};
+
+export function getReviews(language: Language): Review[] {
+  if (language === 'nl') return reviews;
+  return reviews.map((review) => ({
+    ...review,
+    date: review.date.replace(/januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december/, (month) => englishMonths[month]),
+  }));
+}
 
 export function reviewCategory(review: Review): 'Badkamer' | 'Toilet' | 'Renovatie' | 'Aanbouw' {
   const project = review.project.toLowerCase();

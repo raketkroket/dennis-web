@@ -6,20 +6,18 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
-
-const services = [
-  { icon: Layers, title: 'Stucwerk', desc: 'Strak afgewerkte wanden en plafonds voor een moderne uitstraling.' },
-  { icon: Paintbrush, title: 'Schilderwerk', desc: 'Perfect afgewerkt voor een duurzaam en mooi resultaat.' },
-  { icon: Waves, title: 'Vloeren leggen', desc: 'Tegels, laminaat en visgraatpatronen op maat.' },
-  { icon: Grid3x3, title: 'Verlaagd plafond & spotjes', desc: 'Voor sfeer, functionaliteit en een moderne uitstraling.' },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function Binnenrenovatie() {
+  const { t } = useLanguage();
+  const serviceTitles = t('interiorPage.services').split('|');
+  const serviceDescriptions = t('interiorPage.serviceDescriptions').split('|');
+  const services = [Layers, Paintbrush, Waves, Grid3x3].map((icon, index) => ({ icon, title: serviceTitles[index], desc: serviceDescriptions[index] }));
   return (
     <>
       <Header />
       <main>
-        <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label="Binnenrenovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label={t('interiorPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.03fr_0.97fr] gap-14 xl:gap-20 items-center">
               <motion.div
@@ -30,27 +28,27 @@ export default function Binnenrenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label bg-[#e6dfd7] text-[#433a32]">Compleet interieur</span>
+                  <span className="denra-label bg-[#e6dfd7] text-[#433a32]">{t('interiorPage.eyebrow')}</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
-                  Binnenrenovatie
+                  {t('interiorPage.title')}
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg max-w-lg">
-                  Van stucwerk en schilderwerk tot vloeren en verlaagde plafonds. Wij verzorgen complete binnenrenovaties in Almere en Amsterdam met oog voor detail en kwaliteit.
+                  {t('interiorPage.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
-                    Prijs berekenen
+                    {t('common.calculatePrice')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
                   >
-                    Plan adviesgesprek
+                    {t('interiorPage.consultation')}
                   </Link>
                 </div>
               </motion.div>
@@ -63,7 +61,7 @@ export default function Binnenrenovatie() {
                 <div className="absolute inset-0 bg-gradient-to-l from-[#231a12]/10 via-transparent to-transparent" />
                 <img
                   src={sitePhotos[6]}
-                  alt="Luxe binnenrenovatie woonkamer met stucwerk en natuurlijke materialen"
+                  alt={t('interiorPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -83,7 +81,7 @@ export default function Binnenrenovatie() {
               className="text-center mb-14"
             >
               <h2 id="binnen-diensten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
-                Onze binnenrenovatie diensten
+                {t('interiorPage.servicesTitle')}
               </h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

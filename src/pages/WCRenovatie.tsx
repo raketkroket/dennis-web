@@ -6,54 +6,22 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
-
-const features = [
-  'Sloopwerkzaamheden',
-  'Nieuwe tegelwanden en vloer',
-  'Installatie toilet en fontein',
-  'Verlaagd plafond met spotjes',
-  'Stucwerk en schilderwerk',
-  'Elektra en ventilatie',
-  'Tegelvloer',
-];
-
-const projects = [
-  {
-    image: sitePhotos[8],
-    title: 'WC-renovatie',
-    desc: 'Modern en stijlvol, warme stenen tonen en vaste afwerking',
-  },
-  {
-    image: sitePhotos[9],
-    title: 'WC-renovatie',
-    desc: 'Naturel tinten, lichte materialen en een luxe uitstraling',
-  },
-];
-
-const luxePricing = [
-  { label: 'Sloop en afvoer', price: '€300 tot €500' },
-  { label: 'Leidingwerk aanpassen', price: '€400 tot €900' },
-  { label: 'Geberit inbouwreservoir plaatsen', price: '€700 tot €1.000' },
-  { label: 'Hangtoilet monteren', price: '€250 tot €450' },
-  { label: 'Tegelwerk tot plafond', price: '€900 tot €1.500' },
-  { label: 'Stuc- en plafondafwerking', price: '€250 tot €450' },
-  { label: 'Kit- en afwerking', price: '€150 tot €300' },
-];
-
-const luxeAdvies = [
-  { label: 'Basisprijs', price: '€4.250' },
-  { label: 'Geberit Duofix inclusief montage', price: '+ €1.250' },
-  { label: 'Tegelwerk in verstek', price: '+ €350' },
-  { label: 'Nis', price: '+ €450' },
-  { label: 'Inbouwkraan fonteintje', price: '+ €350' },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function WCRenovatie() {
+  const { t } = useLanguage();
+  const features = t('wcPage.features').split('|');
+  const pricingLabels = t('wcPage.pricing').split('|');
+  const adviceLabels = t('wcPage.advice').split('|');
+  const projectDescriptions = t('wcPage.projectDescriptions').split('|');
+  const projects = [{ image: sitePhotos[8], title: t('nav.toilet'), desc: projectDescriptions[0] }, { image: sitePhotos[9], title: t('nav.toilet'), desc: projectDescriptions[1] }];
+  const luxePricing = pricingLabels.map((label, index) => ({ label, price: ['€300 tot €500', '€400 tot €900', '€700 tot €1.000', '€250 tot €450', '€900 tot €1.500', '€250 tot €450', '€150 tot €300'][index] }));
+  const luxeAdvies = adviceLabels.map((label, index) => ({ label, price: ['€4.250', '+ €1.250', '+ €350', '+ €450', '+ €350'][index] }));
   return (
     <>
       <Header />
       <main>
-        <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label="WC-renovatie hero">
+        <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label={t('wcPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">
               <motion.div
@@ -64,7 +32,7 @@ export default function WCRenovatie() {
               >
                 <img
                   src={sitePhotos[8]}
-                  alt="Luxe WC-renovatie met serene, hoogwaardige afwerking"
+                  alt={t('wcPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -78,27 +46,27 @@ export default function WCRenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label bg-[#e6ddd3] text-[#42362d]">Stijlvol toilet</span>
+                  <span className="denra-label bg-[#e6ddd3] text-[#42362d]">{t('wcPage.eyebrow')}</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
-                  WC Renovatie Almere & Noord-Holland
+                  {t('wcPage.title')}
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
-                  Uw toilet of WC laten renoveren? Denra Badkamers verzorgt complete WC-renovaties, toiletverbouwingen en luxe sanitaire upgrades in Almere, Amsterdam en de regio. Van nieuwe tegels en sanitair tot complete afwerking met een strakke, moderne uitstraling.
+                  {t('wcPage.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/configurator"
                     className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
                   >
-                    Prijs berekenen
+                    {t('common.calculatePrice')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
                   >
-                    Plan adviesgesprek
+                    {t('wcPage.consultation')}
                   </Link>
                 </div>
               </motion.div>
@@ -116,9 +84,9 @@ export default function WCRenovatie() {
               className="text-center mb-12"
             >
               <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
-                Alles onder één dak
+                {t('wcPage.featuresTitle')}
               </h2>
-              <p className="text-[#6B5D50]">Complete WC-renovatie van A tot Z, zonder verrassingen.</p>
+              <p className="text-[#6B5D50]">{t('wcPage.featuresDescription')}</p>
             </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {features.map((f, i) => (
@@ -144,20 +112,20 @@ export default function WCRenovatie() {
           <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="denra-line" />
-              <span className="denra-label">Van ontwerp tot oplevering</span>
+              <span className="denra-label">{t('wcPage.guidanceEyebrow')}</span>
               <div className="denra-line" />
             </div>
             <h2 id="wc-begeleiding-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
-              Ook hulp nodig bij sanitair en tegels?
+              {t('wcPage.guidanceTitle')}
             </h2>
             <p className="text-[#6B5D50] leading-relaxed mb-4">
-              Ook voor sanitair en tegels voor uw nieuwe toilet kunnen wij u uiteraard helpen. Via een van onze vaste partners kunnen wij dit voor u verzorgen en mogelijk een aantrekkelijkere prijs aanbieden.
+              {t('wcPage.guidanceFirst')}
             </p>
             <p className="text-[#6B5D50] leading-relaxed mb-4">
-              Daarnaast kunnen we een vakkundig ontwerp inclusief 3D-tekening laten maken, zodat u vooraf een duidelijk beeld krijgt van het eindresultaat.
+              {t('wcPage.guidanceSecond')}
             </p>
             <p className="text-[#4A3F35] font-medium leading-relaxed">
-              Zo verzorgen wij het complete traject: van ontwerp, sanitair en tegels tot de volledige renovatie en oplevering.
+              {t('wcPage.guidanceConclusion')}
             </p>
           </div>
         </section>
@@ -174,13 +142,13 @@ export default function WCRenovatie() {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="denra-line" />
-                  <span className="denra-label">Luxe toiletrenovatie</span>
+                  <span className="denra-label">{t('wcPage.pricingEyebrow')}</span>
                 </div>
                 <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
-                  Indicatieve calculatorprijzen voor een luxe toiletrenovatie.
+                  {t('wcPage.pricingTitle')}
                 </h2>
                 <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-2xl">
-                  Werkzaamheden en prijsindicaties.
+                  {t('wcPage.pricingDescription')}
                 </p>
                 <div className="space-y-3">
                   {luxePricing.map((item) => (
@@ -194,9 +162,9 @@ export default function WCRenovatie() {
                   ))}
                 </div>
                 <div className="mt-8 rounded-sm bg-[#231A12] p-6 text-white">
-                  <p className="denra-label text-[#cfbca7] mb-2">Totaal luxe toiletrenovatie</p>
+                  <p className="denra-label text-[#cfbca7] mb-2">{t('wcPage.pricingTotalLabel')}</p>
                   <p className="font-serif text-4xl font-semibold mb-2">€3.800 tot €5.200</p>
-                  <p className="text-sm text-[#B7A892]">Prijsindicatie op basis van de opgegeven werkzaamheden.</p>
+                  <p className="text-sm text-[#B7A892]">{t('wcPage.pricingTotalDescription')}</p>
                 </div>
               </motion.div>
 
@@ -207,8 +175,8 @@ export default function WCRenovatie() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="rounded-sm bg-[#231A12] p-8 text-white"
               >
-                <p className="denra-label text-[#cfbca7] mb-3">Advies calculator basisprijs DENRA</p>
-                <h3 className="font-serif text-3xl font-semibold mb-6">Luxe uitvoering totaal</h3>
+                <p className="denra-label text-[#cfbca7] mb-3">{t('wcPage.adviceEyebrow')}</p>
+                <h3 className="font-serif text-3xl font-semibold mb-6">{t('wcPage.adviceTitle')}</h3>
                 <div className="space-y-4 mb-8">
                   {luxeAdvies.map((item) => (
                     <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
@@ -218,10 +186,10 @@ export default function WCRenovatie() {
                   ))}
                 </div>
                 <div className="rounded-2xl bg-white/5 p-5">
-                  <p className="denra-label text-[#cfbca7] mb-2">Luxe uitvoering totaal</p>
+                  <p className="denra-label text-[#cfbca7] mb-2">{t('wcPage.adviceTitle')}</p>
                   <p className="font-serif text-4xl font-semibold">€5.500 tot €6.500</p>
                 </div>
-                <p className="mt-6 text-sm text-[#B7A892]">Basisprijs: €4.250. Geberit Duofix inclusief montage: + €1.250. Tegelwerk in verstek: + €350. Nis: + €450. Inbouwkraan fonteintje: + €350.</p>
+                <p className="mt-6 text-sm text-[#B7A892]">{t('wcPage.adviceDescription')}</p>
               </motion.div>
             </div>
           </div>
@@ -237,7 +205,7 @@ export default function WCRenovatie() {
               className="text-center mb-14"
             >
               <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
-                Gerealiseerde WC's
+                {t('wcPage.projectsTitle')}
               </h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">

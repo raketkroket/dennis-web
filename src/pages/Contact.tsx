@@ -8,23 +8,21 @@ import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
 import denraLogoBg from '../../fotos/denralogobg.png';
 import type { QuoteConfiguration } from '../types/quote';
-
-const contactInfo = [
-  { icon: Phone, label: 'Telefoon', value: '+31 6 14 96 67 56', href: 'tel:+31614966756' },
-  { icon: Mail, label: 'E-mail', value: 'info@denrabadkamers.nl', href: 'mailto:info@denrabadkamers.nl' },
-  { icon: MapPin, label: 'Bedrijfsadres', value: 'Almere, Noord-Holland, Nederland', href: undefined },
-  { icon: Clock, label: 'Bereikbaar', value: 'Ma–Za: 08:00–18:00', href: undefined },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function Contact() {
   const location = useLocation();
+  const { t } = useLanguage();
   const quoteConfiguration = (location.state as { quoteConfiguration?: QuoteConfiguration } | null)?.quoteConfiguration;
+  const contactInfo = [
+    { icon: Phone, label: t('form.phone'), value: '+31 6 14 96 67 56', href: 'tel:+31614966756' }, { icon: Mail, label: t('form.email'), value: 'info@denrabadkamers.nl', href: 'mailto:info@denrabadkamers.nl' }, { icon: MapPin, label: t('home.businessAddress'), value: 'Almere, Noord-Holland, Nederland', href: undefined }, { icon: Clock, label: t('home.available'), value: t('home.availability'), href: undefined },
+  ];
 
   return (
     <>
       <Header />
       <main>
-        <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label="Contact">
+        <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label={t('nav.contact')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16">
               {/* Left */}
@@ -35,13 +33,13 @@ export default function Contact() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label">Neem contact op</span>
+                  <span className="denra-label">{t('home.contactUs')}</span>
                 </div>
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
-                  Laten we kennismaken
+                  {t('home.getAcquainted')}
                 </h1>
                 <p className="text-[#6B5D50] leading-relaxed mb-10 max-w-md">
-                  Heeft u een renovatieproject in gedachten? Neem vrijblijvend contact op. Wij reageren binnen 24 uur.
+                  {t('home.contactDescription')}
                 </p>
 
                 <div className="space-y-5 mb-10">
@@ -67,7 +65,7 @@ export default function Contact() {
                 <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-[#f1e7dc] border border-[#cfbca7]/55 flex items-center justify-center p-6">
                   <img
                     src={denraLogoBg}
-                    alt="DENRA achtergrondlogo"
+                    alt={t('home.denraBackgroundLogo')}
                     width={800}
                     height={450}
                     className="w-full h-full object-contain opacity-80"
@@ -82,8 +80,8 @@ export default function Contact() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="bg-[#faf6f0] rounded-sm p-8 md:p-10 border border-[#cfbca7]/55"
               >
-                  <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Stuur ons een bericht</h2>
-                <p className="text-sm text-[#8A7A6A] mb-8">Wij nemen binnen 24 uur contact met u op.</p>
+                  <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('home.sendMessage')}</h2>
+                <p className="text-sm text-[#8A7A6A] mb-8">{t('home.contactWithin24')}</p>
                 <ContactForm quoteConfiguration={quoteConfiguration} />
               </motion.div>
             </div>

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bath, Toilet, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { QuoteConfiguration } from '../types/quote';
+import { useLanguage } from '../i18n/useLanguage';
 
 type RoomType = 'badkamer' | 'wc';
 
@@ -85,6 +86,7 @@ function calculatePrice(state: ConfigState): number {
 }
 
 export default function Configurator() {
+  const { t, language } = useLanguage();
   const [step, setStep] = useState(1);
   const [config, setConfig] = useState<ConfigState>({
     roomType: null,
@@ -145,7 +147,7 @@ export default function Configurator() {
                   {step > s ? <Check size={14} /> : s}
                 </div>
                 <span className={`text-xs font-medium hidden sm:block ${step >= s ? 'text-[#231A12]' : 'text-[#8A7A6A]'}`}>
-                  {s === 1 ? 'Ruimte' : s === 2 ? 'Afmetingen' : 'Opties'}
+                  {s === 1 ? t('configurator.stepRoom') : s === 2 ? t('configurator.stepDimensions') : t('configurator.stepOptions')}
                 </span>
               </div>
               {s < 3 && <div className={`flex-1 h-px transition-colors duration-300 ${step > s ? 'bg-[#7a6552]' : 'bg-[#e8ddcf]'}`} />}
@@ -165,12 +167,12 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Welke ruimte wilt u renoveren?</h3>
-              <p className="text-sm text-[#6B5D50] mb-8 max-w-xl">Kies de ruimte die u wilt renoveren. Daarna stellen we een heldere prijsindicatie samen.</p>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.chooseRoom')}</h3>
+              <p className="text-sm text-[#6B5D50] mb-8 max-w-xl">{t('configurator.chooseRoomDescription')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {([
-                  { type: 'badkamer' as RoomType, icon: Bath, label: 'Badkamer', desc: 'Volledige badkamerrenovatie' },
-                  { type: 'wc' as RoomType, icon: Toilet, label: 'WC', desc: 'Toilet renovatie' },
+                  { type: 'badkamer' as RoomType, icon: Bath, label: t('configurator.bathroom'), desc: t('configurator.bathroomDescription') },
+                  { type: 'wc' as RoomType, icon: Toilet, label: t('configurator.toilet'), desc: t('configurator.toiletDescription') },
                 ] as const).map(({ type, icon: Icon, label, desc }) => (
                   <button
                     key={type}
@@ -202,12 +204,12 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Wat zijn de afmetingen?</h3>
-              <p className="text-sm text-[#6B5D50] mb-8">Meet de langste lengte en breedte van de ruimte. Een schatting op halve meters is voldoende voor deze indicatie.</p>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.dimensionsTitle')}</h3>
+              <p className="text-sm text-[#6B5D50] mb-8">{t('configurator.dimensionsDescription')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                 <div>
                   <label htmlFor="length" className="block text-sm font-medium text-[#231A12] mb-2">
-                    Lengte (m)
+                    {t('configurator.length')}
                   </label>
                     <div className="relative">
                     <input
@@ -218,7 +220,7 @@ export default function Configurator() {
                     step="0.1"
                     value={config.length}
                     onChange={(e) => setConfig((prev) => ({ ...prev, length: e.target.value }))}
-                    placeholder="bijv. 3.5"
+                    placeholder={t('configurator.lengthPlaceholder')}
                       inputMode="decimal"
                       className="denra-field pr-12"
                   />
@@ -227,7 +229,7 @@ export default function Configurator() {
                 </div>
                 <div>
                   <label htmlFor="width" className="block text-sm font-medium text-[#231A12] mb-2">
-                    Breedte (m)
+                    {t('configurator.width')}
                   </label>
                     <div className="relative">
                     <input
@@ -238,7 +240,7 @@ export default function Configurator() {
                     step="0.1"
                     value={config.width}
                     onChange={(e) => setConfig((prev) => ({ ...prev, width: e.target.value }))}
-                    placeholder="bijv. 2.0"
+                    placeholder={t('configurator.widthPlaceholder')}
                       inputMode="decimal"
                       className="denra-field pr-12"
                   />
@@ -253,7 +255,7 @@ export default function Configurator() {
                   className="mt-6 p-4 bg-[#f4ede4] rounded-sm border border-[#cfbca7]/55"
                 >
                   <p className="text-sm text-[#6B5D50]">
-                    Uw ruimte is ongeveer <span className="font-semibold text-[#231A12]">{area.toFixed(2)} m²</span>
+                    {t('configurator.roomArea')} <span className="font-semibold text-[#231A12]">{area.toFixed(2)} m²</span>
                   </p>
                 </motion.div>
               )}
@@ -269,15 +271,15 @@ export default function Configurator() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">Welke opties wenst u?</h3>
-              <p className="text-sm text-[#6B5D50] mb-8">Selecteer alleen de extra's die voor uw ruimte relevant zijn. U kunt dit later altijd nog aanpassen.</p>
+              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.optionsTitle')}</h3>
+              <p className="text-sm text-[#6B5D50] mb-8">{t('configurator.optionsDescription')}</p>
               <div className="space-y-7 mb-8">
                 {optionGroups.map((group) => {
                   const options = currentOptions.filter((option) => group.optionIds.includes(option.id));
                   if (!options.length) return null;
                   return (
                   <section key={group.title}>
-                    <h4 className="denra-label mb-3">{group.title}</h4>
+                    <h4 className="denra-label mb-3">{group.title === 'Afwerking' ? t('configurator.finish') : group.title === 'Tegelwerk' ? t('configurator.tiling') : group.title === 'Installatie' ? t('configurator.installation') : t('configurator.toiletGroup')}</h4>
                     <div className="grid grid-cols-1 gap-3">
                 {options.map((option) => {
                   const isSelected = config.options.includes(option.id);
@@ -295,7 +297,7 @@ export default function Configurator() {
                       <div className="flex items-start justify-between gap-3 w-full min-w-0">
                         <span className="text-sm font-semibold text-[#231A12] leading-snug min-w-0">{option.label}</span>
                         <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-sm font-semibold text-[#6B5D50]">+€{option.price.toLocaleString('nl-NL')}</span>
+                          <span className="text-sm font-semibold text-[#6B5D50]">+€{option.price.toLocaleString(language === 'en' ? 'en-GB' : 'nl-NL')}</span>
                           <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#7a6552] bg-[#7a6552]' : 'border-[#cfbca7]'}`}>
                             {isSelected && <Check size={10} className="text-white" />}
                           </div>
@@ -312,28 +314,28 @@ export default function Configurator() {
               </div>
 
               <p className="text-xs text-[#8A7A6A] mb-6">
-                Vrijblijvende vanafprijs voor arbeid en normale bouwmaterialen. Sanitair, tegels, kranen, badkamermeubels en overige zichtmaterialen zijn niet inbegrepen, tenzij expliciet vermeld. Definitieve prijs wordt vastgesteld na opname op locatie.
+                {t('configurator.disclaimer')}
               </p>
 
               {/* Price result */}
               <div className="bg-[#231A12] rounded-sm p-6 sm:p-7 text-white shadow-[0_16px_36px_rgba(35,26,18,0.2)] lg:sticky lg:top-28">
-                <p className="denra-label text-[#cfbca7] mb-2">Uw prijsindicatie</p>
+                <p className="denra-label text-[#cfbca7] mb-2">{t('configurator.priceEstimate')}</p>
                 <div className="mb-1">
-                  <span className="block text-sm text-[#b7a894] mb-1">Vanaf</span>
+                  <span className="block text-sm text-[#b7a894] mb-1">{t('configurator.from')}</span>
                   <span className="font-serif text-4xl sm:text-5xl font-semibold">
-                    €{price.toLocaleString('nl-NL')}
+                    €{price.toLocaleString(language === 'en' ? 'en-GB' : 'nl-NL')}
                   </span>
-                  <span className="ml-2 text-[#b7a894] text-sm">incl. btw</span>
+                  <span className="ml-2 text-[#b7a894] text-sm">{t('configurator.includingVat')}</span>
                 </div>
                 <p className="text-xs text-[#b7a894] mb-6">
-                  Inclusief bouwmaterialen. Exclusief sanitair en tegels.
+                  {t('configurator.materialsIncluded')}
                 </p>
                 <Link
                   to="/contact"
                   state={{ quoteConfiguration }}
                   className="flex min-h-12 items-center justify-center gap-2 bg-[#f6f0e8] text-[#231A12] font-semibold px-6 py-3.5 rounded-sm hover:bg-[#e8ddcf] transition-all duration-200 text-sm w-full"
                 >
-                  Vraag vrijblijvende offerte aan
+                  {t('configurator.requestQuote')}
                   <ChevronRight size={16} />
                 </Link>
               </div>
@@ -349,7 +351,7 @@ export default function Configurator() {
             className="flex items-center gap-2 text-sm font-medium text-[#8A7A6A] hover:text-[#231A12] disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
           >
             <ChevronLeft size={16} />
-            Vorige
+            {t('configurator.previous')}
           </button>
           {step < 3 && (
             <button
@@ -357,7 +359,7 @@ export default function Configurator() {
               disabled={step === 1 ? !canProceedStep1 : !canProceedStep2}
               className="denra-button-primary px-5 sm:px-6 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
             >
-              Volgende
+              {t('configurator.next')}
               <ChevronRight size={16} />
             </button>
           )}

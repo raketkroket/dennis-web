@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bath, Toilet, Layers, Paintbrush, Grid3x3, Waves, ChevronRight } from 'lucide-react';
 import { sitePhotos } from '../data/sitePhotos';
-
-const services = [
-  { icon: Bath, title: 'Badkamerrenovatie', desc: 'Complete renovatie van A tot Z. Stijlvol, modern en luxe.', path: '/badkamerrenovatie' },
-  { icon: Waves, title: 'Vloeren leggen', desc: 'Tegels, laminaat en visgraatpatronen.', path: '/binnenrenovatie' },
-  { icon: Toilet, title: 'WC-renovatie', desc: 'Maak van je toilet een stijlvolle en comfortabele ruimte.', path: '/wc-renovatie' },
-  { icon: Paintbrush, title: 'Schilderwerk', desc: 'Perfect afgewerkt voor een duurzaam resultaat.', path: '/binnenrenovatie' },
-  { icon: Layers, title: 'Stucwerk', desc: 'Strak afgewerkte wanden en plafonds.', path: '/binnenrenovatie' },
-  { icon: Grid3x3, title: 'Verlaagd plafond & spotjes', desc: 'Voor sfeer, functionaliteit en een moderne uitstraling.', path: '/binnenrenovatie' },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 export default function ServicesSection() {
+  const { t } = useLanguage();
+  const services = [
+    { icon: Bath, title: t('marketing.bathroomService'), desc: t('marketing.bathroomServiceDesc'), path: '/badkamerrenovatie' },
+    { icon: Waves, title: t('marketing.floorService'), desc: t('marketing.floorServiceDesc'), path: '/binnenrenovatie' },
+    { icon: Toilet, title: t('marketing.toiletService'), desc: t('marketing.toiletServiceDesc'), path: '/wc-renovatie' },
+    { icon: Paintbrush, title: t('marketing.paintingService'), desc: t('marketing.paintingServiceDesc'), path: '/binnenrenovatie' },
+    { icon: Layers, title: t('marketing.plasterService'), desc: t('marketing.plasterServiceDesc'), path: '/binnenrenovatie' },
+    { icon: Grid3x3, title: t('marketing.ceilingService'), desc: t('marketing.ceilingServiceDesc'), path: '/binnenrenovatie' },
+  ];
   return (
     <section className="py-24 lg:py-28 bg-transparent overflow-x-clip" aria-labelledby="diensten-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -28,13 +29,13 @@ export default function ServicesSection() {
             >
               <div className="flex items-center gap-3 mb-5">
                 <div className="denra-line" />
-                <span className="denra-label">Onze diensten</span>
+                <span className="denra-label">{t('marketing.servicesLabel')}</span>
               </div>
               <h2 id="diensten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight mb-6">
-                Voor elke ruimte<br />een rustig en precies resultaat
+                {t('marketing.servicesTitle')}
               </h2>
               <p className="text-[#5f544a] leading-relaxed mb-10 max-w-md">
-                Van badkamerrenovatie tot complete binnenrenovaties. Alles wordt opgebouwd met aandacht voor materiaal, verhoudingen en afwerking.
+                {t('marketing.servicesDescription')}
               </p>
             </motion.div>
 
@@ -74,7 +75,7 @@ export default function ServicesSection() {
                 to="/projecten"
                 className="inline-flex items-center gap-2 text-sm font-medium text-[#1d1712] border border-[#5c5147]/18 px-6 py-3 rounded-sm tracking-[0.16em] uppercase hover:bg-[#d8d0c4] transition-all duration-200"
               >
-                Bekijk alle diensten
+                {t('marketing.allServices')}
                 <ChevronRight size={16} />
               </Link>
             </motion.div>
@@ -94,13 +95,13 @@ export default function ServicesSection() {
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-6 h-px bg-white/30" />
-                  <span className="denra-label text-white/55">Binnen 2 minuten een indicatie</span>
+                  <span className="denra-label text-white/55">{t('marketing.estimateLabel')}</span>
                 </div>
                 <h3 className="font-serif text-3xl font-semibold leading-tight mb-6 text-[#f7f2ea]">
-                  Bereken eenvoudig<br />jouw renovatieprijs
+                  {t('marketing.estimateTitle')}
                 </h3>
                 <ul className="space-y-3 mb-8">
-                  {['Vul de afmetingen in', 'Kies jouw wensen en extra\'s', 'Ontvang direct een prijsindicatie'].map((item) => (
+                  {t('marketing.estimateSteps').split('|').map((item) => (
                     <li key={item} className="flex items-center gap-3 text-sm text-white/70">
                       <div className="w-5 h-5 border border-white/18 flex items-center justify-center shrink-0">
                         <div className="w-1.5 h-px bg-white/60" />
@@ -113,7 +114,7 @@ export default function ServicesSection() {
                   to="/configurator"
                   className="inline-flex items-center gap-2 bg-[#f6f0e8] text-[#1d1712] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#e0d6c7] transition-all duration-200 text-sm w-full justify-center"
                 >
-                  Start prijsberekening
+                  {t('marketing.startCalculation')}
                   <ChevronRight size={16} />
                 </Link>
               </div>
@@ -123,7 +124,7 @@ export default function ServicesSection() {
             <div className="mt-6 overflow-hidden h-48 border border-[#5c5147]/12">
               <img
                 src={sitePhotos[0]}
-                alt="Luxe badkamer detail met marmeren tegels"
+                alt={t('marketing.bathroomService')}
                 width={800}
                 height={400}
                 className="w-full h-full object-cover"

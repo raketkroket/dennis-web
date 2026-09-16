@@ -3,24 +3,7 @@ import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../../fotos/Denralogo.png';
 import tiktokIcon from '../../fotos/tiktokicon.png';
-
-const diensten = [
-  { label: 'Badkamerrenovatie', path: '/badkamerrenovatie' },
-  { label: 'WC-renovatie', path: '/wc-renovatie' },
-  { label: 'Binnenrenovatie', path: '/binnenrenovatie' },
-  { label: 'Stucwerk', path: '/binnenrenovatie' },
-  { label: 'Vloeren leggen', path: '/binnenrenovatie' },
-  { label: 'Schilderwerk', path: '/binnenrenovatie' },
-  { label: 'Verlaagd plafond & spotjes', path: '/binnenrenovatie' },
-];
-
-const informatie = [
-  { label: 'Over ons', path: '/over-ons' },
-  { label: 'Projecten', path: '/projecten' },
-  { label: 'Prijs berekenen', path: '/configurator' },
-  { label: 'Veelgestelde vragen', path: '/over-ons' },
-  { label: 'Contact', path: '/contact' },
-];
+import { useLanguage } from '../i18n/useLanguage';
 
 const locaties = [
   'Almere',
@@ -43,6 +26,13 @@ const locaties = [
 const bedrijfsAdres = 'Almere, Noord-Holland, Nederland';
 
 export default function Footer() {
+  const { t } = useLanguage();
+  const diensten = [
+    { label: t('form.bathroom'), path: '/badkamerrenovatie' }, { label: t('form.toilet'), path: '/wc-renovatie' }, { label: t('form.interior'), path: '/binnenrenovatie' }, { label: t('form.plastering'), path: '/binnenrenovatie' }, { label: t('form.floors'), path: '/binnenrenovatie' }, { label: t('form.painting'), path: '/binnenrenovatie' }, { label: t('form.ceiling'), path: '/binnenrenovatie' },
+  ];
+  const informatie = [
+    { label: t('nav.about'), path: '/over-ons' }, { label: t('nav.projects'), path: '/projecten' }, { label: t('common.calculatePrice'), path: '/configurator' }, { label: t('shared.faq'), path: '/over-ons' }, { label: t('nav.contact'), path: '/contact' },
+  ];
   return (
     <footer className="bg-transparent text-[#5f544a] border-t border-[#5c5147]/12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
@@ -53,21 +43,21 @@ export default function Footer() {
               <img src={logo} alt="DENRA Badkamers" className="h-12 w-auto object-contain" />
               <div className="flex items-center gap-3">
                 <span className="denra-line" />
-                <div className="denra-label">Warm architectural luxury</div>
+                <div className="denra-label">{t('shared.footerTagline')}</div>
               </div>
             </div>
             <p className="text-sm text-[#5f544a] leading-relaxed max-w-sm mb-6">
-              Luxe badkamer- en binnenrenovaties in Flevoland en Noord-Holland. Rustige afwerking, sterke detaillering en een heldere manier van werken.
+              {t('shared.footerDescription')}
             </p>
             <p className="text-xs text-[#71665b] mb-6">
-              Uitvoering door <span className="text-[#1d1712] font-medium">Denra Montage en Onderhoud</span>
+              {t('shared.performedBy')} <span className="text-[#1d1712] font-medium">Denra Montage en Onderhoud</span>
             </p>
             <div className="flex items-center gap-4">
               <a
                 href="https://instagram.com/@denrabadkamers"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="DENRA op Instagram"
+                aria-label="DENRA Instagram"
                 className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <Instagram size={16} />
@@ -76,7 +66,7 @@ export default function Footer() {
                 href="https://facebook.com/denrabadkamers"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="DENRA op Facebook"
+                aria-label="DENRA Facebook"
                 className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <Facebook size={16} />
@@ -85,7 +75,7 @@ export default function Footer() {
                 href="https://wa.me/31614966756"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="DENRA op WhatsApp"
+                aria-label={t('common.whatsappDenra')}
                 className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
               >
                 <MessageCircle size={16} />
@@ -104,7 +94,7 @@ export default function Footer() {
 
           {/* Diensten */}
           <div>
-            <h3 className="denra-label mb-5">Diensten</h3>
+            <h3 className="denra-label mb-5">{t('shared.services')}</h3>
             <ul className="space-y-3">
               {diensten.map((item) => (
                 <li key={item.label}>
@@ -121,7 +111,7 @@ export default function Footer() {
 
           {/* Informatie */}
           <div>
-            <h3 className="denra-label mb-5">Juridisch & informatie</h3>
+            <h3 className="denra-label mb-5">{t('shared.legalInformation')}</h3>
             <ul className="space-y-3">
               {informatie.map((item) => (
                 <li key={item.label}>
@@ -138,7 +128,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="denra-label mb-5">Contact</h3>
+            <h3 className="denra-label mb-5">{t('nav.contact')}</h3>
             <ul className="space-y-4">
               <li>
                 <a
@@ -164,7 +154,7 @@ export default function Footer() {
               </li>
             </ul>
             <div className="mt-6">
-              <h4 className="denra-label mb-3">Regio's</h4>
+              <h4 className="denra-label mb-3">{t('shared.regions')}</h4>
               <div className="flex flex-wrap gap-1.5">
                 {locaties.map((loc) => (
                   <span
@@ -183,13 +173,13 @@ export default function Footer() {
               className="denra-button-primary mt-6 w-full"
             >
               <MessageCircle size={16} />
-              WhatsApp ons
+              {t('common.whatsappUs')}
             </a>
             <Link
               to="/algemene-voorwaarden"
               className="denra-button-secondary mt-3 w-full"
             >
-              Algemene voorwaarden
+              {t('shared.terms')}
             </Link>
           </div>
         </div>
@@ -199,14 +189,14 @@ export default function Footer() {
       <div className="border-t border-[#5c5147]/12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#71665b]">
-            &copy; 2026 DENRA. Alle rechten voorbehouden.
+            &copy; 2026 DENRA. {t('shared.allRightsReserved')}
           </p>
           <div className="flex items-center gap-6">
             <Link to="/privacy" className="text-xs text-[#71665b] hover:text-[#1d1712] transition-colors duration-200">
-              Privacyverklaring
+              {t('shared.privacy')}
             </Link>
             <Link to="/algemene-voorwaarden" className="text-xs text-[#71665b] hover:text-[#1d1712] transition-colors duration-200">
-              Algemene voorwaarden
+              {t('shared.terms')}
             </Link>
           </div>
         </div>

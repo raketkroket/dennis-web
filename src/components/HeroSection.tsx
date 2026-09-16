@@ -2,17 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '../i18n/useLanguage';
 
 import heroImage from '../../headerimg.png';
 
 export default function HeroSection() {
+  const { t } = useLanguage();
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Hero sectie">
+    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label={t('marketing.heroTitle')}>
       {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
-          alt="Luxe badkamer met vrijstaand bad en warme materialen"
+          alt={t('marketing.heroTitle')}
           width={1800}
           height={1200}
           className="w-full h-full object-cover object-center brightness-[0.78] contrast-[0.92] saturate-[0.88]"
@@ -32,7 +34,7 @@ export default function HeroSection() {
           >
             <div className="w-10 h-px bg-[#f3ece2]/50" />
             <span className="text-xs tracking-[0.34em] uppercase text-[#f3ece2]/78 font-medium">
-              Luxe badkamer- en binnenrenovaties
+              {t('marketing.heroLabel')}
             </span>
           </motion.div>
 
@@ -42,9 +44,9 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[26rem]"
           >
-            Badkamer & WC Renovatie
+            {t('marketing.heroTitle')}
             <br />
-            <span className="text-[#ddd3c5]">in Flevoland en Noord-Holland</span>
+            <span className="text-[#ddd3c5]">{t('marketing.heroTitleAccent')}</span>
           </motion.h1>
 
           <motion.p
@@ -54,7 +56,7 @@ export default function HeroSection() {
             className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
             style={{ textShadow: '0 2px 8px rgba(18, 13, 9, 0.72)' }}
           >
-            Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Van sloopwerk en leidingwerk tot tegelwerk, sanitair en de volledige afwerking.
+            {t('marketing.heroDescription')}
           </motion.p>
 
           <motion.div
@@ -67,14 +69,14 @@ export default function HeroSection() {
               to="/configurator"
               className="inline-flex items-center justify-center gap-2 bg-[#f4eee5] text-[#120d09] font-medium px-8 py-4 rounded-sm hover:bg-[#e5dbcd] transition-all duration-200 text-sm tracking-[0.16em] uppercase"
             >
-              Prijs berekenen
+              {t('common.calculatePrice')}
               <ArrowRight size={16} />
             </Link>
             <Link
               to="/contact"
               className="inline-flex items-center justify-center gap-2 border border-[#f4eee5]/34 text-[#f4eee5] font-medium px-8 py-4 rounded-sm hover:bg-[#f4eee5] hover:text-[#120d09] transition-all duration-200 text-sm tracking-[0.16em] uppercase backdrop-blur-sm"
             >
-              Plan adviesgesprek
+              {t('marketing.consultation')}
             </Link>
           </motion.div>
         </div>
@@ -87,7 +89,7 @@ export default function HeroSection() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 right-8 hidden lg:flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] tracking-[0.28em] uppercase text-white/30 rotate-90 origin-center mb-4">Scroll</span>
+        <span className="text-[10px] tracking-[0.28em] uppercase text-white/30 rotate-90 origin-center mb-4">{t('marketing.scroll')}</span>
         <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
       </motion.div>
     </section>

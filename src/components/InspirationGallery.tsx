@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { sitePhotos } from '../data/sitePhotos';
+import { useLanguage } from '../i18n/useLanguage';
 
 const images = [
   { src: sitePhotos[3], alt: 'Badkamer projectfoto', span: 'col-span-1 row-span-2' },
@@ -14,6 +15,7 @@ const images = [
 
 export default function InspirationGallery() {
   const [selected, setSelected] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   return (
     <section className="py-24 bg-transparent" aria-labelledby="inspiratie-heading">
@@ -27,11 +29,11 @@ export default function InspirationGallery() {
         >
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="denra-line" />
-            <span className="denra-label">Inspiratie</span>
+            <span className="denra-label">{t('shared.inspiration')}</span>
             <div className="denra-line" />
           </div>
           <h2 id="inspiratie-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight">
-            Laat je inspireren
+            {t('shared.beInspired')}
           </h2>
         </motion.div>
 
@@ -45,7 +47,7 @@ export default function InspirationGallery() {
               transition={{ duration: 0.5, delay: i * 0.08 }}
               className={`${img.span} overflow-hidden rounded-sm group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#5c5147] focus:ring-offset-2`}
               onClick={() => setSelected(img.src)}
-              aria-label={`Bekijk foto: ${img.alt}`}
+              aria-label={`${t('shared.viewPhoto')}: ${img.alt}`}
             >
               <img
                 src={img.src}
@@ -72,7 +74,7 @@ export default function InspirationGallery() {
             <button
               className="absolute top-6 right-6 w-10 h-10 rounded-sm bg-white/8 flex items-center justify-center text-white hover:bg-white/16 transition-colors duration-200"
               onClick={() => setSelected(null)}
-              aria-label="Sluiten"
+              aria-label={t('shared.close')}
             >
               <X size={20} />
             </button>
@@ -81,7 +83,7 @@ export default function InspirationGallery() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               src={selected}
-              alt="Vergroot afbeelding"
+              alt={t('shared.enlargedImage')}
               width={1200}
               height={800}
               className="max-w-full max-h-[85vh] object-contain rounded-sm"
