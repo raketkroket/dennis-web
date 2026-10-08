@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getReviews, reviewCategory } from '../data/reviews';
+import { reviewCategory } from '../data/reviews';
 import ReviewCard from './ReviewCard';
 import { useLanguage } from '../i18n/useLanguage';
+import { usePublishedReviews } from '../hooks/usePublishedReviews';
 
 interface ReviewsSectionProps {
   preview?: boolean;
@@ -15,7 +16,7 @@ const filters = ['Alle', 'Badkamer', 'Toilet', 'Renovatie', 'Aanbouw'] as const;
 
 export default function ReviewsSection({ preview = false, showIntro = true }: ReviewsSectionProps) {
   const { language, t } = useLanguage();
-  const reviews = getReviews(language);
+  const reviews = usePublishedReviews(language);
   const translatedFilters = [t('reviewsPage.filterAll'), t('reviewsPage.filterBathroom'), t('reviewsPage.filterToilet'), t('reviewsPage.filterRenovation'), t('reviewsPage.filterExtension')];
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('Alle');
   const displayedReviews = preview ? reviews.slice(0, 3) : reviews.filter((review) => activeFilter === 'Alle' || reviewCategory(review) === activeFilter);

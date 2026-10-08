@@ -4,14 +4,15 @@ import { ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ReviewForm from '../components/ReviewForm';
 import ReviewsSection from '../components/ReviewsSection';
 import WhatsAppButton from '../components/WhatsAppButton';
-import { getReviews } from '../data/reviews';
 import { useLanguage } from '../i18n/useLanguage';
+import { usePublishedReviews } from '../hooks/usePublishedReviews';
 
 export default function Ervaringen() {
   const { language, t } = useLanguage();
-  const reviews = getReviews(language);
+  const reviews = usePublishedReviews(language);
   const averageRating = '4,1';
   const headline = t('reviewsPage.headline').split('|');
 
@@ -32,6 +33,7 @@ export default function Ervaringen() {
           </div>
         </section>
         <ReviewsSection showIntro={false} />
+        <ReviewForm />
         <section className="bg-[#231A12] px-6 py-20 text-[#f6f0e8] lg:px-8" aria-labelledby="ervaringen-cta-heading">
           <div className="mx-auto max-w-7xl border-y border-[#cfbca7]/25 py-12 md:flex md:items-end md:justify-between md:gap-10">
             <div className="max-w-2xl"><p className="denra-label mb-5 text-[#cfbca7]">{t('reviewsPage.ownRenovation')}</p><h2 id="ervaringen-cta-heading" className="font-serif text-4xl font-semibold leading-tight md:text-5xl">{t('reviewsPage.ctaTitle')}</h2><p className="mt-5 max-w-xl leading-relaxed text-[#ddd3c5]">{t('reviewsPage.ctaDescription')}</p></div>

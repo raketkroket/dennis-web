@@ -23,7 +23,18 @@ export interface Review {
   images?: string[];
 }
 
+export interface PublishedReview {
+  id: string;
+  name: string;
+  city: string;
+  rating: number;
+  project: string;
+  text: string;
+  createdAt: string;
+}
+
 export const reviews: Review[] = [
+  { id: 'nikie-volkers-2026', name: 'Nikie Volkers', rating: 5, date: '7 oktober 2026', project: 'Badkamer laten plaatsen', text: 'Wij hebben onze badkamer laten plaatsen door Dennis. Top aannemer met fantastische alleskunners in dienst. Goede communicatie, prima prijs-kwaliteitverhouding en afspraken worden nagekomen.\n\nWij vonden het erg fijn dat één persoon eigenlijk alle verschillende klussen deed: van loodgieterswerk, elektra, tegels zetten, Mariusz deed alles en echt goed.\n\nHoeken in verstek gezaagd, een betegeld stopcontact, echt vakwerk!', images: ['/nikie-badkamer.jpg', '/nikie-detail.jpg'] },
   { id: 'joost-2021', name: 'Joost', city: 'Amsterdam', rating: 4, date: '22 september 2021', project: 'Aanbouw plaatsen: 5 m²; Ja; Plat dak', text: 'Erg tevreden met Dennis van Denra Bouw. In april offerte aangevraagd en viel lager uit dan in eerste instantie geschat, wat zijn eerlijkheid aangaf. In juni begonnen met een aanbouw die tot en met augustus duurde. Erg tevreden met de kwaliteit en zeker de communicatie. Erg helder en altijd bereikbaar. Ook meerwerk was in overleg goed en snel te realiseren. Ze denken mee met wat handig is voor de aanbouw met locaties als water en stroom. Eerlijke prijs en goeie communicatie zijn echt de basis voor hun werkzaamheden, erg tevreden!', images: [] },
   { id: 'carlo-2021', name: 'Carlo', city: 'Almere', rating: 5, date: '27 juli 2021', project: 'Aanbouw plaatsen: 10 m²; Ja; Plat dak', text: 'Heel prettig bedrijf, de mannen werken hard en denken goed mee. Kwaliteit van het werk is zeer goed, ook maken ze tijd voor wensen die tussentijds veranderen of erbij komen.', images: [] },
   { id: 'effendi-2021', name: 'Effendi', city: 'Amsterdam', rating: 5, date: '7 april 2021', project: 'Aanbouw plaatsen: 20 m²; In overleg; Plat dak met terras erop', text: 'Bij het bouwen van onze uitbouw zijn er een aantal tegenslagen geweest die naar tevredenheid uitgesproken en opgelost zijn. Tijdens de bouw bleek dat wij over de erfgrens zouden bouwen. Onacceptabel voor de buren. Denra heeft samen met de constructeur een nieuwe waterdichte constructie bedacht voor een eigen muur. Bij het openbreken van onze buitenmuur bleek de constructie van de woning toch anders dan de bouwtekening. Ook dit is opgelost. Deze tegenslagen, corona en de strenge winter hebben er wel toe geleid dat de bouw 3x langer duurde dan voorzien. Verder fijn dat Denra een door ons gekochte lichtstraat wel wilde plaatsen. De mannen zijn kundig, goed aan te spreken en denken mee. Tip: laat de mannen zelf nameten en gebruik hun constructeur (indien nodig).', images: [] },
@@ -88,12 +99,50 @@ function reviewTimestamp({ id, date }: Review): number {
 export function getReviews(language: Language): Review[] {
   return [...reviews]
     .sort((firstReview, secondReview) => reviewTimestamp(secondReview) - reviewTimestamp(firstReview))
-    .map((review) => ({
+    .map((review) => formatReviewForLanguage(review, language));
+}
+
+export function mergePublishedReviews(staticReviews: Review[], publishedReviews: PublishedReview[], language: Language): Review[] {
+  const published = publishedReviews.map((review) => {
+    const timestamp = Date.parse(review.createdAt);
+    if (Number.isNaN(timestamp)) {
+      throw new Error(`Published review "${review.id}" has an invalid creation date.`);
+    }
+
+    return {
+      timestamp,
+      review: {
+        id: review.id,
+        name: review.name,
+        city: review.city,
+        rating: review.rating,
+        project: review.project,
+        text: review.text,
+        date: new Intl.DateTimeFormat(language === 'nl' ? 'nl-NL' : 'en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'UTC',
+        }).format(new Date(review.createdAt)),
+      },
+    };
+  });
+
+  return [
+    ...staticReviews.map((review) => ({ timestamp: reviewTimestamp(review), review: formatReviewForLanguage(review, language) })),
+    ...published,
+  ]
+    .sort((firstReview, secondReview) => secondReview.timestamp - firstReview.timestamp)
+    .map(({ review }) => review);
+}
+
+function formatReviewForLanguage(review: Review, language: Language): Review {
+  return {
     ...review,
     date: language === 'nl'
       ? review.date
       : review.date.replace(/januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december/, (month) => englishMonths[month]),
-  }));
+  };
 }
 
 export function reviewCategory(review: Review): 'Badkamer' | 'Toilet' | 'Renovatie' | 'Aanbouw' {
