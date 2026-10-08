@@ -72,7 +72,7 @@ const englishMonths: Record<string, string> = {
 };
 
 export function getReviews(language: Language): Review[] {
-  const sorted = [...reviews].sort((a, b) => reviewDate(b.date) - reviewDate(a.date));
+  const sorted = [...reviews].sort((a, b) => a.name.localeCompare(b.name, 'nl', { sensitivity: 'base', numeric: true }));
   if (language === 'nl') return sorted;
   return sorted.map((review) => ({
     ...review,
@@ -87,7 +87,4 @@ export function reviewCategory(review: Review): 'Badkamer' | 'Toilet' | 'Renovat
   if (project.includes('badkamer')) return 'Badkamer';
   return 'Renovatie';
 }
-function reviewDate(date: string): number {
-  const [day, month, year] = date.split(' ');
-  return Date.UTC(Number(year), Object.keys(englishMonths).indexOf(month), Number(day));
-}
+
