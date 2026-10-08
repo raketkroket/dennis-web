@@ -32,7 +32,6 @@ export default function Ervaringen() {
             </motion.div>
           </div>
         </section>
-        <div className="mx-auto max-w-7xl px-6 pb-8"><a href="#review-schrijven" className="denra-button-secondary">{language === 'en' ? 'Write a review' : 'Schrijf een review'}</a></div>
         <ReviewsSection showIntro={false} />
         <ReviewForm />
         <section className="bg-[#231A12] px-6 py-20 text-[#f6f0e8] lg:px-8" aria-labelledby="ervaringen-cta-heading">
