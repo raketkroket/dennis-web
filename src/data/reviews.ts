@@ -70,11 +70,29 @@ const englishMonths: Record<string, string> = {
   juli: 'July', augustus: 'August', september: 'September', oktober: 'October', november: 'November', december: 'December',
 };
 
+const monthNumbers: Record<string, number> = {
+  januari: 0, februari: 1, maart: 2, april: 3, mei: 4, juni: 5,
+  juli: 6, augustus: 7, september: 8, oktober: 9, november: 10, december: 11,
+};
+
+function reviewTimestamp({ id, date }: Review): number {
+  const match = /^(\d{1,2}) ([a-z]+) (\d{4})$/.exec(date);
+  if (!match || monthNumbers[match[2]] === undefined) {
+    throw new Error(`Review "${id}" has an invalid date: "${date}".`);
+  }
+
+  const [, day, month, year] = match;
+  return Date.UTC(Number(year), monthNumbers[month], Number(day));
+}
+
 export function getReviews(language: Language): Review[] {
-  if (language === 'nl') return reviews;
-  return reviews.map((review) => ({
+  return [...reviews]
+    .sort((firstReview, secondReview) => reviewTimestamp(secondReview) - reviewTimestamp(firstReview))
+    .map((review) => ({
     ...review,
-    date: review.date.replace(/januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december/, (month) => englishMonths[month]),
+    date: language === 'nl'
+      ? review.date
+      : review.date.replace(/januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december/, (month) => englishMonths[month]),
   }));
 }
 
