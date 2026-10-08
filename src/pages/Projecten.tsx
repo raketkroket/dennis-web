@@ -8,6 +8,7 @@ import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 
 const allProjects = [
+  { id: 54, title: 'Modern minimalistische badkamer', category: 'Badkamer', style: 'Modern Minimal', image: '/badkamer-amersfoort.jpeg', desc: 'Modern en tijdloos, met warme tinten en verfijnde details.', location: 'Amersfoort' },
   { id: 1, title: 'Luxe badkamer', category: 'Badkamer', style: 'Modern Luxe', image: sitePhotos[0], desc: 'Complete renovatie met luxe materialen en een rustige uitstraling', location: 'Beelthoven' },
   { id: 28, title: 'Badkamer renovatie', category: 'Badkamer', style: 'Modern Luxe', image: sitePhotos[27], desc: 'Zachte tinten en hoogwaardige afwerking voor dagelijks comfort', location: 'Beelthoven' },
   { id: 44, title: 'Badkamerproject', category: 'Badkamer', style: 'Warm Minimal', image: sitePhotos[20], desc: 'Warme materialen, zachte verlichting en een verfijnde afwerking', location: 'Beelthoven' },
