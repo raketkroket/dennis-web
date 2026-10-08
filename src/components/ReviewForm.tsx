@@ -7,6 +7,7 @@ export default function ReviewForm() {
   const { language } = useLanguage();
   const en = language === 'en';
   const [rating, setRating] = useState(0);
+  const [errorCode, setErrorCode] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const copy = (nl: string, english: string) => en ? english : nl;
   const fieldClass = 'denra-field mt-2 text-sm';
@@ -16,14 +17,18 @@ export default function ReviewForm() {
     if (status === 'sending') return;
     const form = event.currentTarget;
     const fields = new FormData(form);
+    setErrorCode('');
     setStatus('sending');
     try {
       const response = await fetch('/api/review', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: fields.get('name'), email: fields.get('email'), city: fields.get('city'), project: fields.get('project'), rating: Number(fields.get('rating')), text: fields.get('text'), website: fields.get('website'), consent: fields.get('consent') === 'on' }),
       });
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error('Review not sent');
+      const result = await response.json().catch(() => null) as { success?: boolean; code?: string } | null;
+      if (!response.ok || !result?.success) {
+        setErrorCode(result?.code ?? 'NETWORK_ERROR');
+        throw new Error('Review not sent');
+      }
       setStatus('success');
       form.reset();
       setRating(0);
@@ -62,7 +67,7 @@ export default function ReviewForm() {
             <div className="hidden" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
             <label className="flex items-start gap-3 text-xs leading-relaxed text-[#6b5d50] sm:col-span-2"><input name="consent" type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 accent-[#7a6552]" /><span>{copy('Ik ben klant van Denra en geef toestemming om mijn naam, plaats en review na controle te publiceren.', 'I am a Denra customer and consent to publication of my name, city and review after verification.')}</span></label>
             <div className="mt-1 sm:col-span-2"><button disabled={status === 'sending'} className="denra-button-primary w-full disabled:opacity-50 sm:w-auto" type="submit">{status === 'sending' ? copy('Versturen…', 'Sending…') : copy('Verstuur uw review', 'Send your review')}<ArrowRight size={16} aria-hidden="true" /></button></div>
-            <p role={status === 'error' ? 'alert' : 'status'} className="text-sm leading-relaxed text-[#6b5d50] sm:col-span-2">{status === 'success' ? copy('Bedankt! Dennis controleert uw review vóór publicatie.', 'Thank you! Dennis will check your review before publication.') : status === 'error' ? copy('Versturen is niet gelukt. Uw tekst staat nog in het formulier; probeer het opnieuw.', 'Could not send your review. Your text is still in the form; please try again.') : ''}</p>
+            <p role={status === 'error' ? 'alert' : 'status'} className="text-sm leading-relaxed text-[#6b5d50] sm:col-span-2">{status === 'success' ? copy('Bedankt! Dennis controleert uw review vóór publicatie.', 'Thank you! Dennis will check your review before publication.') : status === 'error' ? errorCode === 'EMAIL_NOT_CONFIGURED' ? copy('Reviews versturen is tijdelijk niet beschikbaar: de mailservice is nog niet ingesteld. Uw tekst staat nog in het formulier.', 'Review submission is temporarily unavailable: the email service has not been configured. Your text is still in the form.') : errorCode === 'INVALID_REVIEW' ? copy('Controleer uw gegevens en schrijf minimaal 20 tekens bij uw ervaring. Uw tekst staat nog in het formulier.', 'Check your details and write at least 20 characters about your experience. Your text is still in the form.') : errorCode === 'EMAIL_DELIVERY_FAILED' ? copy('De mailservice kon uw review niet afleveren. Uw tekst staat nog in het formulier; probeer het later opnieuw.', 'The email service could not deliver your review. Your text is still in the form; please try again later.') : copy('Geen verbinding met de reviewservice. Uw tekst staat nog in het formulier; probeer het opnieuw.', 'Could not connect to the review service. Your text is still in the form; please try again.') : ''}</p>
           </form>
         </div>
       </details>
