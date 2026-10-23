@@ -22,10 +22,10 @@ export default function Home() {
   const { t } = useLanguage();
   usePageTitle('Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers', t('marketing.heroDescription'));
 
-  // Each photo appears once on the homepage: hero first, then one per
-  // service, then the project selection. Dennis steers this with the
+  // Each project photo appears once on the homepage: one per service,
+  // then the project selection. Dennis steers this with the
   // "Uitgelicht" switch and the order on the Projecten admin page.
-  const { hero, showcases, selection } = useMemo(() => {
+  const { showcases, selection } = useMemo(() => {
     const candidates = projects.filter((project) => project.cover && largeEnough(project));
     const featured = candidates.filter((project) => project.isFeatured);
     const used = new Set<string>();
@@ -34,13 +34,11 @@ export default function Home() {
       return project;
     };
     const ordered = [...featured, ...candidates.filter((project) => !project.isFeatured)];
-    const heroProjects = [take(ordered[0]), take(ordered.find((project) => !used.has(project.id)))];
     const byCategory: Partial<Record<ProjectCategory, Project>> = {};
     for (const category of projectCategories) {
       byCategory[category] = take(ordered.find((project) => project.category === category && !used.has(project.id)));
     }
     return {
-      hero: heroProjects,
       showcases: byCategory,
       selection: ordered.filter((project) => !used.has(project.id)).slice(0, 6),
     };
@@ -48,7 +46,7 @@ export default function Home() {
 
   return (
     <>
-      <HeroSection main={hero[0]} second={hero[1]} />
+      <HeroSection />
       <TrustBar />
       <ServicesSection showcases={showcases} />
       <ProjectsSection projects={selection} />
