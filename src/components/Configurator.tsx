@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import {
@@ -20,6 +20,21 @@ import { fill, useLocalized } from '../i18n/format';
 import { loadCalculatorDraft, saveCalculatorDraft, saveQuoteConfiguration, type CalculatorDraft } from '../types/quote';
 import EstimateBreakdown from './EstimateBreakdown';
 import Img from './ui/Img';
+
+// three.js is only downloaded when the calculator is opened.
+const RoomPreview3D = lazy(() => import('./RoomPreview3D'));
+
+function useIsDesktop() {
+  const query = '(min-width: 1024px)';
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const onChange = () => setIsDesktop(media.matches);
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, []);
+  return isDesktop;
+}
 
 const emptyDraft: CalculatorDraft = { step: 1, roomType: null, length: '', width: '', optionIds: [] };
 const totalSteps = 4;
@@ -100,6 +115,29 @@ export default function Configurator() {
     navigate(`/contact?dienst=${room.roomType}`);
   };
 
+  const isDesktop = useIsDesktop();
+  const preview = room && (
+    <div>
+      <p className="eyebrow-plain mb-3">{t('site.preview3dTitle')}</p>
+      <Suspense fallback={<div className="aspect-[4/3] w-full bg-denra-stone" />}>
+        <RoomPreview3D
+          roomType={room.roomType}
+          length={dimensionsValid ? length : null}
+          width={dimensionsValid ? width : null}
+          optionIds={optionIds}
+          dimensionLabel={(value) => `${formatNumber(value, language)} m`}
+          description={fill(t('site.preview3dDescription'), {
+            room: pick(room.labelNl, room.labelEn).toLowerCase(),
+            length: formatNumber(dimensionsValid && length !== null ? length : room.roomType === 'wc' ? 1.4 : 3, language),
+            width: formatNumber(dimensionsValid && width !== null ? width : room.roomType === 'wc' ? 0.95 : 2.2, language),
+            options: optionIds.length ? `${t('site.preview3dWith')}${optionIds.map((id) => labelFor(id).toLowerCase()).join(', ')}` : '',
+          })}
+        />
+      </Suspense>
+      <p className="mt-2 text-[13px] text-denra-muted">{t('site.preview3dHint')}</p>
+    </div>
+  );
+
   const roomImage = (roomType: RoomType) => projects.find((project) => project.category === (roomType === 'wc' ? 'toilet' : 'badkamer') && project.isFeatured && project.cover)?.cover;
 
   return (
@@ -132,6 +170,8 @@ export default function Configurator() {
             })}
           </ol>
         </nav>
+
+        {!isDesktop && draft.step > 1 && preview && <div className="mt-8">{preview}</div>}
 
         <div className="mt-10">
           <p className="text-sm text-denra-muted">{fill(t('site.stepOf'), { step: draft.step, total: totalSteps })}</p>
@@ -313,7 +353,9 @@ export default function Configurator() {
 
       {/* Running estimate */}
       <aside className="lg:col-span-4" aria-label={t('site.liveTotal')}>
-        <div className="bg-denra-night p-6 text-denra-ivory lg:sticky lg:top-[calc(var(--header-height)+1.5rem)]">
+        <div className="space-y-6 lg:sticky lg:top-[calc(var(--header-height)+1.5rem)]">
+        {isDesktop && preview}
+        <div className="bg-denra-night p-6 text-denra-ivory">
           <p className="eyebrow-plain text-denra-greige">{t('site.liveTotal')}</p>
           {estimate ? (
             <>
@@ -334,6 +376,7 @@ export default function Configurator() {
             <p className="mt-3 text-denra-ivory/70">{t('configurator.chooseRoomDescription')}</p>
           )}
           <p className="mt-6 border-t border-denra-ivory/15 pt-4 text-xs leading-relaxed text-denra-ivory/55">{t('site.estimateNote')}</p>
+        </div>
         </div>
       </aside>
     </div>
