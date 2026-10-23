@@ -1,17 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
+import { Moon, RotateCcw, Sun } from 'lucide-react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/examples/jsm/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import type { RoomType } from '../lib/calculator';
+import { grateTexture, tileTextures, woodTexture } from './room3d/textures';
+import {
+  concealedTapModel, disposeModelGeometries, drainModel, exposedMixerModel, handBasinModel, heatingModel, nicheModel,
+  radiatorModel, rainShowerModel, showerScreenModel, socketModel, spotModel, toiletModel, vanityModel, type RoomMaterials,
+} from './room3d/models';
 
 interface RoomPreview3DProps {
   roomType: RoomType;
-  /** Metres; falls back to a typical size until valid dimensions are entered. */
+  /** Metres; a typical size is shown until valid dimensions are entered. */
   length: number | null;
   width: number | null;
   optionIds: string[];
   /** Text alternative for screen readers. */
   description: string;
   dimensionLabel: (value: number) => string;
+  labels: { evening: string; day: string; reset: string };
 }
 
 interface Target {
@@ -21,417 +33,526 @@ interface Target {
   options: Set<string>;
 }
 
+interface Controller {
+  setTarget: (target: Target) => void;
+  setEvening: (evening: boolean) => void;
+  resetView: () => void;
+}
+
 const HEIGHT = 2.6;
 const WALL = 0.1;
-const colors = {
-  floor: '#cfc5b6',
-  floorLine: '#bdb2a2',
-  wall: '#ebe4d9',
-  wallLine: '#dcd3c6',
-  wood: '#8a6a4b',
-  white: '#f6f4f0',
-  brass: '#b38d55',
-  dark: '#2b241d',
-  warm: '#ffcf8a',
-};
-
-/** A tile pattern drawn on a canvas, so no image files are needed. */
-function tileTexture(base: string, line: string, columns: number, rows: number) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 256;
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  context.fillStyle = base;
-  context.fillRect(0, 0, 256, 256);
-  context.strokeStyle = line;
-  context.lineWidth = 3;
-  for (let column = 0; column <= columns; column += 1) {
-    context.beginPath();
-    context.moveTo((column * 256) / columns, 0);
-    context.lineTo((column * 256) / columns, 256);
-    context.stroke();
-  }
-  for (let row = 0; row <= rows; row += 1) {
-    context.beginPath();
-    context.moveTo(0, (row * 256) / rows);
-    context.lineTo(256, (row * 256) / rows);
-    context.stroke();
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.anisotropy = 4;
-  return texture;
-}
-
-function labelSprite() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 96;
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true }));
-  sprite.scale.set(0.8, 0.3, 1);
-  sprite.renderOrder = 10;
-  let current = '';
-  const setText = (text: string) => {
-    if (text === current) return;
-    current = text;
-    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    context.clearRect(0, 0, 256, 96);
-    context.fillStyle = 'rgba(35, 26, 18, 0.88)';
-    context.beginPath();
-    context.roundRect(16, 14, 224, 68, 8);
-    context.fill();
-    context.fillStyle = '#f7f2ea';
-    context.font = '500 40px "DM Sans", system-ui, sans-serif';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText(text, 128, 50);
-    texture.needsUpdate = true;
-  };
-  return { sprite, setText };
-}
+const day = { background: new THREE.Color('#efe8de'), hemi: 0.55, sun: 1.25, env: 0.3, glow: 0.7, spot: 1.4, exposure: 0.88 };
+const evening = { background: new THREE.Color('#2a231d'), hemi: 0.08, sun: 0.03, env: 0.06, glow: 3.2, spot: 6, exposure: 1.2 };
+const mix = (from: number, to: number, amount: number) => from + (to - from) * amount;
 
 /**
- * Indicative 3D preview of the room being priced: it follows the entered
- * size and shows the chosen options. Built with plain three.js and loaded
- * only on the calculator page.
+ * Indicative 3D model of the room being priced. It follows the entered size
+ * and the chosen options, can be rotated, and has an evening-light mode.
+ * Built with three.js and only loaded on the calculator page.
  */
-export default function RoomPreview3D({ roomType, length, width, optionIds, description, dimensionLabel }: RoomPreview3DProps) {
+export default function RoomPreview3D({ roomType, length, width, optionIds, description, dimensionLabel, labels }: RoomPreview3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const setTargetRef = useRef<((target: Target) => void) | null>(null);
+  const controllerRef = useRef<Controller | null>(null);
   const labelRef = useRef(dimensionLabel);
   labelRef.current = dimensionLabel;
   const [failed, setFailed] = useState(false);
+  const [isEvening, setIsEvening] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lightweight = window.matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency ?? 4) < 4;
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     } catch {
       setFailed(true);
       return undefined;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, lightweight ? 1.75 : 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
     renderer.domElement.setAttribute('aria-hidden', 'true');
     renderer.domElement.style.touchAction = 'pan-y';
+    renderer.domElement.style.display = 'block';
     container.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 60);
+    scene.background = day.background.clone();
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = environment;
+    scene.environmentIntensity = day.env;
+    pmrem.dispose();
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 80);
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = !reducedMotion;
-    controls.dampingFactor = 0.08;
+    controls.dampingFactor = 0.07;
     controls.enablePan = false;
-    controls.minPolarAngle = 0.35;
-    controls.maxPolarAngle = 1.2;
-    controls.minAzimuthAngle = 0.12;
-    controls.maxAzimuthAngle = 1.45;
-    controls.autoRotate = false;
+    // No wheel zoom: scrolling over the preview must keep scrolling the page.
+    controls.enableZoom = false;
+    controls.minPolarAngle = 0.3;
+    controls.maxPolarAngle = 1.22;
+    controls.minAzimuthAngle = 0.1;
+    controls.maxAzimuthAngle = 1.47;
 
-    // Light: soft daylight plus a sun for gentle shadows.
-    scene.add(new THREE.HemisphereLight('#fff8ee', '#b9ab98', 1.6));
-    const sun = new THREE.DirectionalLight('#fff4e2', 1.6);
-    sun.position.set(4, 7, 5);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(1024, 1024);
-    sun.shadow.camera.left = -6;
-    sun.shadow.camera.right = 6;
-    sun.shadow.camera.top = 6;
-    sun.shadow.camera.bottom = -6;
-    sun.shadow.bias = -0.0005;
-    scene.add(sun);
-
-    const disposables: { dispose: () => void }[] = [];
-    const material = (options: THREE.MeshStandardMaterialParameters) => {
-      const created = new THREE.MeshStandardMaterial(options);
-      disposables.push(created);
-      return created;
-    };
-    const box = new THREE.BoxGeometry(1, 1, 1);
-    const cylinder = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-    const sphere = new THREE.SphereGeometry(0.5, 32, 16);
-    disposables.push(box, cylinder, sphere);
-    const mesh = (geometry: THREE.BufferGeometry, meshMaterial: THREE.Material, parent: THREE.Object3D = scene) => {
-      const created = new THREE.Mesh(geometry, meshMaterial);
-      created.castShadow = true;
-      created.receiveShadow = true;
-      parent.add(created);
-      return created;
-    };
-
-    const floorTexture = tileTexture(colors.floor, colors.floorLine, 2, 2);
-    const backWallTexture = tileTexture(colors.wall, colors.wallLine, 2, 4);
-    const sideWallTexture = tileTexture(colors.wall, colors.wallLine, 2, 4);
-    disposables.push(floorTexture, backWallTexture, sideWallTexture);
-
-    const floorMaterial = material({ map: floorTexture, roughness: 0.75, emissive: '#ff8a3d', emissiveIntensity: 0 });
-    const floor = mesh(box, floorMaterial);
-    const backWall = mesh(box, material({ map: backWallTexture, roughness: 0.9 }));
-    const sideWall = mesh(box, material({ map: sideWallTexture, roughness: 0.9 }));
-    const plainWhite = material({ color: colors.white, roughness: 0.25 });
-    const wood = material({ color: colors.wood, roughness: 0.6 });
-    const brass = material({ color: colors.brass, metalness: 0.85, roughness: 0.3 });
-    const dark = material({ color: colors.dark, roughness: 0.5 });
-    const glow = material({ color: colors.warm, emissive: colors.warm, emissiveIntensity: 2.2 });
-    const glass = new THREE.MeshPhysicalMaterial({ color: '#dfe9e8', transparent: true, opacity: 0.22, roughness: 0.05, transmission: 0.6, thickness: 0.01 });
-    // No environment map to reflect, so the mirror gets a soft glow instead of metalness.
-    const mirror = material({ color: '#dfe6e6', metalness: 0.1, roughness: 0.12, emissive: '#e8eeee', emissiveIntensity: 0.35 });
-    disposables.push(glass);
-
-    // Vertical mitred corner: a fine light edge where the two walls meet.
-    const corner = mesh(box, material({ color: '#fbf8f2', roughness: 0.3 }));
-
-    // Bathroom furniture.
-    const vanity = new THREE.Group();
-    scene.add(vanity);
-    mesh(box, wood, vanity).scale.set(1, 0.5, 0.46);
-    vanity.children[0].position.y = 0.6;
-    const basin = mesh(cylinder, plainWhite, vanity);
-    basin.scale.set(0.42, 0.14, 0.36);
-    basin.position.set(0, 0.92, 0.02);
-    const vanityMirror = mesh(box, mirror, vanity);
-    vanityMirror.scale.set(0.8, 0.9, 0.02);
-    vanityMirror.position.set(0, 1.6, -0.21);
-    const vanityTap = mesh(cylinder, brass, vanity);
-    vanityTap.scale.set(0.03, 0.22, 0.03);
-    vanityTap.position.set(0, 1.08, -0.16);
-
-    const shower = new THREE.Group();
-    scene.add(shower);
-    const showerGlass = mesh(box, glass, shower);
-    showerGlass.scale.set(0.012, 2.0, 1);
-    showerGlass.castShadow = false;
-    const showerHead = mesh(cylinder, brass, shower);
-    showerHead.scale.set(0.24, 0.02, 0.24);
-    const showerArm = mesh(cylinder, brass, shower);
-    showerArm.scale.set(0.02, 0.32, 0.02);
-    showerArm.rotation.x = Math.PI / 2;
-    const drain = mesh(box, dark, shower);
-    drain.scale.set(0.8, 0.012, 0.06);
-    const concealedTap = new THREE.Group();
-    shower.add(concealedTap);
-    mesh(box, brass, concealedTap).scale.set(0.16, 0.16, 0.012);
-    const tapLever = mesh(cylinder, brass, concealedTap);
-    tapLever.scale.set(0.025, 0.12, 0.025);
-    tapLever.rotation.x = Math.PI / 2;
-    tapLever.position.z = 0.06;
-
-    const niche = new THREE.Group();
-    scene.add(niche);
-    mesh(box, material({ color: '#d8cfc2', roughness: 0.9 }), niche).scale.set(0.6, 0.32, 0.06);
-    const nicheLight = mesh(box, glow, niche);
-    nicheLight.scale.set(0.58, 0.012, 0.012);
-    nicheLight.position.set(0, 0.155, 0.02);
-    const nicheBottle = mesh(cylinder, dark, niche);
-    nicheBottle.scale.set(0.05, 0.14, 0.05);
-    nicheBottle.position.set(-0.15, -0.09, 0.02);
-
-    // Toilet variants.
-    const toilet = new THREE.Group();
-    scene.add(toilet);
-    const bowl = mesh(sphere, plainWhite, toilet);
-    bowl.scale.set(0.38, 0.32, 0.55);
-    const pedestal = mesh(cylinder, plainWhite, toilet);
-    pedestal.scale.set(0.24, 0.36, 0.3);
-    pedestal.position.y = 0.18;
-    const cistern = mesh(box, plainWhite, toilet);
-    cistern.scale.set(0.4, 0.4, 0.17);
-    const boxing = mesh(box, material({ color: '#e1d8cb', roughness: 0.85 }), toilet);
-    boxing.scale.set(0.9, 1.15, 0.22);
-    const flushPlate = mesh(box, brass, toilet);
-    flushPlate.scale.set(0.24, 0.16, 0.012);
-    const frame = mesh(box, material({ color: '#7d8a8f', metalness: 0.4, roughness: 0.5 }), toilet);
-    frame.scale.set(0.5, 1.1, 0.1);
-
-    const handBasin = mesh(box, plainWhite);
-    handBasin.scale.set(0.36, 0.12, 0.24);
-
-    // Ceiling details along the two walls (a section through the room).
-    const bulkhead = new THREE.Group();
-    scene.add(bulkhead);
-    const bulkheadBack = mesh(box, material({ color: '#f1ece4', roughness: 0.9 }), bulkhead);
-    const bulkheadSide = mesh(box, bulkheadBack.material as THREE.Material, bulkhead);
-    const spots: THREE.Mesh[] = [];
-    const spotLights: THREE.PointLight[] = [];
-    const disc = new THREE.CylinderGeometry(0.05, 0.05, 0.02, 20);
-    disposables.push(disc);
-    for (let index = 0; index < 4; index += 1) {
-      spots.push(mesh(disc, glow));
-      const light = new THREE.PointLight(colors.warm, 0, 3, 2);
-      spotLights.push(light);
-      scene.add(light);
+    // Post-processing: ambient occlusion adds depth in corners and under
+    // furniture. Skipped on phones and slow devices.
+    let composer: EffectComposer | null = null;
+    let aoPass: GTAOPass | null = null;
+    if (!lightweight) {
+      composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      aoPass = new GTAOPass(scene, camera, 1, 1);
+      aoPass.updateGtaoMaterial({ radius: 0.3, distanceFallOff: 1, thickness: 1, scale: 1 });
+      aoPass.blendIntensity = 0.85;
+      composer.addPass(aoPass);
+      composer.addPass(new OutputPass());
     }
 
-    const sockets = [mesh(box, plainWhite), mesh(box, plainWhite)];
-    sockets.forEach((socket) => socket.scale.set(0.09, 0.09, 0.015));
+    // ── Light ──────────────────────────────────────────────────────────
+    const hemisphere = new THREE.HemisphereLight('#fff8ee', '#b8a994', day.hemi);
+    scene.add(hemisphere);
+    const sun = new THREE.DirectionalLight('#fff1dc', day.sun);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(lightweight ? 1024 : 2048, lightweight ? 1024 : 2048);
+    sun.shadow.bias = -0.0004;
+    sun.shadow.normalBias = 0.02;
+    sun.shadow.radius = 4;
+    scene.add(sun, sun.target);
 
-    const lengthLabel = labelSprite();
-    const widthLabel = labelSprite();
-    scene.add(lengthLabel.sprite, widthLabel.sprite);
-    disposables.push(lengthLabel.sprite.material, widthLabel.sprite.material, (lengthLabel.sprite.material as THREE.SpriteMaterial).map as THREE.Texture, (widthLabel.sprite.material as THREE.SpriteMaterial).map as THREE.Texture);
+    // ── Materials ──────────────────────────────────────────────────────
+    const disposables: { dispose: () => void }[] = [environment];
+    const keep = <T extends { dispose: () => void }>(item: T) => {
+      disposables.push(item);
+      return item;
+    };
+    const floorTiles = tileTextures({ base: '#bfb29f', grout: '#9f927f', columns: 2, rows: 2, seed: 11 });
+    const backTiles = tileTextures({ base: '#e2d9cc', grout: '#c4b8a8', columns: 2, rows: 4, seed: 23, variation: 6 });
+    const sideTiles = tileTextures({ base: '#e2d9cc', grout: '#c4b8a8', columns: 2, rows: 4, seed: 37, variation: 6 });
+    const wood = woodTexture();
+    const grate = grateTexture();
+    [floorTiles.map, floorTiles.bumpMap, backTiles.map, backTiles.bumpMap, sideTiles.map, sideTiles.bumpMap, wood, grate].forEach(keep);
 
+    const floorMaterial = keep(new THREE.MeshStandardMaterial({ map: floorTiles.map, bumpMap: floorTiles.bumpMap, bumpScale: 1.2, roughness: 0.62 }));
+    const backMaterial = keep(new THREE.MeshStandardMaterial({ map: backTiles.map, bumpMap: backTiles.bumpMap, bumpScale: 0.9, roughness: 0.4 }));
+    const sideMaterial = keep(new THREE.MeshStandardMaterial({ map: sideTiles.map, bumpMap: sideTiles.bumpMap, bumpScale: 0.9, roughness: 0.4 }));
+    const glow = keep(new THREE.MeshStandardMaterial({ color: '#ffe2b0', emissive: '#ffcf8a', emissiveIntensity: day.glow }));
+    const heat = keep(new THREE.MeshStandardMaterial({ color: '#ff8a3d', emissive: '#ff6a1f', emissiveIntensity: 1.2, transparent: true, opacity: 0.55, depthWrite: false }));
+    const materials: RoomMaterials = {
+      ceramic: keep(new THREE.MeshPhysicalMaterial({ color: '#f8f6f2', roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08 })),
+      brass: keep(new THREE.MeshStandardMaterial({ color: '#c39a5c', metalness: 1, roughness: 0.28 })),
+      black: keep(new THREE.MeshStandardMaterial({ color: '#1f1c19', metalness: 0.4, roughness: 0.45 })),
+      wood: keep(new THREE.MeshStandardMaterial({ map: wood, roughness: 0.55 })),
+      stone: keep(new THREE.MeshStandardMaterial({ color: '#e3ddd3', roughness: 0.3 })),
+      glass: keep(new THREE.MeshPhysicalMaterial({ color: '#eef5f4', metalness: 0, roughness: 0.04, transmission: 1, thickness: 0.01, ior: 1.5, transparent: true, opacity: 1 })),
+      mirror: keep(new THREE.MeshStandardMaterial({ color: '#e7ecec', metalness: 1, roughness: 0.03 })),
+      glow,
+      plaster: keep(new THREE.MeshStandardMaterial({ color: '#efe9e0', roughness: 0.85 })),
+      steel: keep(new THREE.MeshStandardMaterial({ color: '#7f8b90', metalness: 0.6, roughness: 0.45 })),
+      grate: keep(new THREE.MeshStandardMaterial({ map: grate, metalness: 0.8, roughness: 0.35 })),
+      leaf: keep(new THREE.MeshStandardMaterial({ color: '#5f7652', roughness: 0.7 })),
+      pot: keep(new THREE.MeshStandardMaterial({ color: '#3a332c', roughness: 0.6 })),
+      heat,
+      inset: keep(new THREE.MeshStandardMaterial({ color: '#a89a87', roughness: 0.9 })),
+    };
+    const profileMaterial = keep(new THREE.MeshStandardMaterial({ color: '#c8ccce', metalness: 0.9, roughness: 0.25 }));
+
+    // ── Room shell ─────────────────────────────────────────────────────
+    const box = keep(new THREE.BoxGeometry(1, 1, 1));
+    const shell = (material: THREE.Material) => {
+      const mesh = new THREE.Mesh(box, material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+      return mesh;
+    };
+    const plinth = shell(keep(new THREE.MeshStandardMaterial({ color: '#d7cdbf', roughness: 0.9 })));
+    const floor = shell(floorMaterial);
+    const backWall = shell(backMaterial);
+    const sideWall = shell(sideMaterial);
+    const ground = new THREE.Mesh(keep(new THREE.PlaneGeometry(40, 40)), keep(new THREE.ShadowMaterial({ opacity: 0.18 })));
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.16;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // ── Fixtures ───────────────────────────────────────────────────────
+    const vanity = vanityModel(materials);
+    const screen = showerScreenModel(materials);
+    const rain = rainShowerModel(materials);
+    const mixer = exposedMixerModel(materials);
+    const concealed = concealedTapModel(materials);
+    const drain = drainModel(materials);
+    const niche = nicheModel(materials);
+    const toilet = toiletModel(materials);
+    const handBasin = handBasinModel(materials);
+    const radiator = radiatorModel(materials);
+    const sockets = new THREE.Group();
+    sockets.add(socketModel(materials), socketModel(materials));
+    const ceiling = new THREE.Group();
+    const bulkheadBack = new THREE.Mesh(box, materials.plaster);
+    const bulkheadSide = new THREE.Mesh(box, materials.plaster);
+    const shadowGapBack = new THREE.Mesh(box, materials.black);
+    const shadowGapSide = new THREE.Mesh(box, materials.black);
+    [bulkheadBack, bulkheadSide].forEach((mesh) => { mesh.castShadow = true; mesh.receiveShadow = true; });
+    ceiling.add(bulkheadBack, bulkheadSide, shadowGapBack, shadowGapSide);
+    const spots = Array.from({ length: 4 }, () => spotModel(materials));
+    const spotLights = spots.map(() => {
+      const light = new THREE.SpotLight('#ffd9a0', 0, 5, 0.75, 0.75, 1.6);
+      scene.add(light, light.target);
+      return light;
+    });
+    let heating: THREE.Mesh | null = null;
+    let heatingSize = '';
+
+    // Aluminium edge profiles on outside corners; mitred tiling ("verstek") has none.
+    const profileGeometry = keep(new THREE.BoxGeometry(0.012, 1, 0.012));
+    const toiletProfiles = [-0.45, 0.45].map((x) => {
+      const mesh = new THREE.Mesh(profileGeometry, profileMaterial);
+      mesh.scale.y = 1.15;
+      mesh.position.set(x, 0.575, 0.24);
+      toilet.add(mesh);
+      return mesh;
+    });
+    const nicheProfiles = [-0.3, 0.3].map((x) => {
+      const mesh = new THREE.Mesh(profileGeometry, profileMaterial);
+      mesh.scale.y = 0.34;
+      mesh.position.set(x, 0, 0.1);
+      niche.add(mesh);
+      return mesh;
+    });
+
+    scene.add(vanity, screen, rain, mixer, concealed, drain, niche, toilet, handBasin, radiator, sockets, ceiling, ...spots);
+
+    // Optional parts grow in and out instead of popping.
+    type Feature = { object: THREE.Object3D; value: number; target: number; base: THREE.Vector3 };
+    const features = new Map<THREE.Object3D, Feature>();
+    [vanity, screen, rain, mixer, concealed, drain, niche, toilet, handBasin, radiator, sockets, ceiling, ...spots].forEach((object) => {
+      features.set(object, { object, value: 0, target: 0, base: new THREE.Vector3(1, 1, 1) });
+    });
+    const show = (object: THREE.Object3D, visible: boolean) => {
+      const feature = features.get(object);
+      if (feature) feature.target = visible ? 1 : 0;
+    };
+
+    // ── Dimension lines ────────────────────────────────────────────────
+    const lineMaterial = keep(new THREE.LineBasicMaterial({ color: '#4a3f35', transparent: true, opacity: 0.85 }));
+    const dimensionLine = () => {
+      const geometry = keep(new THREE.BufferGeometry());
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(new Array(18).fill(0), 3));
+      const line = new THREE.LineSegments(geometry, lineMaterial);
+      scene.add(line);
+      return line;
+    };
+    const setLine = (line: THREE.LineSegments, from: THREE.Vector3, to: THREE.Vector3, tick: THREE.Vector3) => {
+      const position = line.geometry.getAttribute('position') as THREE.BufferAttribute;
+      const values = [from, to, from.clone().sub(tick), from.clone().add(tick), to.clone().sub(tick), to.clone().add(tick)];
+      values.forEach((point, index) => position.setXYZ(index, point.x, point.y, point.z));
+      position.needsUpdate = true;
+      line.geometry.computeBoundingSphere();
+    };
+    // Dimension labels are HTML on top of the canvas: crisp text, and they
+    // stay out of the ambient-occlusion pass.
+    const label = () => {
+      const element = document.createElement('span');
+      element.setAttribute('aria-hidden', 'true');
+      element.style.cssText = 'position:absolute;left:0;top:0;padding:3px 10px;border-radius:999px;background:#231A12;color:#f7f2ea;font:600 12px/1.3 "DM Sans",system-ui,sans-serif;white-space:nowrap;pointer-events:none;will-change:transform';
+      container.appendChild(element);
+      const anchor = new THREE.Vector3();
+      return {
+        anchor,
+        set(text: string) {
+          if (element.textContent !== text) element.textContent = text;
+        },
+        place() {
+          const projected = anchor.clone().project(camera);
+          const x = ((projected.x + 1) / 2) * container.clientWidth;
+          const y = ((1 - projected.y) / 2) * container.clientHeight;
+          element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+          element.style.visibility = projected.z < 1 ? 'visible' : 'hidden';
+        },
+        remove() {
+          element.remove();
+        },
+      };
+    };
+    const lengthLine = dimensionLine();
+    const widthLine = dimensionLine();
+    const lengthLabel = label();
+    const widthLabel = label();
+
+    // ── Layout ─────────────────────────────────────────────────────────
     let target: Target = { roomType: 'badkamer', length: 3, width: 2.2, options: new Set() };
     const current = { length: 3, width: 2.2 };
-    let options = target.options;
-    let cameraFramed = false;
+    let mood = 0;
+    let moodTarget = 0;
 
     const layout = (length: number, width: number) => {
       const halfL = length / 2;
       const halfW = width / 2;
       const bathroom = target.roomType === 'badkamer';
-      const has = (id: string) => options.has(id);
+      const has = (id: string) => target.options.has(id);
 
+      plinth.scale.set(length + 0.5, 0.14, width + 0.5);
+      plinth.position.set(0.15, -0.15, 0.15);
       floor.scale.set(length + WALL, 0.08, width + WALL);
-      floor.position.set(0, -0.04, 0);
-      floorTexture.repeat.set(length / 0.6, width / 0.6);
+      floor.position.set(-WALL / 2, -0.04, -WALL / 2);
+      floorTiles.map.repeat.set(length / 1.2, width / 1.2);
+      floorTiles.bumpMap.repeat.copy(floorTiles.map.repeat);
       backWall.scale.set(length + WALL, HEIGHT, WALL);
-      backWall.position.set(0, HEIGHT / 2, -halfW - WALL / 2);
-      backWallTexture.repeat.set(length / 0.6, HEIGHT / 0.6);
+      backWall.position.set(-WALL / 2, HEIGHT / 2, -halfW - WALL / 2);
+      backTiles.map.repeat.set(length / 0.6, HEIGHT / 2.4);
+      backTiles.bumpMap.repeat.copy(backTiles.map.repeat);
       sideWall.scale.set(WALL, HEIGHT, width);
-      sideWall.position.set(-halfL - WALL / 2, HEIGHT / 2, WALL / 2 - WALL / 2);
-      sideWallTexture.repeat.set(width / 0.6, HEIGHT / 0.6);
-      corner.visible = has('tegelwerk_verstek');
-      corner.scale.set(0.025, HEIGHT, 0.025);
-      corner.position.set(-halfL + 0.012, HEIGHT / 2, -halfW + 0.012);
+      sideWall.position.set(-halfL - WALL / 2, HEIGHT / 2, 0);
+      sideTiles.map.repeat.set(width / 0.6, HEIGHT / 2.4);
+      sideTiles.bumpMap.repeat.copy(sideTiles.map.repeat);
 
-      floorMaterial.emissiveIntensity = has('vloerverwarming') ? 0.16 : 0;
+      // Bathroom: shower in the back-left corner, vanity on the back wall,
+      // toilet on the side wall when the room is deep enough.
+      const showerWidth = Math.min(1.0, length * 0.38);
+      const showerDepth = Math.min(1.15, width * 0.58);
+      show(screen, bathroom);
+      screen.position.set(-halfL + showerWidth, 0, -halfW);
+      const glassPane = screen.getObjectByName('glass') as THREE.Mesh;
+      glassPane.scale.z = showerDepth;
+      glassPane.position.z = showerDepth / 2;
+      const topProfile = screen.getObjectByName('profile') as THREE.Mesh;
+      topProfile.scale.z = showerDepth;
+      topProfile.position.z = showerDepth / 2;
+      show(rain, bathroom);
+      rain.position.set(-halfL + showerWidth / 2, 0, -halfW);
+      show(mixer, bathroom && !has('inbouwkraan'));
+      mixer.position.set(-halfL + showerWidth / 2, 0, -halfW);
+      show(concealed, has('inbouwkraan'));
+      if (bathroom) {
+        concealed.position.set(-halfL, 0, -halfW + showerDepth / 2);
+        concealed.rotation.y = Math.PI / 2;
+      } else {
+        concealed.position.set(halfL - 0.2, -0.25, -halfW);
+        concealed.rotation.y = 0;
+      }
+      show(drain, has('drain'));
+      drain.position.set(bathroom ? -halfL + showerWidth / 2 : 0, 0, bathroom ? -halfW + 0.1 : halfW - 0.15);
+      (drain.getObjectByName('grate') as THREE.Mesh).scale.x = bathroom ? Math.max(0.5, showerWidth - 0.2) : Math.min(0.6, length - 0.4);
 
-      // Shower in the back-left corner of a bathroom; toilet and basin elsewhere.
-      const showerDepth = Math.min(1.2, width * 0.6);
-      const showerWidth = Math.min(1.1, length * 0.4);
-      shower.visible = bathroom;
-      showerGlass.scale.z = showerDepth;
-      showerGlass.position.set(-halfL + showerWidth, 1.0, -halfW + showerDepth / 2);
-      showerHead.position.set(-halfL + showerWidth / 2, 2.05, -halfW + 0.32);
-      showerArm.position.set(-halfL + showerWidth / 2, 2.07, -halfW + 0.16);
-      drain.visible = has('drain');
-      drain.scale.x = Math.max(0.5, showerWidth - 0.2);
-      drain.position.set(-halfL + showerWidth / 2, 0.006, -halfW + 0.12);
-      concealedTap.visible = has('inbouwkraan');
-      concealedTap.position.set(-halfL + 0.008, 1.1, -halfW + showerDepth / 2);
-      concealedTap.rotation.y = Math.PI / 2;
-
-      vanity.visible = bathroom;
-      vanity.position.set(Math.min(halfL - 0.65, Math.max(-halfL + showerWidth + 0.6, halfL * 0.25)), 0, -halfW + 0.23);
-
-      niche.visible = has('niche');
-      niche.position.set(bathroom ? -halfL + showerWidth / 2 : 0, bathroom ? 1.25 : 1.55, -halfW + 0.02);
-      nicheLight.visible = true;
+      show(vanity, bathroom);
+      const vanityX = Math.min(halfL - 0.58, Math.max(-halfL + showerWidth + 0.6, halfL * 0.2));
+      vanity.position.set(vanityX, 0, -halfW);
+      show(radiator, bathroom && halfL - (vanityX + 0.5) > 0.6);
+      radiator.position.set(halfL - 0.35, 0, -halfW);
 
       const wallHung = has('hangtoilet_systeem') || has('geberit_duofix') || has('inbouwreservoir');
       const boxedIn = has('hangtoilet_systeem') || has('toiletframe_ombouwen');
-      const toiletOnSide = bathroom;
-      toilet.visible = bathroom ? width >= 1.7 : true;
-      if (toiletOnSide) {
+      show(toilet, bathroom ? width >= 1.7 : true);
+      if (bathroom) {
         toilet.position.set(-halfL, 0, Math.min(halfW - 0.5, -halfW + showerDepth + 0.55));
         toilet.rotation.y = Math.PI / 2;
       } else {
         toilet.position.set(0, 0, -halfW);
         toilet.rotation.y = 0;
       }
-      bowl.position.set(0, wallHung ? 0.42 : 0.4, boxedIn ? 0.5 : 0.36);
-      pedestal.visible = !wallHung;
-      pedestal.position.z = 0.34;
-      cistern.visible = !wallHung && !boxedIn;
-      cistern.position.set(0, 0.62, 0.1);
-      boxing.visible = boxedIn;
-      boxing.position.set(0, 0.575, 0.11);
-      flushPlate.visible = boxedIn || wallHung;
-      flushPlate.position.set(0, 0.95, boxedIn ? 0.225 : 0.02);
-      frame.visible = wallHung && !boxedIn;
-      frame.position.set(0, 0.55, 0.06);
+      const wallFace = boxedIn ? 0.24 : wallHung ? 0.11 : 0.17;
+      const bowl = toilet.getObjectByName('bowl') as THREE.Mesh;
+      bowl.position.set(0, wallHung ? 0.15 : 0.12, wallFace + 0.27);
+      (toilet.getObjectByName('lid') as THREE.Mesh).position.set(0, bowl.position.y + 0.285, wallFace + 0.28);
+      (toilet.getObjectByName('pedestal') as THREE.Mesh).visible = !wallHung;
+      (toilet.getObjectByName('pedestal') as THREE.Mesh).position.z = wallFace + 0.24;
+      (toilet.getObjectByName('cistern') as THREE.Mesh).visible = !wallHung && !boxedIn;
+      (toilet.getObjectByName('boxing') as THREE.Mesh).visible = boxedIn;
+      (toilet.getObjectByName('shelf') as THREE.Mesh).visible = boxedIn;
+      (toilet.getObjectByName('frame') as THREE.Mesh).visible = wallHung && !boxedIn;
+      const plate = toilet.getObjectByName('plate') as THREE.Group;
+      plate.visible = wallHung || boxedIn;
+      plate.position.set(0, 0.95, boxedIn ? 0.247 : 0.117);
+      toiletProfiles.forEach((profile) => { profile.visible = boxedIn && !has('tegelwerk_verstek'); });
 
-      handBasin.visible = !bathroom;
-      handBasin.position.set(halfL - 0.2, 0.85, -halfW + 0.42);
+      show(handBasin, !bathroom);
+      handBasin.position.set(-halfL, 0, Math.max(-halfW + 0.35, halfW - 0.3));
+      handBasin.rotation.y = Math.PI / 2;
 
+      show(niche, has('niche'));
+      niche.position.set(bathroom ? -halfL + showerWidth / 2 : 0, bathroom ? 1.3 : 1.62, -halfW);
+      nicheProfiles.forEach((profile) => { profile.visible = !has('tegelwerk_verstek'); });
+
+      // Ceiling: a lowered ceiling becomes a bulkhead along both walls;
+      // spotlights alone sit in a slim band.
       const lowered = has('verlaagd_plafond');
       const withSpots = has('spotjes');
-      bulkhead.visible = lowered || withSpots;
-      const depth = lowered ? 0.42 : 0.16;
-      bulkheadBack.scale.set(length, 0.2, depth);
-      bulkheadBack.position.set(0, HEIGHT - 0.1, -halfW + depth / 2);
-      bulkheadSide.scale.set(depth, 0.2, width - depth);
-      bulkheadSide.position.set(-halfL + depth / 2, HEIGHT - 0.1, depth / 2);
+      show(ceiling, lowered || withSpots);
+      ceiling.position.set(-halfL, HEIGHT, -halfW);
+      const depth = lowered ? 0.5 : 0.18;
+      const thickness = lowered ? 0.22 : 0.08;
+      bulkheadBack.scale.set(length, thickness, depth);
+      bulkheadBack.position.set(halfL, -thickness / 2, depth / 2);
+      bulkheadSide.scale.set(depth, thickness, width - depth);
+      bulkheadSide.position.set(depth / 2, -thickness / 2, depth + (width - depth) / 2);
+      shadowGapBack.scale.set(length, 0.012, 0.02);
+      shadowGapBack.position.set(halfL, -thickness - 0.006, depth - 0.01);
+      shadowGapSide.scale.set(0.02, 0.012, width - depth);
+      shadowGapSide.position.set(depth - 0.01, -thickness - 0.006, depth + (width - depth) / 2);
       spots.forEach((spot, index) => {
-        spot.visible = withSpots;
-        const along = index < 2 ? -halfL + length * (index === 0 ? 0.3 : 0.72) : -halfW + width * (index === 2 ? 0.45 : 0.8);
-        if (index < 2) spot.position.set(along, HEIGHT - 0.205, -halfW + depth / 2);
-        else spot.position.set(-halfL + depth / 2, HEIGHT - 0.205, along);
-        spotLights[index].intensity = withSpots ? 1.2 : 0;
-        spotLights[index].position.copy(spot.position).y -= 0.15;
+        show(spot, withSpots);
+        const along = index < 2 ? -halfL + length * (index === 0 ? 0.3 : 0.72) : -halfW + depth + (width - depth) * (index === 2 ? 0.35 : 0.78);
+        if (index < 2) spot.position.set(along, HEIGHT - thickness - 0.004, -halfW + depth / 2);
+        else spot.position.set(-halfL + depth / 2, HEIGHT - thickness - 0.004, along);
+        spotLights[index].position.copy(spot.position);
+        spotLights[index].target.position.set(spot.position.x + 0.15, 0, spot.position.z + 0.15);
       });
 
-      sockets.forEach((socket, index) => {
-        socket.visible = has('elektra');
-        socket.position.set(halfL - 0.25 - index * 0.12, bathroom ? 1.15 : 1.1, -halfW + 0.008);
-      });
+      sockets.position.set(halfL - 0.3, bathroom ? 1.15 : 1.1, -halfW);
+      sockets.children[1].position.x = -0.1;
+      show(sockets, has('elektra'));
 
-      lengthLabel.setText(labelRef.current(target.length));
-      widthLabel.setText(labelRef.current(target.width));
-      lengthLabel.sprite.position.set(0, 0.08, halfW + 0.35);
-      widthLabel.sprite.position.set(halfL + 0.45, 0.08, 0);
+      // Heating cable, rebuilt only when the room size settles on a new value.
+      const heatingKey = `${target.length.toFixed(2)}x${target.width.toFixed(2)}`;
+      if (has('vloerverwarming') && heatingKey !== heatingSize) {
+        if (heating) {
+          scene.remove(heating);
+          heating.geometry.dispose();
+        }
+        heating = heatingModel(materials, target.length, target.width);
+        scene.add(heating);
+        heatingSize = heatingKey;
+      }
+      if (heating) {
+        heating.visible = has('vloerverwarming');
+        heating.scale.set(length / target.length, 1, width / target.width);
+      }
+
+      // Dimension lines just in front of the floor edges.
+      setLine(lengthLine, new THREE.Vector3(-halfL, 0.01, halfW + 0.3), new THREE.Vector3(halfL, 0.01, halfW + 0.3), new THREE.Vector3(0, 0, 0.08));
+      setLine(widthLine, new THREE.Vector3(halfL + 0.3, 0.01, -halfW), new THREE.Vector3(halfL + 0.3, 0.01, halfW), new THREE.Vector3(0.08, 0, 0));
+      lengthLabel.set(labelRef.current(target.length));
+      widthLabel.set(labelRef.current(target.width));
+      lengthLabel.anchor.set(0, 0.02, halfW + 0.3);
+      widthLabel.anchor.set(halfL + 0.3, 0.02, 0);
+
+      // Sun and shadow area follow the room size.
+      const span = Math.max(length, width) + 1.5;
+      sun.position.set(span * 0.9, span * 1.6, span * 1.2);
+      sun.target.position.set(0, 0, 0);
+      const shadowCamera = sun.shadow.camera;
+      shadowCamera.left = -span;
+      shadowCamera.right = span;
+      shadowCamera.top = span;
+      shadowCamera.bottom = -span;
+      shadowCamera.far = span * 5;
+      shadowCamera.updateProjectionMatrix();
     };
 
-    // Keeps the whole room in view: same viewing angle, distance follows the size.
-    const frameCamera = (immediate: boolean) => {
+    const applyMood = () => {
+      hemisphere.intensity = mix(day.hemi, evening.hemi, mood);
+      sun.intensity = mix(day.sun, evening.sun, mood);
+      (scene.background as THREE.Color).copy(day.background).lerp(evening.background, mood);
+      renderer.toneMappingExposure = mix(day.exposure, evening.exposure, mood);
+      glow.emissiveIntensity = mix(day.glow, evening.glow, mood);
+      scene.environmentIntensity = mix(day.env, evening.env, mood);
+      const spotStrength = mix(day.spot, evening.spot, mood);
+      spots.forEach((spot, index) => { spotLights[index].intensity = spotStrength * (features.get(spot)?.value ?? 0); });
+      const halo = vanity.getObjectByName('halo') as THREE.Mesh | undefined;
+      if (halo) halo.visible = mood > 0.05 || target.options.has('spotjes');
+    };
+
+    // ── Camera ─────────────────────────────────────────────────────────
+    const intro = { active: !reducedMotion, progress: 0 };
+    // Distance that keeps the whole room in view, a little further on narrow screens.
+    const framing = () => {
       const size = Math.max(target.length, target.width, 1.4);
-      const distance = 2.2 + size * 1.25;
-      controls.target.set(0, 1.0, 0);
-      controls.minDistance = distance * 0.6;
-      controls.maxDistance = distance * 1.6;
-      if (immediate || !cameraFramed) {
-        camera.position.set(distance * 0.62, 1.0 + distance * 0.62, distance * 0.62);
-        cameraFramed = true;
-      } else {
+      return (2.0 + size * 1.25) * Math.max(1, 1.5 / camera.aspect);
+    };
+    const restingPosition = () => {
+      const distance = framing();
+      return new THREE.Vector3(distance * 0.6, 0.9 + distance * 0.62, distance * 0.68);
+    };
+    const frameCamera = (snap: boolean) => {
+      const distance = framing();
+      controls.target.set(0, 0.95, 0);
+      controls.minDistance = distance * 0.55;
+      controls.maxDistance = distance * 1.7;
+      if (snap) camera.position.copy(restingPosition());
+      else {
         const direction = camera.position.clone().sub(controls.target).normalize();
         camera.position.copy(controls.target).addScaledVector(direction, distance);
       }
       controls.update();
     };
 
+    // ── Render loop (only while something moves) ───────────────────────
     let frameRequested = false;
     let running = true;
-    const render = () => {
+    let introStart = 0;
+    const render = (now: number) => {
       frameRequested = false;
       if (!running) return;
-      const done = Math.abs(current.length - target.length) < 0.002 && Math.abs(current.width - target.width) < 0.002;
-      if (done) {
-        current.length = target.length;
-        current.width = target.width;
-      } else {
-        current.length += (target.length - current.length) * 0.16;
-        current.width += (target.width - current.width) * 0.16;
+      let busy = false;
+
+      const step = reducedMotion ? 1 : 0.16;
+      const lengthDone = Math.abs(current.length - target.length) < 0.002;
+      const widthDone = Math.abs(current.width - target.width) < 0.002;
+      current.length = lengthDone ? target.length : mix(current.length, target.length, step);
+      current.width = widthDone ? target.width : mix(current.width, target.width, step);
+      busy ||= !lengthDone || !widthDone;
+
+      features.forEach((feature) => {
+        if (Math.abs(feature.value - feature.target) < 0.004) feature.value = feature.target;
+        else {
+          feature.value = reducedMotion ? feature.target : mix(feature.value, feature.target, 0.2);
+          busy = true;
+        }
+        const eased = feature.value === 1 ? 1 : 1 - Math.pow(1 - feature.value, 3);
+        feature.object.visible = feature.value > 0.01;
+        feature.object.scale.copy(feature.base).multiplyScalar(Math.max(0.001, eased));
+      });
+
+      if (Math.abs(mood - moodTarget) < 0.003) mood = moodTarget;
+      else {
+        mood = reducedMotion ? moodTarget : mix(mood, moodTarget, 0.12);
+        busy = true;
       }
+
       layout(current.length, current.width);
+      applyMood();
+
+      if (intro.active) {
+        if (!introStart) introStart = now;
+        intro.progress = Math.min(1, (now - introStart) / 1500);
+        const eased = 1 - Math.pow(1 - intro.progress, 3);
+        const rest = restingPosition();
+        const start = rest.clone().multiplyScalar(1.7).add(new THREE.Vector3(-1.2, 1.4, 0));
+        camera.position.lerpVectors(start, rest, eased);
+        camera.lookAt(controls.target);
+        if (intro.progress >= 1) intro.active = false;
+        busy = true;
+      }
+
       const moved = controls.update();
-      renderer.render(scene, camera);
-      if (!done || moved) requestRender();
+      lengthLabel.place();
+      widthLabel.place();
+      if (composer) composer.render();
+      else renderer.render(scene, camera);
+      if (busy || moved) requestRender();
     };
     const requestRender = () => {
-      if (frameRequested) return;
+      if (frameRequested || !running) return;
       frameRequested = true;
       requestAnimationFrame(render);
     };
     controls.addEventListener('change', requestRender);
+    controls.addEventListener('start', () => { intro.active = false; });
 
     const resize = () => {
       const { clientWidth, clientHeight } = container;
       if (!clientWidth || !clientHeight) return;
-      renderer.setSize(clientWidth, clientHeight, false);
-      renderer.domElement.style.width = '100%';
-      renderer.domElement.style.height = '100%';
+      renderer.setSize(clientWidth, clientHeight);
+      composer?.setPixelRatio(renderer.getPixelRatio());
+      composer?.setSize(clientWidth, clientHeight);
       camera.aspect = clientWidth / clientHeight;
       camera.updateProjectionMatrix();
       requestRender();
@@ -440,25 +561,37 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     observer.observe(container);
     resize();
 
-    setTargetRef.current = (next) => {
-      const resized = Math.abs(next.length - target.length) > 0.01 || Math.abs(next.width - target.width) > 0.01;
-      target = next;
-      options = next.options;
-      if (reducedMotion) {
-        current.length = next.length;
-        current.width = next.width;
-      }
-      if (resized) frameCamera(false);
-      requestRender();
+    controllerRef.current = {
+      setTarget(next) {
+        const resized = Math.abs(next.length - target.length) > 0.01 || Math.abs(next.width - target.width) > 0.01;
+        target = next;
+        if (resized && !intro.active) frameCamera(false);
+        requestRender();
+      },
+      setEvening(on) {
+        moodTarget = on ? 1 : 0;
+        requestRender();
+      },
+      resetView() {
+        intro.active = false;
+        frameCamera(true);
+        requestRender();
+      },
     };
     frameCamera(true);
 
     return () => {
       running = false;
-      setTargetRef.current = null;
+      controllerRef.current = null;
       observer.disconnect();
       controls.dispose();
+      lengthLabel.remove();
+      widthLabel.remove();
+      if (heating) heating.geometry.dispose();
+      disposeModelGeometries();
       disposables.forEach((item) => item.dispose());
+      aoPass?.dispose();
+      composer?.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
@@ -466,7 +599,7 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
 
   const optionKey = optionIds.join('|');
   useEffect(() => {
-    setTargetRef.current?.({
+    controllerRef.current?.setTarget({
       roomType,
       length: length ?? (roomType === 'wc' ? 1.4 : 3),
       width: width ?? (roomType === 'wc' ? 0.95 : 2.2),
@@ -474,10 +607,34 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     });
   }, [roomType, length, width, optionKey]);
 
+  useEffect(() => {
+    controllerRef.current?.setEvening(isEvening);
+  }, [isEvening]);
+
   if (failed) return null;
   return (
-    <figure className="relative">
-      <div ref={containerRef} className="aspect-[4/3] w-full cursor-grab bg-[radial-gradient(circle_at_50%_35%,#fbf8f3,#e9e1d5)] active:cursor-grabbing" />
+    <figure className="relative overflow-hidden">
+      <div ref={containerRef} className="relative aspect-[4/3] w-full cursor-grab active:cursor-grabbing sm:aspect-[16/10]" />
+      <div className="absolute right-2 top-2 flex gap-1.5">
+        <button
+          type="button"
+          onClick={() => setIsEvening((value) => !value)}
+          aria-pressed={isEvening}
+          className="inline-flex h-10 items-center gap-1.5 bg-denra-ivory/90 px-3 text-[13px] font-medium text-denra-ink shadow-sm backdrop-blur hover:bg-white"
+        >
+          {isEvening ? <Sun size={15} aria-hidden="true" /> : <Moon size={15} aria-hidden="true" />}
+          {isEvening ? labels.day : labels.evening}
+        </button>
+        <button
+          type="button"
+          onClick={() => controllerRef.current?.resetView()}
+          aria-label={labels.reset}
+          title={labels.reset}
+          className="inline-flex h-10 w-10 items-center justify-center bg-denra-ivory/90 text-denra-ink shadow-sm backdrop-blur hover:bg-white"
+        >
+          <RotateCcw size={15} aria-hidden="true" />
+        </button>
+      </div>
       <figcaption className="sr-only">{description}</figcaption>
     </figure>
   );

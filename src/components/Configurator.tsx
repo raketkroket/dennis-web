@@ -24,17 +24,6 @@ import Img from './ui/Img';
 // three.js is only downloaded when the calculator is opened.
 const RoomPreview3D = lazy(() => import('./RoomPreview3D'));
 
-function useIsDesktop() {
-  const query = '(min-width: 1024px)';
-  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(query).matches);
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    const onChange = () => setIsDesktop(media.matches);
-    media.addEventListener('change', onChange);
-    return () => media.removeEventListener('change', onChange);
-  }, []);
-  return isDesktop;
-}
 
 const emptyDraft: CalculatorDraft = { step: 1, roomType: null, length: '', width: '', optionIds: [] };
 const totalSteps = 4;
@@ -115,17 +104,17 @@ export default function Configurator() {
     navigate(`/contact?dienst=${room.roomType}`);
   };
 
-  const isDesktop = useIsDesktop();
   const preview = room && (
     <div>
       <p className="eyebrow-plain mb-3">{t('site.preview3dTitle')}</p>
-      <Suspense fallback={<div className="aspect-[4/3] w-full bg-denra-stone" />}>
+      <Suspense fallback={<div className="aspect-[4/3] w-full bg-denra-stone sm:aspect-[16/10]" />}>
         <RoomPreview3D
           roomType={room.roomType}
           length={dimensionsValid ? length : null}
           width={dimensionsValid ? width : null}
           optionIds={optionIds}
           dimensionLabel={(value) => `${formatNumber(value, language)} m`}
+          labels={{ evening: t('site.preview3dEvening'), day: t('site.preview3dDay'), reset: t('site.preview3dReset') }}
           description={fill(t('site.preview3dDescription'), {
             room: pick(room.labelNl, room.labelEn).toLowerCase(),
             length: formatNumber(dimensionsValid && length !== null ? length : room.roomType === 'wc' ? 1.4 : 3, language),
@@ -171,7 +160,7 @@ export default function Configurator() {
           </ol>
         </nav>
 
-        {!isDesktop && draft.step > 1 && preview && <div className="mt-8">{preview}</div>}
+        {draft.step > 1 && preview && <div className="mt-8">{preview}</div>}
 
         <div className="mt-10">
           <p className="text-sm text-denra-muted">{fill(t('site.stepOf'), { step: draft.step, total: totalSteps })}</p>
@@ -354,7 +343,6 @@ export default function Configurator() {
       {/* Running estimate */}
       <aside className="lg:col-span-4" aria-label={t('site.liveTotal')}>
         <div className="space-y-6 lg:sticky lg:top-[calc(var(--header-height)+1.5rem)]">
-        {isDesktop && preview}
         <div className="bg-denra-night p-6 text-denra-ivory">
           <p className="eyebrow-plain text-denra-greige">{t('site.liveTotal')}</p>
           {estimate ? (
