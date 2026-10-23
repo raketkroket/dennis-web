@@ -1,0 +1,13 @@
+{
+  "name": "denra-local-supabase",
+  "private": true,
+  "type": "module",
+  "description": "Local stand-in for Supabase to test the website and admin. Never connects to a live project.",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.3.16",
+    "@electric-sql/pglite-socket": "0.0.22"
+  }
+}

@@ -1,97 +1,58 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import type { Project } from '../content/types';
 import { useLanguage } from '../i18n/useLanguage';
+import Img from './ui/Img';
+import { useProjectText } from './projects/useProjectText';
 
-import heroImage from '../../headerimg.png';
-
-export default function HeroSection() {
+export default function HeroSection({ main, second }: { main?: Project; second?: Project }) {
   const { t } = useLanguage();
+  const { title, pick } = useProjectText();
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label={t('marketing.heroTitle')}>
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt={t('marketing.heroTitle')}
-          width={1800}
-          height={1200}
-          className="w-full h-full object-cover object-center brightness-[0.78] contrast-[0.92] saturate-[0.88]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#120d09]/82 via-[#120d09]/42 to-[#120d09]/18" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#120d09]/58 via-transparent to-transparent" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-28 md:py-32 w-full">
-        <div className="max-w-xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-3 mb-8"
-          >
-            <div className="w-10 h-px bg-[#f3ece2]/50" />
-            <span className="text-xs tracking-[0.34em] uppercase text-[#f3ece2]/78 font-medium">
-              {t('marketing.heroLabel')}
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[26rem]"
-          >
-            {t('marketing.heroTitle')}
-            <br />
-            <span className="text-[#ddd3c5]">{t('marketing.heroTitleAccent')}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
-            style={{ textShadow: '0 2px 8px rgba(18, 13, 9, 0.72)' }}
-          >
-            {t('marketing.heroDescription')}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <Link
-              to="/configurator"
-              className="inline-flex items-center justify-center gap-2 bg-[#f4eee5] text-[#120d09] font-medium px-8 py-4 rounded-sm hover:bg-[#e5dbcd] transition-all duration-200 text-sm tracking-[0.16em] uppercase"
-            >
-              {t('common.calculatePrice')}
-              <ArrowRight size={16} />
+    <section className="relative" aria-labelledby="hero-heading">
+      <div className="shell grid items-center gap-10 pb-16 pt-8 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-14">
+        <div className="lg:col-span-5">
+          <p className="eyebrow">{t('marketing.heroLabel')}</p>
+          <h1 id="hero-heading" className="display-xl mt-6">
+            {t('marketing.heroTitle')}{' '}
+            <span className="italic text-denra-bronze">{t('marketing.heroTitleAccent')}</span>
+          </h1>
+          <p className="lede mt-6 max-w-xl">{t('marketing.heroDescription')}</p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Link to="/contact" className="btn-primary">
+              {t('site.quote')}
+              <ArrowRight size={16} aria-hidden="true" />
             </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 border border-[#f4eee5]/34 text-[#f4eee5] font-medium px-8 py-4 rounded-sm hover:bg-[#f4eee5] hover:text-[#120d09] transition-all duration-200 text-sm tracking-[0.16em] uppercase backdrop-blur-sm"
-            >
-              {t('marketing.consultation')}
-            </Link>
-          </motion.div>
+            <Link to="/projecten" className="btn-secondary">{t('site.viewProjects')}</Link>
+          </div>
+          <Link to="/configurator" className="mt-6 inline-flex text-[15px] text-denra-muted underline decoration-denra-line underline-offset-[6px] hover:text-denra-ink hover:decoration-denra-ink">
+            {t('site.calculatorLink')}
+          </Link>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 right-8 hidden lg:flex flex-col items-center gap-2"
-      >
-        <span className="text-[10px] tracking-[0.28em] uppercase text-white/30 rotate-90 origin-center mb-4">{t('marketing.scroll')}</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
-      </motion.div>
+        {main?.cover && (
+          <div className="relative lg:col-span-7">
+            <div className="grid grid-cols-12 items-end gap-3 sm:gap-4">
+              <Link to={`/projecten/${main.slug}`} className={`group frame zoom-on-hover block aspect-[4/5] ${second?.cover ? 'col-span-12 sm:col-span-8' : 'col-span-12'}`}>
+                <Img image={main.cover.image} alt={pick(main.cover.altNl, main.cover.altEn)} sizes="(min-width: 1024px) 40vw, (min-width: 640px) 66vw, 100vw" priority />
+              </Link>
+              {second?.cover && (
+                <Link to={`/projecten/${second.slug}`} className="group frame zoom-on-hover col-span-4 hidden aspect-[3/4] sm:mb-16 sm:block">
+                  <Img image={second.cover.image} alt={pick(second.cover.altNl, second.cover.altEn)} sizes="(min-width: 1024px) 20vw, 33vw" />
+                </Link>
+              )}
+            </div>
+            <Link to={`/projecten/${main.slug}`} className="mt-4 flex items-center justify-between gap-4 border-t border-denra-line pt-4 text-sm text-denra-muted hover:text-denra-ink">
+              <span className="min-w-0 truncate">
+                <span className="eyebrow-plain mr-3">{t('site.heroProject')}</span>
+                {title(main)}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1.5">{t('site.viewThisProject')}<ArrowRight size={14} aria-hidden="true" /></span>
+            </Link>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

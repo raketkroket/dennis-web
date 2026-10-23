@@ -1,370 +1,351 @@
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bath, Toilet, ChevronRight, ChevronLeft, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import type { QuoteConfiguration } from '../types/quote';
+import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
+import {
+  calculateEstimate,
+  formatEuro,
+  formatNumber,
+  optionGroups,
+  optionsForRoom,
+  parseDecimal,
+  toggleOption,
+  validateDimension,
+  type CalculatorOption,
+  type DimensionError,
+  type RoomType,
+} from '../lib/calculator';
+import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
+import { fill, useLocalized } from '../i18n/format';
+import { loadCalculatorDraft, saveCalculatorDraft, saveQuoteConfiguration, type CalculatorDraft } from '../types/quote';
+import EstimateBreakdown from './EstimateBreakdown';
+import Img from './ui/Img';
 
-type RoomType = 'badkamer' | 'wc';
-
-interface ConfigState {
-  roomType: RoomType | null;
-  length: string;
-  width: string;
-  options: string[];
-}
-
-interface ConfigOption {
-  id: string;
-  label: string;
-  price: number;
-  note?: string;
-}
-
-const optionGroups = [
-  { title: 'Afwerking', optionIds: ['verlaagd_plafond', 'spotjes', 'stucwerk', 'schilderwerk'] },
-  { title: 'Tegelwerk', optionIds: ['tegelwerk_verstek', 'niche'] },
-  { title: 'Installatie', optionIds: ['drain', 'inbouwkraan', 'vloerverwarming', 'elektra', 'sloopcontainer'] },
-  { title: 'Toilet', optionIds: ['inbouwreservoir', 'geberit_duofix', 'toiletframe_ombouwen', 'hangtoilet_systeem'] },
-];
-
-const badkamerOptions: ConfigOption[] = [
-  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
-  { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
-  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
-  { id: 'niche', label: 'Nis', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
-  { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
-  { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
-  { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
-  { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
-  { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
-  { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
-  { id: 'sloopcontainer', label: 'Sloopcontainer', price: 450, note: 'Inclusief: Plaatsing en afvoer.' },
-  { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
-  { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
-  { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
-  { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
-];
-
-const wcOptions: ConfigOption[] = [
-  { id: 'verlaagd_plafond', label: 'Verlaagd plafond', price: 750, note: 'Inclusief: Vochtwerend plafond, montage. Opmerking: Stucwerk en spotjes apart.' },
-  { id: 'spotjes', label: 'Spotjes', price: 500, note: 'Inclusief: Montage en bekabeling. Opmerking: Extra spot €125 per stuk.' },
-  { id: 'tegelwerk_verstek', label: 'Tegelwerk in verstek', price: 600, note: 'Inclusief: Verstekafwerking. Opmerking: Afhankelijk van het aantal strekkende meters.' },
-  { id: 'niche', label: 'Nis', price: 550, note: 'Inclusief: Constructie en waterdichting. Opmerking: LED-verlichting + €250.' },
-  { id: 'drain', label: 'Drain', price: 450, note: 'Inclusief: Montage en aansluiting. Opmerking: Drain zelf niet inbegrepen.' },
-  { id: 'inbouwkraan', label: 'Inbouwkraan', price: 550, note: 'Inclusief: Montage en aansluiting. Opmerking: Kraan zelf niet inbegrepen.' },
-  { id: 'stucwerk', label: 'Stucwerk', price: 450, note: 'Inclusief: Voorbereiding en glad afwerken.' },
-  { id: 'schilderwerk', label: 'Schilderwerk', price: 350, note: 'Inclusief: Twee lagen vochtbestendige verf.' },
-  { id: 'vloerverwarming', label: 'Elektrische vloerverwarming', price: 900, note: 'Inclusief: Verwarmingsmat, thermostaat en montage. Opmerking: Tot ongeveer 6 m².' },
-  { id: 'elektra', label: 'Elektra', price: 650, note: 'Inclusief: Lichtpunten en wandcontactdozen. Opmerking: Meterkastwerk apart.' },
-  { id: 'sloopcontainer', label: 'Sloopcontainer', price: 450, note: 'Inclusief: Plaatsing en afvoer.' },
-  { id: 'inbouwreservoir', label: 'Inbouwreservoir / toiletframe', price: 750, note: 'Inclusief: Montage en aansluiting. Opmerking: Frame wordt door klant geleverd.' },
-  { id: 'geberit_duofix', label: 'Geberit Duofix inclusief montage', price: 1250, note: 'Inclusief: Frame en montage. Opmerking: Toilet niet inbegrepen.' },
-  { id: 'toiletframe_ombouwen', label: 'Toiletframe ombouwen', price: 500, note: 'Inclusief: Betimmering. Opmerking: Tegelwerk apart.' },
-  { id: 'hangtoilet_systeem', label: 'Compleet hangtoilet-systeem', price: 1850, note: 'Inclusief: Frame, ombouw en montage. Opmerking: Toilet en tegelwerk deels niet inbegrepen.' },
-];
-
-function calculatePrice(state: ConfigState): number {
-  if (!state.roomType || !state.length || !state.width) return 0;
-  const area = parseFloat(state.length) * parseFloat(state.width);
-  if (isNaN(area) || area <= 0) return 0;
-  const base = state.roomType === 'badkamer'
-    ? area <= 5
-      ? 7950
-      : area <= 8
-        ? 7950 + (area - 5) * 900
-        : 10650 + (area - 8) * 1100
-    : area <= 2
-      ? 3950
-      : 3950 + (area - 2) * 800;
-  const options = state.roomType === 'badkamer' ? badkamerOptions : wcOptions;
-  const extras = state.options.reduce((sum, id) => {
-    const opt = options.find((o) => o.id === id);
-    return sum + (opt ? opt.price : 0);
-  }, 0);
-  return Math.round(base + extras);
-}
+const emptyDraft: CalculatorDraft = { step: 1, roomType: null, length: '', width: '', optionIds: [] };
+const totalSteps = 4;
 
 export default function Configurator() {
-  const { t, language } = useLanguage();
-  const [step, setStep] = useState(1);
-  const [config, setConfig] = useState<ConfigState>({
-    roomType: null,
-    length: '',
-    width: '',
-    options: [],
-  });
+  const { language, t } = useLanguage();
+  const pick = useLocalized();
+  const navigate = useNavigate();
+  const { calculator, projects } = useSiteContent();
+  const [draft, setDraft] = useState<CalculatorDraft>(() => loadCalculatorDraft() ?? emptyDraft);
+  const [showErrors, setShowErrors] = useState(false);
+  const [notice, setNotice] = useState('');
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const firstRender = useRef(true);
 
-  const price = calculatePrice(config);
-  const currentOptions = config.roomType === 'wc' ? wcOptions : badkamerOptions;
-  const quoteConfiguration: QuoteConfiguration | null = config.roomType && config.length && config.width
-    ? {
-        roomType: config.roomType,
-        length: parseFloat(config.length),
-        width: parseFloat(config.width),
-        area: Number((parseFloat(config.length) * parseFloat(config.width)).toFixed(2)),
-        selectedOptions: currentOptions
-          .filter((option) => config.options.includes(option.id))
-          .map(({ id, label, price: optionPrice }) => ({ id, label, price: optionPrice })),
-        totalPrice: price,
-      }
-    : null;
+  useEffect(() => saveCalculatorDraft(draft), [draft]);
 
-  const toggleOption = useCallback((id: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      options: prev.options.includes(id)
-        ? prev.options.filter((o) => o !== id)
-        : [...prev.options, id],
-    }));
-  }, []);
+  // Move focus to the new step's heading so keyboard and screen-reader users
+  // land at the right place; the very first render keeps the page's focus.
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    headingRef.current?.focus({ preventScroll: true });
+    headingRef.current?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }, [draft.step]);
 
-  const canProceedStep1 = config.roomType !== null;
-  const canProceedStep2 =
-    config.length !== '' &&
-    config.width !== '' &&
-    parseFloat(config.length) > 0 &&
-    parseFloat(config.width) > 0;
-  const area = canProceedStep2 ? parseFloat(config.length) * parseFloat(config.width) : null;
+  const rooms = calculator.rooms.filter((room) => room.isActive);
+  const room = rooms.find((candidate) => candidate.roomType === draft.roomType);
+  const options = room ? optionsForRoom(calculator, room.roomType) : [];
+  const lengthError = validateDimension(draft.length);
+  const widthError = validateDimension(draft.width);
+  const length = parseDecimal(draft.length);
+  const width = parseDecimal(draft.width);
+  const dimensionsValid = !lengthError && !widthError && length !== null && width !== null;
+  // Drop choices that no longer exist (for example after a price-list change).
+  const optionIds = draft.optionIds.filter((id) => options.some((option) => option.id === id));
+  const result = useMemo(() => (room && dimensionsValid ? calculateEstimate(calculator, { roomType: room.roomType, length: length as number, width: width as number, optionIds }) : null), [calculator, room, dimensionsValid, length, width, optionIds]);
+  const estimate = result?.ok ? result.estimate : null;
+
+  const update = (patch: Partial<CalculatorDraft>) => setDraft((current) => ({ ...current, ...patch }));
+  const canEnter = (step: number) => step === 1 || (step === 2 && Boolean(room)) || (step >= 3 && Boolean(room) && dimensionsValid);
+  const stepAllowed = canEnter(draft.step);
+
+  // A saved draft can point at a step that is no longer reachable (for
+  // example when a room was switched off in the admin); start over then.
+  useEffect(() => {
+    if (!stepAllowed) setDraft((current) => ({ ...current, step: current.roomType && rooms.some((candidate) => candidate.roomType === current.roomType) ? 2 : 1 }));
+  }, [stepAllowed, rooms]);
+  const goTo = (step: number) => {
+    if (step > draft.step && !canEnter(step)) {
+      setShowErrors(true);
+      return;
+    }
+    setShowErrors(false);
+    setNotice('');
+    update({ step });
+  };
+
+  const stepNames = [t('site.stepRoom'), t('site.stepSize'), t('site.stepOptions'), t('site.stepSummary')];
+  const errorText = (error: DimensionError | null) => (error ? t({ required: 'site.errRequired', invalid: 'site.errInvalid', tooSmall: 'site.errTooSmall', tooLarge: 'site.errTooLarge' }[error]) : '');
+
+  const onToggle = (option: CalculatorOption) => {
+    const next = toggleOption(calculator, optionIds, option.id);
+    const removed = optionIds.filter((id) => !next.includes(id) && id !== option.id);
+    setNotice(removed.length ? fill(t('site.replaces'), { options: removed.map((id) => labelFor(id)).join(', ') }) : '');
+    update({ optionIds: next });
+  };
+  const labelFor = (id: string) => {
+    const option = calculator.options.find((candidate) => candidate.id === id);
+    return option ? pick(option.labelNl, option.labelEn) : id;
+  };
+
+  const requestQuote = () => {
+    if (!estimate || !room) return;
+    saveQuoteConfiguration({ roomType: room.roomType, length: estimate.length, width: estimate.width, optionIds });
+    navigate(`/contact?dienst=${room.roomType}`);
+  };
+
+  const roomImage = (roomType: RoomType) => projects.find((project) => project.category === (roomType === 'wc' ? 'toilet' : 'badkamer') && project.isFeatured && project.cover)?.cover;
 
   return (
-    <div className="denra-panel overflow-hidden">
-      {/* Progress */}
-      <div className="bg-[#f4ede4] px-8 py-6 border-b border-[#cfbca7]/60">
-        <div className="flex items-center gap-4">
-          {[1, 2, 3].map((s) => (
-            <React.Fragment key={s}>
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
-                    step > s
-                        ? 'bg-[#231A12] text-[#F6F0E8]'
-                      : step === s
-                        ? 'bg-[#7a6552] text-[#F6F0E8]'
-                        : 'bg-[#e8ddcf] text-[#8A7A6A]'
-                  }`}
-                >
-                  {step > s ? <Check size={14} /> : s}
-                </div>
-                <span className={`text-xs font-medium hidden sm:block ${step >= s ? 'text-[#231A12]' : 'text-[#8A7A6A]'}`}>
-                  {s === 1 ? t('configurator.stepRoom') : s === 2 ? t('configurator.stepDimensions') : t('configurator.stepOptions')}
-                </span>
-              </div>
-              {s < 3 && <div className={`flex-1 h-px transition-colors duration-300 ${step > s ? 'bg-[#7a6552]' : 'bg-[#e8ddcf]'}`} />}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-
-      <div className="p-5 sm:p-8">
-        <AnimatePresence mode="wait">
-          {/* Step 1 */}
-          {step === 1 && (
-            <motion.div
-              key="step1"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.chooseRoom')}</h3>
-              <p className="text-sm text-[#6B5D50] mb-8 max-w-xl">{t('configurator.chooseRoomDescription')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {([
-                  { type: 'badkamer' as RoomType, icon: Bath, label: t('configurator.bathroom'), desc: t('configurator.bathroomDescription') },
-                  { type: 'wc' as RoomType, icon: Toilet, label: t('configurator.toilet'), desc: t('configurator.toiletDescription') },
-                ] as const).map(({ type, icon: Icon, label, desc }) => (
+    <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <div className="min-w-0 lg:col-span-8">
+        {/* Progress */}
+        <nav aria-label={t('common.calculatePrice')}>
+          <ol className="grid grid-cols-4 border-t border-denra-ink/70">
+            {stepNames.map((name, index) => {
+              const step = index + 1;
+              const done = step < draft.step;
+              const current = step === draft.step;
+              return (
+                <li key={name} className="min-w-0">
                   <button
-                    key={type}
-                    onClick={() => setConfig((prev) => ({ ...prev, roomType: type, options: [] }))}
-                    aria-pressed={config.roomType === type}
-                    className={`min-h-40 p-6 rounded-sm border text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2 ${
-                      config.roomType === type
-                        ? 'border-[#7a6552] bg-[#e8ddcf]/40 shadow-[0_10px_24px_rgba(35,26,18,0.08)]'
-                        : 'border-[#cfbca7] bg-white/35 hover:border-[#7a6552]/50 hover:bg-white/60'
-                    }`}
+                    type="button"
+                    onClick={() => goTo(step)}
+                    disabled={!current && !canEnter(step)}
+                    aria-current={current ? 'step' : undefined}
+                    aria-label={`${fill(t('site.stepOf'), { step, total: totalSteps })}: ${name}`}
+                    className={`flex w-full flex-col items-start gap-1 border-t-2 pt-3 text-left transition-colors disabled:cursor-not-allowed ${current ? '-mt-px border-denra-ink' : done ? '-mt-px border-denra-bronze' : 'border-transparent'}`}
                   >
-                    <div className={`w-12 h-12 rounded-sm flex items-center justify-center mb-4 ${config.roomType === type ? 'bg-[#231A12]' : 'bg-[#f4ede4]'}`}>
-                      <Icon size={22} className={config.roomType === type ? 'text-[#F6F0E8]' : 'text-[#7a6552]'} />
-                    </div>
-                    <p className="font-serif text-xl font-semibold text-[#231A12] mb-1">{label}</p>
-                    <p className="text-xs text-[#8A7A6A]">{desc}</p>
+                    <span className={`flex h-7 w-7 items-center justify-center text-[13px] font-medium ${current ? 'bg-denra-ink text-denra-ivory' : done ? 'bg-denra-bronze text-denra-ivory' : 'border border-denra-ink/20 text-denra-muted'}`}>
+                      {done ? <Check size={14} aria-hidden="true" /> : step}
+                    </span>
+                    <span className={`truncate text-[13px] sm:text-sm ${current ? 'font-medium text-denra-ink' : 'text-denra-muted'}`}>{name}</span>
                   </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
 
-          {/* Step 2 */}
-          {step === 2 && (
-            <motion.div
-              key="step2"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.dimensionsTitle')}</h3>
-              <p className="text-sm text-[#6B5D50] mb-8">{t('configurator.dimensionsDescription')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-                <div>
-                  <label htmlFor="length" className="block text-sm font-medium text-[#231A12] mb-2">
-                    {t('configurator.length')}
-                  </label>
-                    <div className="relative">
-                    <input
-                    id="length"
-                    type="number"
-                    min="0.5"
-                    max="20"
-                    step="0.1"
-                    value={config.length}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, length: e.target.value }))}
-                    placeholder={t('configurator.lengthPlaceholder')}
-                      inputMode="decimal"
-                      className="denra-field pr-12"
-                  />
-                    <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm text-[#8A7A6A]">m</span>
-                    </div>
-                </div>
-                <div>
-                  <label htmlFor="width" className="block text-sm font-medium text-[#231A12] mb-2">
-                    {t('configurator.width')}
-                  </label>
-                    <div className="relative">
-                    <input
-                    id="width"
-                    type="number"
-                    min="0.5"
-                    max="20"
-                    step="0.1"
-                    value={config.width}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, width: e.target.value }))}
-                    placeholder={t('configurator.widthPlaceholder')}
-                      inputMode="decimal"
-                      className="denra-field pr-12"
-                  />
-                    <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm text-[#8A7A6A]">m</span>
-                    </div>
-                </div>
-              </div>
-              {area !== null && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 bg-[#f4ede4] rounded-sm border border-[#cfbca7]/55"
-                >
-                  <p className="text-sm text-[#6B5D50]">
-                    {t('configurator.roomArea')} <span className="font-semibold text-[#231A12]">{area.toFixed(2)} m²</span>
-                  </p>
-                </motion.div>
-              )}
-            </motion.div>
-          )}
+        <div className="mt-10">
+          <p className="text-sm text-denra-muted">{fill(t('site.stepOf'), { step: draft.step, total: totalSteps })}</p>
 
-          {/* Step 3 */}
-          {step === 3 && (
-            <motion.div
-              key="step3"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('configurator.optionsTitle')}</h3>
-              <p className="text-sm text-[#6B5D50] mb-8">{t('configurator.optionsDescription')}</p>
-              <div className="space-y-7 mb-8">
-                {optionGroups.map((group) => {
-                  const options = currentOptions.filter((option) => group.optionIds.includes(option.id));
-                  if (!options.length) return null;
-                  return (
-                  <section key={group.title}>
-                    <h4 className="denra-label mb-3">{group.title === 'Afwerking' ? t('configurator.finish') : group.title === 'Tegelwerk' ? t('configurator.tiling') : group.title === 'Installatie' ? t('configurator.installation') : t('configurator.toiletGroup')}</h4>
-                    <div className="grid grid-cols-1 gap-3">
-                {options.map((option) => {
-                  const isSelected = config.options.includes(option.id);
-                  return (
-                    <button
-                      key={option.id}
-                      onClick={() => toggleOption(option.id)}
-                      aria-pressed={isSelected}
-                      className={`flex flex-col items-stretch gap-2 p-4 rounded-sm border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-1 ${
-                        isSelected
-                          ? 'border-[#7a6552] bg-[#e8ddcf]/35 shadow-[0_6px_18px_rgba(35,26,18,0.06)]'
-                          : 'border-[#cfbca7] bg-white/30 hover:border-[#7a6552]/40 hover:bg-white/60'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3 w-full min-w-0">
-                        <span className="text-sm font-semibold text-[#231A12] leading-snug min-w-0">{option.label}</span>
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-sm font-semibold text-[#6B5D50]">+€{option.price.toLocaleString(language === 'en' ? 'en-GB' : 'nl-NL')}</span>
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[#7a6552] bg-[#7a6552]' : 'border-[#cfbca7]'}`}>
-                            {isSelected && <Check size={10} className="text-white" />}
+          {draft.step === 1 && (
+            <StepFrame headingRef={headingRef} title={t('configurator.chooseRoom')} intro={t('configurator.chooseRoomDescription')}>
+              <fieldset>
+                <legend className="sr-only">{t('configurator.chooseRoom')}</legend>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {rooms.map((candidate) => {
+                    const selected = draft.roomType === candidate.roomType;
+                    const image = roomImage(candidate.roomType);
+                    return (
+                      <label key={candidate.roomType} className={`group relative cursor-pointer border bg-denra-paper transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-denra-bronze ${selected ? 'border-denra-ink ring-1 ring-denra-ink' : 'border-denra-ink/15 hover:border-denra-ink/50'}`}>
+                        <input type="radio" name="room" value={candidate.roomType} checked={selected} onChange={() => update({ roomType: candidate.roomType, optionIds: [] })} className="sr-only" aria-label={`${pick(candidate.labelNl, candidate.labelEn)}: ${pick(candidate.descriptionNl, candidate.descriptionEn)}, ${t('site.calcFrom')} ${formatEuro(candidate.basePrice, language)}`} />
+                        {image && <div className="frame aspect-[16/10]"><Img image={image.image} alt="" sizes="(min-width: 640px) 30vw, 100vw" /></div>}
+                        <div className="flex items-start justify-between gap-4 p-5">
+                          <div>
+                            <p className="font-serif text-2xl">{pick(candidate.labelNl, candidate.labelEn)}</p>
+                            <p className="mt-1 text-sm text-denra-muted">{pick(candidate.descriptionNl, candidate.descriptionEn)}</p>
+                            <p className="mt-3 text-sm">{t('site.calcFrom')} <strong className="font-medium">{formatEuro(candidate.basePrice, language)}</strong> {t('configurator.includingVat')} · {fill(t('site.calcUpTo'), { area: formatNumber(candidate.includedArea, language) })}</p>
                           </div>
+                          <span className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${selected ? 'border-denra-ink bg-denra-ink text-denra-ivory' : 'border-denra-ink/30'}`} aria-hidden="true">
+                            {selected && <Check size={14} />}
+                          </span>
                         </div>
-                      </div>
-                      {option.note && <p className="w-full text-left text-[11px] leading-snug text-[#8A7A6A]">{option.note}</p>}
-                    </button>
-                  );
-                })}
-                    </div>
-                  </section>
-                  );
-                })}
-              </div>
-
-              <p className="text-xs text-[#8A7A6A] mb-6">
-                {t('configurator.disclaimer')}
-              </p>
-
-              {/* Price result */}
-              <div className="bg-[#231A12] rounded-sm p-6 sm:p-7 text-white shadow-[0_16px_36px_rgba(35,26,18,0.2)] lg:sticky lg:top-28">
-                <p className="denra-label text-[#cfbca7] mb-2">{t('configurator.priceEstimate')}</p>
-                <div className="mb-1">
-                  <span className="block text-sm text-[#b7a894] mb-1">{t('configurator.from')}</span>
-                  <span className="font-serif text-4xl sm:text-5xl font-semibold">
-                    €{price.toLocaleString(language === 'en' ? 'en-GB' : 'nl-NL')}
-                  </span>
-                  <span className="ml-2 text-[#b7a894] text-sm">{t('configurator.includingVat')}</span>
+                      </label>
+                    );
+                  })}
                 </div>
-                <p className="text-xs text-[#b7a894] mb-6">
-                  {t('configurator.materialsIncluded')}
-                </p>
-                <Link
-                  to="/contact"
-                  state={{ quoteConfiguration }}
-                  className="flex min-h-12 items-center justify-center gap-2 bg-[#f6f0e8] text-[#231A12] font-semibold px-6 py-3.5 rounded-sm hover:bg-[#e8ddcf] transition-all duration-200 text-sm w-full"
-                >
-                  {t('configurator.requestQuote')}
-                  <ChevronRight size={16} />
-                </Link>
-              </div>
-            </motion.div>
+              </fieldset>
+              {showErrors && !room && <p className="field-error" role="alert">{t('configurator.chooseRoom')}</p>}
+            </StepFrame>
           )}
-        </AnimatePresence>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between gap-3 mt-8 pt-6 border-t border-[#cfbca7]/60">
-          <button
-            onClick={() => setStep((s) => Math.max(1, s - 1))}
-            disabled={step === 1}
-            className="flex items-center gap-2 text-sm font-medium text-[#8A7A6A] hover:text-[#231A12] disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
-          >
-            <ChevronLeft size={16} />
-            {t('configurator.previous')}
-          </button>
-          {step < 3 && (
-            <button
-              onClick={() => setStep((s) => Math.min(3, s + 1))}
-              disabled={step === 1 ? !canProceedStep1 : !canProceedStep2}
-              className="denra-button-primary px-5 sm:px-6 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
-            >
-              {t('configurator.next')}
-              <ChevronRight size={16} />
-            </button>
+          {draft.step === 2 && room && (
+            <StepFrame headingRef={headingRef} title={t('configurator.dimensionsTitle')} intro={t('site.sizeHelp')}>
+              <div className="grid gap-5 sm:grid-cols-2">
+                {([['length', t('site.sizeLength'), lengthError], ['width', t('site.sizeWidth'), widthError]] as const).map(([field, label, error]) => {
+                  const invalid = Boolean(error) && (showErrors || draft[field] !== '');
+                  return (
+                    <div key={field}>
+                      <label htmlFor={`calc-${field}`} className="field-label">{label} <span className="font-normal text-denra-muted">({t('site.metres')})</span></label>
+                      <div className="relative">
+                        <input
+                          id={`calc-${field}`}
+                          type="text"
+                          inputMode="decimal"
+                          autoComplete="off"
+                          enterKeyHint="next"
+                          placeholder={field === 'length' ? '2,5' : '1,8'}
+                          value={draft[field]}
+                          onChange={(event) => update({ [field]: event.target.value })}
+                          aria-invalid={invalid}
+                          aria-describedby={invalid ? `calc-${field}-error` : undefined}
+                          className="field pr-12 text-lg"
+                        />
+                        <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-denra-muted" aria-hidden="true">m</span>
+                      </div>
+                      {invalid && <p id={`calc-${field}-error`} className="field-error">{errorText(error)}</p>}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="mt-6 border-l-2 border-denra-bronze bg-denra-paper p-5" aria-live="polite">
+                {dimensionsValid && length !== null && width !== null ? (
+                  <>
+                    <p><span className="text-denra-muted">{t('site.areaResult')}:</span> <strong className="font-serif text-2xl font-medium">{formatNumber(Math.round(length * width * 100) / 100, language)} m²</strong></p>
+                    <p className="mt-1 text-sm text-denra-muted">{fill(t('site.areaIncluded'), { area: formatNumber(room.includedArea, language) })} {length * width > room.includedArea ? t('site.areaExtra') : ''}</p>
+                  </>
+                ) : (
+                  <p className="text-sm text-denra-muted">{fill(t('site.areaIncluded'), { area: formatNumber(room.includedArea, language) })}</p>
+                )}
+              </div>
+            </StepFrame>
           )}
+
+          {draft.step === 3 && room && (
+            <StepFrame headingRef={headingRef} title={t('configurator.optionsTitle')} intro={t('site.optionsHelp')}>
+              <p className="sr-only" aria-live="polite">{notice}</p>
+              {notice && <p className="mb-6 border-l-2 border-denra-bronze bg-denra-paper px-4 py-3 text-sm" aria-hidden="true">{notice}</p>}
+              <div className="space-y-10">
+                {optionGroups.map((group) => {
+                  const groupOptions = options.filter((option) => option.group === group.id);
+                  if (!groupOptions.length) return null;
+                  return (
+                    <fieldset key={group.id}>
+                      <legend className="eyebrow-plain mb-3">{pick(group.labelNl, group.labelEn)}</legend>
+                      <div className="grid gap-3">
+                        {groupOptions.map((option) => {
+                          const checked = optionIds.includes(option.id);
+                          const conflicts = option.conflictsWith.filter((id) => options.some((candidate) => candidate.id === id));
+                          const included = pick(option.includedNl, option.includedEn);
+                          const note = pick(option.noteNl, option.noteEn);
+                          return (
+                            <label key={option.id} className={`flex cursor-pointer gap-4 border p-4 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-denra-bronze sm:p-5 ${checked ? 'border-denra-ink bg-denra-paper ring-1 ring-denra-ink' : 'border-denra-ink/15 bg-denra-paper/60 hover:border-denra-ink/50'}`}>
+                              <input type="checkbox" checked={checked} onChange={() => onToggle(option)} className="sr-only" aria-label={`${pick(option.labelNl, option.labelEn)}, + ${formatEuro(option.price, language)}`} aria-describedby={`opt-${option.id}-details`} />
+                              <span className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border ${checked ? 'border-denra-ink bg-denra-ink text-denra-ivory' : 'border-denra-ink/30 bg-white'}`} aria-hidden="true">
+                                {checked && <Check size={15} />}
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                  <span className="font-medium text-denra-ink">{pick(option.labelNl, option.labelEn)}</span>
+                                  <span className="tabular-nums text-denra-ink">+ {formatEuro(option.price, language)}</span>
+                                </span>
+                                <span id={`opt-${option.id}-details`} className="mt-1.5 block space-y-1 text-sm leading-snug text-denra-muted">
+                                  {included && <span className="block"><span className="text-denra-ink">{t('site.included')}:</span> {included}</span>}
+                                  {note && <span className="block"><span className="text-denra-ink">{t('site.note')}:</span> {note}</span>}
+                                  {conflicts.length > 0 && (
+                                    <span className="block">{fill(t('site.cannotCombine'), { options: conflicts.map(labelFor).join(', ') })}</span>
+                                  )}
+                                </span>
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </fieldset>
+                  );
+                })}
+              </div>
+            </StepFrame>
+          )}
+
+          {draft.step === 4 && estimate && (
+            <StepFrame headingRef={headingRef} title={t('site.summaryTitle')} intro={t('site.estimateNote')}>
+              <div className="border-t border-denra-ink/70 pt-2">
+                <EstimateBreakdown estimate={estimate} config={calculator} />
+              </div>
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <button type="button" onClick={() => goTo(1)} className="underline underline-offset-4 hover:text-denra-bronze">{t('site.change')} {t('site.stepRoom').toLowerCase()}</button>
+                <button type="button" onClick={() => goTo(2)} className="underline underline-offset-4 hover:text-denra-bronze">{t('site.change')} {t('site.stepSize').toLowerCase()}</button>
+                <button type="button" onClick={() => goTo(3)} className="underline underline-offset-4 hover:text-denra-bronze">{t('site.change')} {t('site.stepOptions').toLowerCase()}</button>
+              </div>
+              <div className="mt-8 space-y-3 bg-denra-stone p-5 text-sm leading-relaxed text-denra-muted">
+                <p>{t('configurator.disclaimer')}</p>
+                <p>{t('configurator.materialsIncluded')}</p>
+              </div>
+              <div className="mt-8">
+                <button type="button" onClick={requestQuote} className="btn-primary w-full sm:w-auto">
+                  {t('site.quoteWithCalc')}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+                <p className="mt-3 text-sm text-denra-muted">{t('site.quoteWithCalcHelp')}</p>
+              </div>
+            </StepFrame>
+          )}
+
+          {/* The running total sits in the sidebar on large screens; on phones it is repeated here. */}
+          {estimate && draft.step < totalSteps && (
+            <p className="mt-10 flex items-baseline justify-between gap-4 border-t border-denra-ink/70 pt-4 lg:hidden" aria-live="polite">
+              <span className="text-sm text-denra-muted">{t('site.liveTotal')} ({t('configurator.includingVat')})</span>
+              <span className="font-serif text-2xl tabular-nums">{formatEuro(estimate.total, language)}</span>
+            </p>
+          )}
+
+          {/* Step navigation */}
+          <div className="mt-6 flex items-center justify-between gap-4 border-t border-denra-line pt-6 lg:mt-10">
+            {draft.step > 1 ? (
+              <button type="button" onClick={() => goTo(draft.step - 1)} className="btn-secondary">
+                <ArrowLeft size={16} aria-hidden="true" />
+                {t('site.back')}
+              </button>
+            ) : <span />}
+            {draft.step < totalSteps ? (
+              <button type="button" onClick={() => goTo(draft.step + 1)} className="btn-primary">
+                {draft.step === 3 ? t('site.toSummary') : t('site.next')}
+                <ArrowRight size={16} aria-hidden="true" />
+              </button>
+            ) : (
+              <button type="button" onClick={() => { setDraft(emptyDraft); saveQuoteConfiguration(null); }} className="inline-flex min-h-12 items-center gap-2 text-sm text-denra-muted hover:text-denra-ink">
+                <RotateCcw size={15} aria-hidden="true" />
+                {t('site.startOver')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Running estimate */}
+      <aside className="lg:col-span-4" aria-label={t('site.liveTotal')}>
+        <div className="bg-denra-night p-6 text-denra-ivory lg:sticky lg:top-[calc(var(--header-height)+1.5rem)]">
+          <p className="eyebrow-plain text-denra-greige">{t('site.liveTotal')}</p>
+          {estimate ? (
+            <>
+              <p className="mt-3 font-serif text-5xl tabular-nums">{formatEuro(estimate.total, language)}</p>
+              <p className="mt-1 text-sm text-denra-ivory/60">{t('configurator.includingVat')} · {formatNumber(estimate.area, language)} m² · {pick(room?.labelNl ?? '', room?.labelEn)}</p>
+              {estimate.options.length > 0 && (
+                <ul className="mt-5 space-y-1.5 border-t border-denra-ivory/15 pt-4 text-sm text-denra-ivory/75">
+                  {estimate.options.map((option) => <li key={option.id} className="flex justify-between gap-3"><span>{pick(option.labelNl, option.labelEn)}</span><span className="tabular-nums">+ {formatEuro(option.price, language)}</span></li>)}
+                </ul>
+              )}
+            </>
+          ) : room ? (
+            <>
+              <p className="mt-3 font-serif text-4xl tabular-nums">{t('site.calcFrom')} {formatEuro(room.basePrice, language)}</p>
+              <p className="mt-2 text-sm text-denra-ivory/60">{fill(t('site.calcUpTo'), { area: formatNumber(room.includedArea, language) })} · {t('configurator.includingVat')}</p>
+            </>
+          ) : (
+            <p className="mt-3 text-denra-ivory/70">{t('configurator.chooseRoomDescription')}</p>
+          )}
+          <p className="mt-6 border-t border-denra-ivory/15 pt-4 text-xs leading-relaxed text-denra-ivory/55">{t('site.estimateNote')}</p>
+        </div>
+      </aside>
     </div>
+  );
+}
+
+function StepFrame({ headingRef, title, intro, children }: { headingRef: RefObject<HTMLHeadingElement | null>; title: string; intro: string; children: ReactNode }) {
+  return (
+    <section className="mt-2">
+      <h2 ref={headingRef} tabIndex={-1} className="display-md scroll-mt-[calc(var(--header-height)+1.5rem)] outline-none">{title}</h2>
+      <p className="mt-3 max-w-2xl text-denra-muted">{intro}</p>
+      <div className="mt-8">{children}</div>
+    </section>
   );
 }
