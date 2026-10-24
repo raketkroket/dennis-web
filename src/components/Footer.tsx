@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import logo from '../assets/denra-logo.png';
+import LanguageSwitcher from './LanguageSwitcher';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
 import { useLocalized } from '../i18n/format';
@@ -95,7 +96,7 @@ export default function Footer() {
 
       <div className="shell flex flex-col gap-2 border-t border-denra-ivory/10 py-6 text-xs text-denra-ivory/45 sm:flex-row sm:items-center sm:justify-between">
         <p>&copy; {new Date().getFullYear()} {business.companyName}. {t('shared.allRightsReserved')}</p>
-        <p>{t('shared.footerTagline')}</p>
+        <LanguageSwitcher tone="light" />
       </div>
     </footer>
   );

@@ -66,6 +66,11 @@ export default function Header() {
   }, [menuOpen]);
 
   const solid = isScrolled || menuOpen;
+  // On the homepage the header sits transparently over the hero photo until
+  // the visitor scrolls, like the original site.
+  const overPhoto = location.pathname === '/' && !solid;
+  const linkTone = overPhoto ? 'text-denra-ivory/85 hover:text-denra-ivory' : 'text-denra-muted hover:text-denra-ink';
+  const activeTone = overPhoto ? 'text-denra-ivory after:bg-denra-ivory' : 'text-denra-ink after:bg-denra-ink';
 
   return (
     <>
@@ -73,19 +78,19 @@ export default function Header() {
         {t('site.skipToContent')}
       </a>
       <header
-        className={`fixed inset-x-0 top-0 z-50 h-[var(--header-height)] transition-[background-color,border-color] duration-200 ${solid ? 'border-b border-denra-line bg-denra-ivory/95 backdrop-blur-md' : 'border-b border-transparent bg-denra-ivory/80 backdrop-blur-sm'}`}
+        className={`fixed inset-x-0 top-0 z-50 h-[var(--header-height)] transition-[background-color,border-color] duration-200 ${overPhoto ? 'border-b border-denra-ivory/15 bg-gradient-to-b from-[#14100c]/55 to-transparent' : solid ? 'border-b border-denra-line bg-denra-ivory/95 backdrop-blur-md' : 'border-b border-transparent bg-denra-ivory/80 backdrop-blur-sm'}`}
       >
-        <div className="shell flex h-full items-center justify-between gap-6">
+        <div className="shell flex h-full items-center justify-between gap-5 xl:gap-8">
           <Link to="/" className="flex shrink-0 items-center" aria-label={`${business.companyName} – home`}>
-            <img src={logo} alt="Denra Badkamers" width={445} height={120} className="h-9 w-auto lg:h-10" />
+            <img src={logo} alt="Denra Badkamers" width={445} height={120} className={`h-9 w-auto transition-[filter] duration-200 xl:h-10 ${overPhoto ? 'invert' : ''}`} />
           </Link>
 
-          <nav className="hidden min-w-0 items-center gap-7 xl:flex" aria-label={t('nav.primaryNav')}>
+          <nav className="hidden min-w-0 items-center gap-5 lg:flex xl:gap-7" aria-label={t('nav.primaryNav')}>
             {navLinks.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
-                className={({ isActive }) => `relative whitespace-nowrap py-2 text-[14px] transition-colors ${isActive ? 'text-denra-ink after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-denra-ink' : 'text-denra-muted hover:text-denra-ink'}`}
+                className={({ isActive }) => `relative whitespace-nowrap py-2 text-[14px] transition-colors ${isActive ? `${activeTone} after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px` : linkTone}`}
               >
                 {link.label}
               </NavLink>
@@ -93,17 +98,14 @@ export default function Header() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-3">
-            <div className="hidden xl:block"><LanguageSwitcher /></div>
-            <Link to="/configurator" className="hidden whitespace-nowrap text-[14px] text-denra-muted underline-offset-4 hover:text-denra-ink hover:underline lg:inline xl:hidden 2xl:inline">
-              {t('common.calculatePrice')}
-            </Link>
-            <Link to="/contact" className="btn-primary hidden min-h-11 px-5 lg:inline-flex">
+            <div className="hidden xl:block"><LanguageSwitcher tone={overPhoto ? 'light' : 'dark'} /></div>
+            <Link to="/contact" className={`${overPhoto ? 'btn-light' : 'btn-primary'} hidden min-h-11 px-5 lg:inline-flex`}>
               {t('site.quote')}
             </Link>
             <button
               ref={menuButtonRef}
               type="button"
-              className="flex h-11 items-center gap-2 border border-denra-ink/20 px-3 text-sm font-medium text-denra-ink xl:hidden"
+              className={`flex h-11 items-center gap-2 border px-3 text-sm font-medium lg:hidden ${overPhoto ? 'border-denra-ivory/40 text-denra-ivory' : 'border-denra-ink/20 text-denra-ink'}`}
               onClick={() => setMenuOpen((open) => !open)}
               aria-expanded={menuOpen}
               aria-controls="site-menu"
@@ -118,7 +120,7 @@ export default function Header() {
           <div
             id="site-menu"
             ref={menuRef}
-            className="fixed inset-x-0 bottom-0 top-[var(--header-height)] z-50 overflow-y-auto overscroll-contain border-t border-denra-line bg-denra-ivory xl:hidden"
+            className="fixed inset-x-0 bottom-0 top-[var(--header-height)] z-50 overflow-y-auto overscroll-contain border-t border-denra-line bg-denra-ivory lg:hidden"
           >
             <nav className="shell flex min-h-full flex-col py-6 pb-[calc(var(--action-bar-height)+2rem)]" aria-label={t('nav.navigation')}>
               <ul>

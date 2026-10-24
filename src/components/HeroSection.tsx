@@ -9,7 +9,7 @@ export default function HeroSection() {
   const image = heroImage.img;
 
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-var(--header-height))] items-end overflow-hidden lg:items-center" aria-labelledby="hero-heading">
+    <section className="relative isolate -mt-[var(--header-height)] flex min-h-[100svh] items-end overflow-hidden pt-[var(--header-height)] lg:items-center" aria-labelledby="hero-heading">
       <img
         src={image.src}
         srcSet={Object.values(heroImage.sources)[0]}
