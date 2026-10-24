@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, FileDown, ArrowUp } from 'lucide-react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
 
 const sections = [
   ['Artikel 1 - Identiteit en definities', [
@@ -137,7 +134,7 @@ export default function AlgemeneVoorwaarden() {
         const visibleArticle = entries
           .filter((entry) => entry.isIntersecting)
           .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];
-        if (visibleArticle) setActiveArticle(Number(visibleArticle.target.dataset.articleIndex));
+        if (visibleArticle) setActiveArticle(Number((visibleArticle.target as HTMLElement).dataset.articleIndex));
       },
       { rootMargin: '-96px 0px -68% 0px', threshold: 0 },
     );
@@ -181,9 +178,8 @@ export default function AlgemeneVoorwaarden() {
 
   return (
     <>
-      <Header />
       <div className="denra-legal-progress print:hidden" aria-hidden="true"><div ref={progressBar} /></div>
-      <main className="denra-legal-page pt-[74px] pb-20">
+      <div className="denra-legal-page pb-20">
         <section className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-12 lg:pt-24 lg:pb-20">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1.65fr)_minmax(255px,0.7fr)] lg:items-end">
             <div className="animate-fade-in">
@@ -219,7 +215,7 @@ export default function AlgemeneVoorwaarden() {
 
           <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12">
             <aside className="hidden lg:block">
-              <nav aria-label="Inhoudsopgave algemene voorwaarden" className="sticky top-[98px] border-l border-[#7a6552]/25 pl-5">
+              <nav aria-label="Inhoudsopgave algemene voorwaarden" className="sticky top-[calc(var(--header-height)+24px)] border-l border-[#7a6552]/25 pl-5">
                 <p className="denra-label mb-4">Inhoud</p>
                 <ol className="space-y-1">
                   {sections.map(([title], index) => <li key={title}><button type="button" onClick={() => scrollToArticle(index)} aria-current={activeArticle === index ? 'location' : undefined} className={`flex w-full items-start gap-3 py-1.5 text-left text-xs leading-snug transition-colors ${activeArticle === index ? 'font-medium text-[#231A12]' : 'text-[#71665b] hover:text-[#231A12]'}`}><span className="shrink-0">{String(index + 1).padStart(2, '0')}</span>{title.replace(/^Artikel \d+ - /, '')}</button></li>)}
@@ -250,9 +246,7 @@ export default function AlgemeneVoorwaarden() {
           </div>
         </section>
         <button ref={backToTopButton} type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="denra-back-top print:hidden" aria-label="Naar boven"><ArrowUp size={16} /><span>Naar boven</span></button>
-      </main>
-      <Footer />
-      <WhatsAppButton />
+      </div>
     </>
   );
 }

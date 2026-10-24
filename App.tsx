@@ -1,11 +1,9 @@
 import React, { Suspense, lazy } from 'react';
-import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles.css';
 import { LanguageProvider } from './src/i18n/LanguageProvider';
+import { SiteContentProvider } from './src/content/SiteContentProvider';
+import SiteLayout from './src/components/SiteLayout';
 
 import Home from './src/pages/Home';
 import NotFound from './src/pages/NotFound';
@@ -16,11 +14,13 @@ const Badkamerrenovatie = lazy(() => import('./src/pages/Badkamerrenovatie'));
 const WCRenovatie = lazy(() => import('./src/pages/WCRenovatie'));
 const Binnenrenovatie = lazy(() => import('./src/pages/Binnenrenovatie'));
 const Projecten = lazy(() => import('./src/pages/Projecten'));
+const ProjectDetail = lazy(() => import('./src/pages/ProjectDetail'));
 const OverOns = lazy(() => import('./src/pages/OverOns'));
 const Contact = lazy(() => import('./src/pages/Contact'));
 const ConfiguratorPage = lazy(() => import('./src/pages/ConfiguratorPage'));
 const AlgemeneVoorwaarden = lazy(() => import('./src/pages/AlgemeneVoorwaarden'));
 const Ervaringen = lazy(() => import('./src/pages/Ervaringen'));
+const AdminApp = lazy(() => import('./src/admin/AdminApp'));
 
 const localPages = {
   nl: {
@@ -126,8 +126,8 @@ const localPages = {
 };
 
 const PageLoader = () => (
-  <div className="min-h-screen bg-[#F5EFE6] flex items-center justify-center">
-    <div className="w-8 h-8 border border-[#8E7A68]/20 border-t-[#231A12] rounded-full animate-spin" />
+  <div className="flex min-h-[60vh] items-center justify-center" role="status" aria-label="Laden">
+    <div className="h-8 w-8 animate-spin rounded-full border border-denra-bronze/20 border-t-denra-ink motion-reduce:animate-none" />
   </div>
 );
 
@@ -137,8 +137,10 @@ const AppRoutes = () => {
 
   return (
     <Router>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/admin/*" element={<AdminApp />} />
+          <Route element={<SiteLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/badkamer-renovatie" element={<Badkamerrenovatie />} />
             <Route path="/badkamerrenovatie" element={<Badkamerrenovatie />} />
@@ -149,32 +151,27 @@ const AppRoutes = () => {
             <Route path="/wc-renovatie-amsterdam" element={<LocalServicePage {...pages.wcAmsterdam} />} />
             <Route path="/binnenrenovatie" element={<Binnenrenovatie />} />
             <Route path="/projecten" element={<Projecten />} />
+            <Route path="/projecten/:slug" element={<ProjectDetail />} />
             <Route path="/over-ons" element={<OverOns />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/configurator" element={<ConfiguratorPage />} />
             <Route path="/ervaringen" element={<Ervaringen />} />
             <Route path="/algemene-voorwaarden" element={<AlgemeneVoorwaarden />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          newestOnTop
-          closeOnClick
-          pauseOnHover
-        />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 };
 
 const App: React.FC = () => {
   return (
-    <Theme appearance="inherit" radius="large" scaling="100%">
+    <SiteContentProvider>
       <LanguageProvider>
         <AppRoutes />
       </LanguageProvider>
-    </Theme>
+    </SiteContentProvider>
   );
 };
 

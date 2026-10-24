@@ -10,7 +10,7 @@ export default function ReviewForm() {
   const [errorCode, setErrorCode] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const copy = (nl: string, english: string) => en ? english : nl;
-  const fieldClass = 'denra-field mt-2 text-sm';
+  const fieldClass = 'field mt-2';
   const labelClass = 'block text-sm font-medium text-[#231A12]';
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,18 +34,18 @@ export default function ReviewForm() {
       setRating(0);
     } catch { setStatus('error'); }
   }
-  return <section id="review-schrijven" className="denra-review-background scroll-mt-28 px-6 py-12 md:py-16 lg:px-8" aria-labelledby="review-form-title">
-    <div className="mx-auto max-w-7xl border-y border-[#bdaa95]/50 py-8 md:py-10">
+  return <section id="review-schrijven" className="bg-denra-stone py-16 md:py-20" aria-labelledby="review-form-title">
+    <div className="shell">
       <details className="group/review">
         <summary className="flex cursor-pointer list-none flex-col gap-6 marker:content-none sm:flex-row sm:items-center sm:justify-between [&::-webkit-details-marker]:hidden">
           <div>
-            <div className="mb-3 flex items-center gap-3"><div className="denra-line" /><span className="denra-label">{copy('Uw ervaring', 'Your experience')}</span></div>
-            <h2 id="review-form-title" className="font-serif text-3xl font-semibold leading-tight text-[#231A12] md:text-4xl">{copy('Ook geholpen door Denra?', 'Worked with Denra?')}</h2>
+            <p className="eyebrow mb-4">{copy('Uw ervaring', 'Your experience')}</p>
+            <h2 id="review-form-title" className="display-md">{copy('Ook geholpen door Denra?', 'Worked with Denra?')}</h2>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-[#6b5d50]">{copy('Vertel ons over uw renovatie. We horen graag hoe u het heeft ervaren.', 'Tell us about your renovation. We would love to hear your experience.')}</p>
           </div>
-          <span className="denra-button-secondary shrink-0 self-start sm:self-auto">{copy('Schrijf een review', 'Write a review')}<ChevronDown size={16} className="transition-transform group-open/review:rotate-180" aria-hidden="true" /></span>
+          <span className="btn-secondary shrink-0 self-start sm:self-auto">{copy('Schrijf een review', 'Write a review')}<ChevronDown size={16} className="transition-transform group-open/review:rotate-180" aria-hidden="true" /></span>
         </summary>
-        <div className="mt-8 grid gap-8 border-t border-[#bdaa95]/40 pt-8 lg:mt-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 lg:pt-10">
+        <div className="mt-8 grid gap-8 border-t border-denra-line pt-8 lg:mt-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 lg:pt-10">
           <aside className="max-w-sm">
             <p className="font-serif text-2xl leading-snug text-[#231A12]">{copy('Een mooi resultaat begint met vertrouwen.', 'A beautiful result begins with trust.')}</p>
             <p className="mt-4 text-sm leading-relaxed text-[#6b5d50]">{copy('Uw ervaring helpt anderen bij de keuze voor hun renovatie.', 'Your experience helps others choose who to trust with their renovation.')}</p>
@@ -66,7 +66,7 @@ export default function ReviewForm() {
             <label className={`${labelClass} sm:col-span-2`}>{copy('Uw ervaring', 'Your experience')}<textarea name="text" placeholder={copy('Hoe heeft u de samenwerking en het resultaat ervaren?', 'How did you experience the work and the result?')} required minLength={20} maxLength={3000} rows={4} className={`${fieldClass} resize-y`} /></label>
             <div className="hidden" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
             <label className="flex items-start gap-3 text-xs leading-relaxed text-[#6b5d50] sm:col-span-2"><input name="consent" type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 accent-[#7a6552]" /><span>{copy('Ik ben klant van Denra en geef toestemming om mijn naam, plaats en review na controle te publiceren.', 'I am a Denra customer and consent to publication of my name, city and review after verification.')}</span></label>
-            <div className="mt-1 sm:col-span-2"><button disabled={status === 'sending'} className="denra-button-primary w-full disabled:opacity-50 sm:w-auto" type="submit">{status === 'sending' ? copy('Versturen…', 'Sending…') : copy('Verstuur uw review', 'Send your review')}<ArrowRight size={16} aria-hidden="true" /></button></div>
+            <div className="mt-1 sm:col-span-2"><button disabled={status === 'sending'} className="btn-primary w-full sm:w-auto" type="submit">{status === 'sending' ? copy('Versturen…', 'Sending…') : copy('Verstuur uw review', 'Send your review')}<ArrowRight size={16} aria-hidden="true" /></button></div>
             <p role={status === 'error' ? 'alert' : 'status'} className="text-sm leading-relaxed text-[#6b5d50] sm:col-span-2">{status === 'success' ? copy('Bedankt! Dennis controleert uw review vóór publicatie.', 'Thank you! Dennis will check your review before publication.') : status === 'error' ? errorCode === 'EMAIL_NOT_CONFIGURED' ? copy('Reviews versturen is tijdelijk niet beschikbaar: de mailservice is nog niet ingesteld. Uw tekst staat nog in het formulier.', 'Review submission is temporarily unavailable: the email service has not been configured. Your text is still in the form.') : errorCode === 'INVALID_REVIEW' ? copy('Controleer uw gegevens en schrijf minimaal 20 tekens bij uw ervaring. Uw tekst staat nog in het formulier.', 'Check your details and write at least 20 characters about your experience. Your text is still in the form.') : errorCode === 'REVIEW_DELIVERY_FAILED' ? copy('Uw review kon niet veilig worden opgeslagen of afgeleverd. Uw tekst staat nog in het formulier; probeer het later opnieuw.', 'Your review could not be securely stored or delivered. Your text is still in the form; please try again later.') : copy('Geen verbinding met de reviewservice. Uw tekst staat nog in het formulier; probeer het opnieuw.', 'Could not connect to the review service. Your text is still in the form; please try again.') : ''}</p>
           </form>
         </div>

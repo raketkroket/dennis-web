@@ -49,15 +49,21 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))'
         },
         denra: {
-          ivory: '#F6F0E8',
+          ivory: '#F7F2EA',
+          paper: '#FBF8F3',
           cream: '#FAF6F0',
           limestone: '#EEE6DA',
-          sand: '#E8DDCF',
+          stone: '#E9E1D5',
+          sand: '#DDD1C1',
           greige: '#CBB9A5',
           taupe: '#8E7A68',
           bronze: '#7A6552',
+          muted: '#6B5D50',
+          ink: '#231A12',
           espresso: '#231A12',
+          night: '#1B1510',
           charcoal: '#2D261F',
+          line: '#D9CDBD',
         }
       },
       borderRadius: {
@@ -78,6 +84,9 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
+      },
+      maxWidth: {
+        shell: '1320px',
       },
       fontFamily: {
         sans: ["'DM Sans'", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],

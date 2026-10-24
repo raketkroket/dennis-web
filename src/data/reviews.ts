@@ -1,15 +1,15 @@
-import partoredjo1 from '../../fotos/Partoredjo1.jpg';
-import partoredjo2 from '../../fotos/Partoredjo2.jpg';
-import partoredjo3 from '../../fotos/Partoredjo3.jpg';
-import partoredjo4 from '../../fotos/Partoredjo4.jpg';
-import partoredjo5 from '../../fotos/Partoredjo5.jpg';
-import partoredjo6 from '../../fotos/Partoredjo6.jpg';
-import natalieDiemen1 from '../../fotos/natalie diemen 1.jpg';
-import natalieDiemen2 from '../../fotos/nataliediemen2.jpg';
-import karinAmsterdam1 from '../../fotos/karin amsterdam1.jpg';
-import karinAmsterdam2 from '../../fotos/karinamsterdam2.jpg';
-import karinAmsterdam3 from '../../fotos/karinamsterdam 3.jpg';
-import joostAmsterdamReview from '../../fotos/joost amsterdam review.png';
+import partoredjo1 from '../../fotos/Partoredjo1.jpg?w=1280&format=webp';
+import partoredjo2 from '../../fotos/Partoredjo2.jpg?w=1280&format=webp';
+import partoredjo3 from '../../fotos/Partoredjo3.jpg?w=1280&format=webp';
+import partoredjo4 from '../../fotos/Partoredjo4.jpg?w=1280&format=webp';
+import partoredjo5 from '../../fotos/Partoredjo5.jpg?w=1280&format=webp';
+import partoredjo6 from '../../fotos/Partoredjo6.jpg?w=1280&format=webp';
+import natalieDiemen1 from '../../fotos/natalie diemen 1.jpg?w=1280&format=webp';
+import natalieDiemen2 from '../../fotos/nataliediemen2.jpg?w=1280&format=webp';
+import karinAmsterdam1 from '../../fotos/karin amsterdam1.jpg?w=1280&format=webp';
+import karinAmsterdam2 from '../../fotos/karinamsterdam2.jpg?w=1280&format=webp';
+import karinAmsterdam3 from '../../fotos/karinamsterdam 3.jpg?w=1280&format=webp';
+import joostAmsterdamReview from '../../fotos/joost amsterdam review.png?w=1280&format=webp';
 import type { Language } from '../i18n/translations';
 
 export interface Review {
@@ -35,7 +35,7 @@ export interface PublishedReview {
 
 export const reviews: Review[] = [
   { id: 'nikie-volkers-2026', name: 'Nikie Volkers', rating: 5, date: '7 oktober 2026', project: 'Badkamer laten plaatsen', text: 'Wij hebben onze badkamer laten plaatsen door Dennis. Top aannemer met fantastische alleskunners in dienst. Goede communicatie, prima prijs-kwaliteitverhouding en afspraken worden nagekomen.\n\nWij vonden het erg fijn dat één persoon eigenlijk alle verschillende klussen deed: van loodgieterswerk, elektra, tegels zetten, Mariusz deed alles en echt goed.\n\nHoeken in verstek gezaagd, een betegeld stopcontact, echt vakwerk!', images: ['/nikie-badkamer.jpg', '/nikie-detail.jpg'] },
-  { id: 'joost-2021', name: 'Joost', city: 'Amsterdam', rating: 4, date: '22 september 2021', project: 'Aanbouw plaatsen: 5 m²; Ja; Plat dak', text: 'Erg tevreden met Dennis van Denra Bouw. In april offerte aangevraagd en viel lager uit dan in eerste instantie geschat, wat zijn eerlijkheid aangaf. In juni begonnen met een aanbouw die tot en met augustus duurde. Erg tevreden met de kwaliteit en zeker de communicatie. Erg helder en altijd bereikbaar. Ook meerwerk was in overleg goed en snel te realiseren. Ze denken mee met wat handig is voor de aanbouw met locaties als water en stroom. Eerlijke prijs en goeie communicatie zijn echt de basis voor hun werkzaamheden, erg tevreden!', images: [] },
+  { id: 'joost-2021', name: 'Joost', city: 'Amsterdam', rating: 4, date: '22 september 2021', project: 'Aanbouw plaatsen: 5 m²; Ja; Plat dak', text: 'Erg tevreden met Dennis van Denra Bouw. In april offerte aangevraagd en viel lager uit dan in eerste instantie geschat, wat zijn eerlijkheid aangaf. In juni begonnen met een aanbouw die tot en met augustus duurde. Erg tevreden met de kwaliteit en zeker de communicatie. Erg helder en altijd bereikbaar. Ook meerwerk was in overleg goed en snel te realiseren. Ze denken mee met wat handig is voor de aanbouw met locaties als water en stroom. Eerlijke prijs en goeie communicatie zijn echt de basis voor hun werkzaamheden, erg tevreden!', images: [joostAmsterdamReview] },
   { id: 'carlo-2021', name: 'Carlo', city: 'Almere', rating: 5, date: '27 juli 2021', project: 'Aanbouw plaatsen: 10 m²; Ja; Plat dak', text: 'Heel prettig bedrijf, de mannen werken hard en denken goed mee. Kwaliteit van het werk is zeer goed, ook maken ze tijd voor wensen die tussentijds veranderen of erbij komen.', images: [] },
   { id: 'effendi-2021', name: 'Effendi', city: 'Amsterdam', rating: 5, date: '7 april 2021', project: 'Aanbouw plaatsen: 20 m²; In overleg; Plat dak met terras erop', text: 'Bij het bouwen van onze uitbouw zijn er een aantal tegenslagen geweest die naar tevredenheid uitgesproken en opgelost zijn. Tijdens de bouw bleek dat wij over de erfgrens zouden bouwen. Onacceptabel voor de buren. Denra heeft samen met de constructeur een nieuwe waterdichte constructie bedacht voor een eigen muur. Bij het openbreken van onze buitenmuur bleek de constructie van de woning toch anders dan de bouwtekening. Ook dit is opgelost. Deze tegenslagen, corona en de strenge winter hebben er wel toe geleid dat de bouw 3x langer duurde dan voorzien. Verder fijn dat Denra een door ons gekochte lichtstraat wel wilde plaatsen. De mannen zijn kundig, goed aan te spreken en denken mee. Tip: laat de mannen zelf nameten en gebruik hun constructeur (indien nodig).', images: [] },
   { id: 'karin-2021', name: 'Karin', city: 'Amsterdam', rating: 5, date: '20 maart 2021', project: 'Aanbouw plaatsen: 10 m²; Nee; Plat dak', text: 'Prachtige uitbouw gemaakt, vakkundig en precies. Netjes gewerkt, met kwalitatief goede materialen. Prettige communiceren.', images: [karinAmsterdam1, karinAmsterdam2, karinAmsterdam3] },
@@ -48,32 +48,6 @@ export const reviews: Review[] = [
   { id: 'denra-montage-2019', name: 'Klant van Denra montage en onderhoud', rating: 5, date: '7 januari 2019', project: 'Badkamer renovatie en stucwerk hele woning.', text: 'Goed meedenkend bedrijf! Wij hebben samen een plan van aanpak gemaakt. Tijdens de werkzaamheden in de badkamer hebben wij besloten voor meerwerk (stucwerk voor de gehele woning) mooie badkamer en strak stucwerk afgeleverd! Dennis is altijd transparant en goed bereikbaar geweest. In de zomer hebben wij nog meer verbouwplannen en zullen dan zeker weer gebruik maken van Denra montage & onderhoud. Kortom een aanrader...', images: [] },
   { id: 'mr-c-elmas-2019', name: 'Mr C Elmas', rating: 5, date: '7 januari 2019', project: 'Stucwerk, latexspuitwerk, spotjes, schilderwerk binnen', text: 'Zeer prettige ervaring met Denra Montage. Meerdere aannemers over de vloer gehad maar Dennis maakte door zijn eerlijke manier van communiceren en plan van aanpak het verschil. Afspraak is afspraak met Dennis wat ik als zeer prettig heb ervaren. Oplevering is conform afspraak en tijd opgeleverd. Voor andere klussen zal ik wederom gebruik maken van zijn diensten of hem aanbevelen bij vrienden/collega\'s.', images: [] },
   { id: 'danielle-2018', name: 'Danielle', city: 'Almere', rating: 3, date: '21 december 2018', project: 'Badkamer: Nieuwe badkamer; 6 m²', text: 'De communicatie was prima, de klus is niet door gegaan omdat de bouw van het huis en zijn tegenslagen dit nu nog niet toelaten. Daarom 1 ster voor kwaliteit en prijs. Dit kan ik niet beoordelen. Verder prima overleg geweest.', images: [] },
-  // DEMO / PLACEHOLDER REVIEWS — replace with verified customer reviews before production
-  { id: 'demo-sanne-2026', name: 'Sanne', city: 'Almere', rating: 4, date: '18 augustus 2026', project: 'Complete badkamer renovatie', text: 'Erg blij met onze nieuwe badkamer. Dennis en zijn team werkten netjes, hielden ons goed op de hoogte en lieten alles schoon achter.' },
-  { id: 'demo-yassin-2026', name: 'Jason', city: 'Amsterdam West', rating: 4, date: '2 juli 2026', project: 'Badkamer volledig renoveren', text: 'Van het slopen tot de laatste kitrand is alles zorgvuldig gedaan. Dennis was transparant over de keuzes en kosten, en zijn team dacht goed mee over de indeling. De inloopdouche is precies geworden zoals we wilden.' },
-  { id: 'demo-linda-2026', name: 'Linda', city: 'Almere Poort', rating: 4, date: '16 juni 2026', project: 'Badkamer vernieuwen', text: 'Fijne mensen over de vloer gehad. De nieuwe tegels en wastafel maken echt verschil, wij zijn er blij mee.' },
-  { id: 'demo-dinesh-2026', name: 'Dinesh', city: 'Amsterdam Noord', rating: 4, date: '28 mei 2026', project: 'Badkamer renovatie', text: 'Dennis en zijn team hebben mooi werk geleverd. De badkamer ziet er top uit en de afspraken waren helder.' },
-  { id: 'demo-esra-2026', name: 'Emma', city: 'Almere Buiten', rating: 4, date: '9 april 2026', project: 'Badkamer plaatsen', text: 'Vooral de rustige manier van werken vonden wij prettig. Er werd meegedacht over de nis en de plek van de kranen. De afwerking past goed bij de rest van ons huis.' },
-  { id: 'demo-joost-2026', name: 'Joost', city: 'Amsterdam Centrum', rating: 4, date: '21 maart 2026', project: 'Badkamer renovatie', text: 'Onze badkamer is compleet aangepakt. Dennis hielp ons met goede keuzes in sanitair en tegelwerk en had een fijne samenwerking met de leverancier. Na afloop was alles opgeruimd. Heel blij mee.', images: [joostAmsterdamReview] },
-  { id: 'demo-nadia-2026', name: 'Britt', city: 'Almere Stad', rating: 3, date: '5 februari 2026', project: 'Badkamer volledig renoveren', text: 'De badkamer is netjes geworden en het resultaat ziet er goed uit. Voor ons duurden de werkzaamheden iets langer dan verwacht, maar er is zorgvuldig gewerkt.' },
-  { id: 'demo-mark-2025', name: 'Mark', city: 'Zoetermeer', rating: 4, date: '14 december 2025', project: 'Badkamer vernieuwen', text: 'Netjes gedaan en fijn meegedacht met de kleine ruimte.' },
-  { id: 'demo-samira-2025', name: 'Samira', city: 'Amsterdam Zuid', rating: 3, date: '30 oktober 2025', project: 'Complete badkamer renovatie', text: 'We zijn tevreden met de badkamer en vooral met de strakke tegelverdeling. Een klein detail bij het meubel had ik zelf achteraf anders gekozen, maar het geheel is prachtig geworden.' },
-  { id: 'demo-peter-2025', name: 'Peter', city: 'Almere Overgooi', rating: 4, date: '12 september 2025', project: 'Badkamer renovatie', text: 'Dennis dacht praktisch mee over leidingwerk en de plaats van het bad. Hij was transparant over wat mogelijk was en stemde de materialen goed af met de leverancier. Daardoor hebben we meer ruimte overgehouden dan verwacht.' },
-  { id: 'demo-ayse-2025', name: 'Ayse', city: 'Amsterdam Oost', rating: 4, date: '27 juli 2025', project: 'Badkamer volledig renoveren', text: 'Nieuwe douche, wastafel en verlichting laten plaatsen. Het resultaat is heel verzorgd en de ruimte is veel lichter geworden.' },
-  { id: 'demo-robin-2025', name: 'Robin', city: 'Almere', rating: 4, date: '8 juni 2025', project: 'Badkamer vernieuwen', text: 'De badkamer ziet er weer modern uit. Vooral de kranen en het meubel zijn mooi geworden.' },
-  { id: 'demo-fatima-2025', name: 'Denise', city: 'Amsterdam Noord', rating: 4, date: '19 april 2025', project: 'Badkamer renovatie', text: 'We wilden een praktische badkamer zonder dat het kil zou worden. Dennis nam rustig de tijd voor onze vragen en werkte prettig samen met de leverancier. Door de warme tegels en het houtlook meubel is dat goed gelukt.' },
-  { id: 'demo-kevin-2025', name: 'Kevin', city: 'Almere Poort', rating: 3, date: '3 maart 2025', project: 'Badkamer plaatsen', text: 'Prima uitgevoerd en de afspraken waren duidelijk. Wij geven niet snel vijf sterren, maar zijn gewoon erg tevreden met de nieuwe badkamer.' },
-  { id: 'demo-anita-2025', name: 'Anita', city: 'Amsterdam West', rating: 4, date: '17 januari 2025', project: 'Complete badkamer renovatie', text: 'Dennis en zijn team hebben vooraf goed gekeken naar wat mogelijk was in onze oude badkamer. De communicatie over planning en kosten was transparant. De inloopdouche en extra bergruimte zijn een grote verbetering.' },
-  { id: 'demo-bart-2026', name: 'Bart', city: 'Almere Stad', rating: 4, date: '6 augustus 2026', project: 'Toilet renovatie', text: 'Toilet helemaal vernieuwd en keurig afgewerkt.' },
-  { id: 'demo-merve-2026', name: 'Melissa', city: 'Amsterdam', rating: 4, date: '11 juni 2026', project: 'Toilet verbouwen', text: 'Dennis en zijn team hebben netjes gewerkt. Het fonteintje en de tegels zijn mooi gekozen en onze wc is veel moderner geworden.' },
-  { id: 'demo-willem-2026', name: 'Willem', city: 'Almere Buiten', rating: 4, date: '24 april 2026', project: 'Toilet volledig vernieuwen', text: 'Kleine ruimte slim benut. Het hangende toilet geeft meteen een veel rustiger beeld.' },
-  { id: 'demo-rachida-2026', name: 'Laura', city: 'Amsterdam Oost', rating: 4, date: '15 februari 2026', project: 'Toilet renovatie', text: 'Heel blij met de nieuwe wc.' },
-  { id: 'demo-thomas-2025', name: 'Thomas', city: 'Almere Overgooi', rating: 3, date: '22 november 2025', project: 'Toilet verbouwen', text: 'Goed werk geleverd. De werkzaamheden namen wat meer tijd dan wij dachten, maar het toilet is netjes en strak geworden.' },
-  { id: 'demo-priya-2025', name: 'Priya', city: 'Amsterdam Centrum', rating: 3, date: '4 september 2025', project: 'Toilet renovatie', text: 'Dennis was helder over de planning en werkte prettig samen met de leverancier. De oude wc is volledig aangepakt, inclusief leidingwerk en een nieuwe nis. Fijn dat er aandacht was voor de details in zo een kleine ruimte.' },
-  { id: 'demo-emre-2025', name: 'Emre', city: 'Zoetermeer', rating: 2, date: '18 juli 2025', project: 'Toilet volledig vernieuwen', text: 'Snel en verzorgd uitgevoerd. De afwerking bij het fonteintje is mooi strak.' },
-  { id: 'demo-kim-2025', name: 'Kim', city: 'Almere', rating: 2, date: '25 mei 2025', project: 'Toilet renovatie', text: 'Netjes werk en alles weer schoon achtergelaten.' },
-  { id: 'demo-omar-2025', name: 'Brian', city: 'Amsterdam Zuid', rating: 3, date: '7 maart 2025', project: 'Toilet verbouwen', text: 'Wij wilden een rustige uitstraling met een hangend toilet en lichte tegels. Er is goed geluisterd naar wat we voor ogen hadden. Het resultaat past precies.' },
-  { id: 'demo-inge-2025', name: 'Inge', city: 'Almere Poort', rating: 2, date: '13 januari 2025', project: 'Toilet renovatie', text: 'Onze wc is klein, maar voelt nu veel ruimer. Mooie materialen gebruikt en de afwerking rondom de nis is echt fraai.' },
 ];
 
 const englishMonths: Record<string, string> = {
@@ -96,20 +70,35 @@ function reviewTimestamp({ id, date }: Review): number {
   return Date.UTC(Number(year), monthNumbers[month], Number(day));
 }
 
+const byNewestThenId = (first: { timestamp: number; review: Review }, second: { timestamp: number; review: Review }) =>
+  second.timestamp - first.timestamp || first.review.id.localeCompare(second.review.id);
+
 export function getReviews(language: Language): Review[] {
-  return [...reviews]
-    .sort((firstReview, secondReview) => reviewTimestamp(secondReview) - reviewTimestamp(firstReview))
-    .map((review) => formatReviewForLanguage(review, language));
+  return reviews
+    .map((review) => ({ timestamp: reviewTimestamp(review), review }))
+    .sort(byNewestThenId)
+    .map(({ review }) => formatReviewForLanguage(review, language));
 }
 
+const normalise = (value: string) => value.toLowerCase().replace(/\s+/g, ' ').trim();
+
+/**
+ * Combines the reviews in this file with reviews approved through the
+ * website. A submitted review with the same name and text as one in this
+ * file is shown once. Newest first; reviews from the same day keep a fixed
+ * order (by id) so the list never jumps between visits.
+ */
 export function mergePublishedReviews(staticReviews: Review[], publishedReviews: PublishedReview[], language: Language): Review[] {
-  const published = publishedReviews.map((review) => {
+  const known = new Set(staticReviews.map((review) => `${normalise(review.name)}|${normalise(review.text)}`));
+  const published = publishedReviews.flatMap((review) => {
     const timestamp = Date.parse(review.createdAt);
     if (Number.isNaN(timestamp)) {
-      throw new Error(`Published review "${review.id}" has an invalid creation date.`);
+      console.error(`Published review "${review.id}" has an invalid creation date; it is not shown.`);
+      return [];
     }
+    if (known.has(`${normalise(review.name)}|${normalise(review.text)}`)) return [];
 
-    return {
+    return [{
       timestamp,
       review: {
         id: review.id,
@@ -125,15 +114,21 @@ export function mergePublishedReviews(staticReviews: Review[], publishedReviews:
           timeZone: 'UTC',
         }).format(new Date(review.createdAt)),
       },
-    };
+    }];
   });
 
   return [
     ...staticReviews.map((review) => ({ timestamp: reviewTimestamp(review), review: formatReviewForLanguage(review, language) })),
     ...published,
   ]
-    .sort((firstReview, secondReview) => secondReview.timestamp - firstReview.timestamp)
+    .sort(byNewestThenId)
     .map(({ review }) => review);
+}
+
+/** Average star rating, rounded to one decimal; null when there are no reviews. */
+export function averageRating(list: Review[]): number | null {
+  if (!list.length) return null;
+  return Math.round((list.reduce((sum, review) => sum + review.rating, 0) / list.length) * 10) / 10;
 }
 
 function formatReviewForLanguage(review: Review, language: Language): Review {

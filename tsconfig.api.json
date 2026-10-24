@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["api/**/*.ts"]
+  "include": ["api/**/*.ts", "src/lib/calculator.ts", "src/lib/calculatorRows.ts"]
 }
