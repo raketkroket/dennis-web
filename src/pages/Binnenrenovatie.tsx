@@ -1,37 +1,114 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Layers, Paintbrush, Grid3x3, Waves } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
-import { usePageTitle } from '../i18n/format';
-import { RelatedProjects, ServiceHero, useCategoryProjects } from '../components/service/ServiceBlocks';
-import FaqSection from '../components/FaqSection';
-import CTASection from '../components/CTASection';
-import Reveal from '../components/ui/Reveal';
 
 export default function Binnenrenovatie() {
   const { t } = useLanguage();
-  const projects = useCategoryProjects('interieur');
-  usePageTitle(t('interiorPage.title'), t('interiorPage.description'));
-  const titles = t('interiorPage.services').split('|');
-  const descriptions = t('interiorPage.serviceDescriptions').split('|');
-
+  const serviceTitles = t('interiorPage.services').split('|');
+  const serviceDescriptions = t('interiorPage.serviceDescriptions').split('|');
+  const services = [Layers, Paintbrush, Waves, Grid3x3].map((icon, index) => ({ icon, title: serviceTitles[index], desc: serviceDescriptions[index] }));
   return (
     <>
-      <ServiceHero eyebrow={t('interiorPage.eyebrow')} title={t('interiorPage.title')} description={t('interiorPage.description')} category="interieur" project={projects[0]} />
-      <section className="bg-denra-stone py-20 md:py-28" aria-labelledby="interior-services-heading">
-        <div className="shell">
-          <Reveal><h2 id="interior-services-heading" className="display-lg max-w-2xl">{t('interiorPage.servicesTitle')}</h2></Reveal>
-          <ol className="mt-12 grid border-t border-denra-ink/70 md:grid-cols-2">
-            {titles.map((title, index) => (
-              <Reveal as="li" key={title} delay={index * 0.05} className={`border-b border-denra-line py-8 md:pr-10 ${index % 2 === 1 ? 'md:border-l md:pl-10' : ''}`}>
-                <span className="font-serif text-lg text-denra-bronze">{String(index + 1).padStart(2, '0')}</span>
-                <h3 className="mt-2 font-serif text-3xl">{title}</h3>
-                <p className="mt-3 max-w-md leading-relaxed text-denra-muted">{descriptions[index]}</p>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </section>
-      <RelatedProjects title={t('portfolioPage.interior')} category="interieur" projects={projects.slice(1)} />
-      <FaqSection pages={['binnen']} />
-      <CTASection service="binnen" />
+      <Header />
+      <main>
+        <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label={t('interiorPage.heroAria')}>
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-[1.03fr_0.97fr] gap-14 xl:gap-20 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="max-w-xl"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="denra-line" />
+                  <span className="denra-label bg-[#e6dfd7] text-[#433a32]">{t('interiorPage.eyebrow')}</span>
+                </div>
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
+                  {t('interiorPage.title')}
+                </h1>
+                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg max-w-lg">
+                  {t('interiorPage.description')}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
+                  >
+                    {t('common.calculatePrice')}
+                    <ArrowRight size={16} />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
+                  >
+                    {t('interiorPage.consultation')}
+                  </Link>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="relative rounded-[34px] overflow-hidden aspect-[4/3] border border-[#d7cab8] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e7ddcf]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-l from-[#231a12]/10 via-transparent to-transparent" />
+                <img
+                  src={sitePhotos[6]}
+                  alt={t('interiorPage.heroAlt')}
+                  width={900}
+                  height={675}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="binnen-diensten-heading">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-14"
+            >
+              <h2 id="binnen-diensten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
+                {t('interiorPage.servicesTitle')}
+              </h2>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {services.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="flex items-start gap-6 p-8 bg-[#faf6f0] rounded-sm border border-[#cfbca7]/55 hover:border-[#7a6552]/40 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-sm bg-[#f4ede4] border border-[#cfbca7]/55 flex items-center justify-center shrink-0">
+                    <s.icon size={22} className="text-[#7a6552]" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl font-semibold text-[#231A12] mb-2">{s.title}</h3>
+                    <p className="text-sm text-[#6B5D50] leading-relaxed">{s.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <WhatsAppButton />
     </>
   );
 }
