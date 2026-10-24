@@ -1,21 +1,24 @@
+import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { useSiteContent } from '../content/SiteContentProvider';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n/useLanguage';
+import { useSiteContent } from '../content/SiteContentProvider';
 
-// Desktop only: on smaller screens WhatsApp lives in the MobileActionBar.
 export default function WhatsAppButton() {
   const { t } = useLanguage();
   const { business } = useSiteContent();
   return (
-    <a
+    <motion.a
       href={`https://wa.me/${business.whatsappNumber}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t('home.whatsappChat')}
-      className="fixed bottom-6 right-6 z-30 hidden h-14 items-center gap-2 border border-denra-ink/15 bg-denra-paper px-4 text-sm font-medium text-denra-ink shadow-[0_10px_30px_rgba(35,26,18,0.12)] transition-colors hover:bg-denra-ink hover:text-denra-ivory lg:inline-flex"
+          className="fixed bottom-4 right-4 z-30 h-14 w-14 bg-[#e7dfd2] border border-[#5c5147]/16 rounded-sm flex items-center justify-center hover:border-[#5c5147]/32 hover:scale-105 transition-all duration-300 sm:bottom-6 sm:right-6"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}
     >
-      <MessageCircle size={20} aria-hidden="true" />
-      {t('site.whatsapp')}
-    </a>
+          <MessageCircle size={26} className="text-[#3c342c]" />
+    </motion.a>
   );
 }

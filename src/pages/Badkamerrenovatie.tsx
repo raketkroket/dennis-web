@@ -1,22 +1,198 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Check, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
+import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
-import { usePageTitle } from '../i18n/format';
-import { GuidanceSection, RelatedProjects, ScopeSection, ServiceHero, useCategoryProjects } from '../components/service/ServiceBlocks';
-import FaqSection from '../components/FaqSection';
-import CTASection from '../components/CTASection';
 
 export default function Badkamerrenovatie() {
   const { t } = useLanguage();
-  const projects = useCategoryProjects('badkamer');
-  usePageTitle(t('bathroomPage.title'), t('bathroomPage.description'));
+  const features = t('bathroomPage.features').split('|');
+  const projectTitles = t('bathroomPage.projectTitles').split('|');
+  const projectDescriptions = t('bathroomPage.projectDescriptions').split('|');
+  const projects = [0, 1, 2].map((photoIndex, index) => ({ image: sitePhotos[photoIndex], title: projectTitles[index], desc: projectDescriptions[index] }));
 
   return (
     <>
-      <ServiceHero eyebrow={t('bathroomPage.eyebrow')} title={t('bathroomPage.title')} description={t('bathroomPage.description')} category="badkamer" project={projects[0]} />
-      <ScopeSection title={t('bathroomPage.featuresTitle')} description={t('bathroomPage.featuresDescription')} items={t('bathroomPage.features').split('|')} project={projects[1]} />
-      <GuidanceSection eyebrow={t('bathroomPage.guidanceEyebrow')} title={t('bathroomPage.guidanceTitle')} paragraphs={[t('bathroomPage.guidanceFirst'), t('bathroomPage.guidanceSecond')]} conclusion={t('bathroomPage.guidanceConclusion')} />
-      <RelatedProjects title={t('bathroomPage.projectsTitle')} category="badkamer" projects={projects.slice(2)} />
-      <FaqSection pages={['badkamer']} tone="stone" />
-      <CTASection service="badkamer" />
+      <Header />
+      <main>
+        {/* Hero */}
+        <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label={t('bathroomPage.heroAria')}>
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-14 xl:gap-20 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="max-w-xl"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="denra-line" />
+                  <span className="denra-label bg-[#efe2d2] text-[#4d3d33]">{t('bathroomPage.eyebrow')}</span>
+                </div>
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
+                  {t('bathroomPage.title')}
+                </h1>
+                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
+                  {t('bathroomPage.description')}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    to="/configurator"
+                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
+                  >
+                    {t('common.calculatePrice')}
+                    <ArrowRight size={16} />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
+                  >
+                    {t('bathroomPage.consultation')}
+                  </Link>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="relative rounded-[32px] overflow-hidden aspect-[4/3] border border-[#d6c3a9] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#efe4d5]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/10 to-transparent" />
+                <img
+                  src={sitePhotos[0]}
+                  alt={t('bathroomPage.heroAlt')}
+                  width={900}
+                  height={675}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="features-heading">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <h2 id="features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
+                  {t('bathroomPage.featuresTitle').split('|').map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}
+                </h2>
+                <p className="text-[#6B5D50] leading-relaxed mb-8">
+                  {t('bathroomPage.featuresDescription')}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {features.map((f, i) => (
+                    <motion.div
+                      key={f}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: i * 0.05 }}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="w-5 h-5 rounded-full bg-[#e8ddcf] flex items-center justify-center shrink-0">
+                        <Check size={11} className="text-[#7a6552]" />
+                      </div>
+                      <span className="text-sm text-[#4A3F35]">{f}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="rounded-3xl overflow-hidden aspect-square"
+              >
+                <img
+                  src={sitePhotos[8]}
+                  alt={t('bathroomPage.featuresAlt')}
+                  width={800}
+                  height={800}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-[#f4efe8]" aria-labelledby="badkamer-begeleiding-heading">
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <div className="denra-line" />
+              <span className="denra-label">{t('bathroomPage.guidanceEyebrow')}</span>
+              <div className="denra-line" />
+            </div>
+            <h2 id="badkamer-begeleiding-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
+              {t('bathroomPage.guidanceTitle')}
+            </h2>
+            <p className="text-[#6B5D50] leading-relaxed mb-4">
+              {t('bathroomPage.guidanceFirst')}
+            </p>
+            <p className="text-[#6B5D50] leading-relaxed mb-4">
+              {t('bathroomPage.guidanceSecond')}
+            </p>
+            <p className="text-[#4A3F35] font-medium leading-relaxed">
+              {t('bathroomPage.guidanceConclusion')}
+            </p>
+          </div>
+        </section>
+
+        {/* Projects */}
+        <section className="py-20 bg-[#f6f0e8]" aria-labelledby="badkamer-projecten-heading">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-14"
+            >
+              <h2 id="badkamer-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
+                {t('bathroomPage.projectsTitle')}
+              </h2>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {projects.map((p, i) => (
+                <motion.div
+                  key={p.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group"
+                >
+                  <div className="rounded-2xl overflow-hidden aspect-[4/3] mb-4">
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      width={800}
+                      height={600}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
+                  <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
+      <WhatsAppButton />
     </>
   );
 }

@@ -1,6 +1,6 @@
 # Denra Badkamers website
 
-React 19, Vite, TypeScript and Tailwind, hosted on Vercel with serverless functions in `api/` and optional Supabase for content management. Dennis manages projects, photos, texts, FAQs, prices, reviews and quote requests at `/admin` (Dutch guide: [docs/BEHEER.md](docs/BEHEER.md)).
+React 19, Vite, TypeScript and Tailwind, hosted on Vercel with serverless functions in `api/` and optional Supabase for content management. Dennis manages projects, photos, texts, prices, reviews and quote requests at `/admin` (Dutch guide: [docs/BEHEER.md](docs/BEHEER.md)).
 
 ## Scripts
 

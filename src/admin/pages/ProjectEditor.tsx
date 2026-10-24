@@ -173,7 +173,7 @@ export default function ProjectEditor() {
       <PageHeader
         title={isNew ? 'Nieuw project' : draft.titleNl || 'Project'}
         description="Vul alleen gegevens in die kloppen. Een plaats of omschrijving die u niet zeker weet, kunt u beter leeg laten."
-        actions={draft.id && draft.status === 'published' && !dirty ? <a href={`/projecten/${draft.slug}`} target="_blank" rel="noopener noreferrer" className="btn-secondary min-h-12"><ExternalLink size={16} aria-hidden="true" />Bekijk op de website</a> : undefined}
+        actions={draft.id && draft.status === 'published' && !dirty ? <a href="/projecten" target="_blank" rel="noopener noreferrer" className="btn-secondary min-h-12"><ExternalLink size={16} aria-hidden="true" />Bekijk op de website</a> : undefined}
       />
 
       <div className="grid gap-8 xl:grid-cols-[1fr_18rem]">
@@ -207,7 +207,7 @@ export default function ProjectEditor() {
                   </select>
                 )}
               </FieldShell>
-              <TextField label="Webadres" value={draft.slug} onChange={(slug) => update({ slug: slugify(slug) || slug.toLowerCase(), slugTouched: true })} prefix="/" error={shownErrors.slug} help={`Wordt: denrabadkamers.nl/projecten/${draft.slug || '…'}. Wijzig dit liever niet meer nadat het project online staat.`} />
+              <TextField label="Webadres" value={draft.slug} onChange={(slug) => update({ slug: slugify(slug) || slug.toLowerCase(), slugTouched: true })} prefix="/" error={shownErrors.slug} help="Korte vaste naam voor dit project. Wordt automatisch ingevuld." />
             </div>
           </Panel>
 

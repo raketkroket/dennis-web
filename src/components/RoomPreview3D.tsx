@@ -3,10 +3,6 @@ import { Moon, RotateCcw, Sun } from 'lucide-react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { GTAOPass } from 'three/examples/jsm/postprocessing/GTAOPass.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import type { RoomType } from '../lib/calculator';
 import { grateTexture, tileTextures, woodTexture } from './room3d/textures';
 import {
@@ -71,9 +67,12 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       setFailed(true);
       return undefined;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, lightweight ? 1.75 : 2));
+    // Kept modest so dragging stays smooth on high-density screens.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, lightweight ? 1.25 : 1.5));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Shadows are recalculated only when the room changes, not on every camera move.
+    renderer.shadowMap.autoUpdate = false;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -101,26 +100,12 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     controls.minAzimuthAngle = 0.1;
     controls.maxAzimuthAngle = 1.47;
 
-    // Post-processing: ambient occlusion adds depth in corners and under
-    // furniture. Skipped on phones and slow devices.
-    let composer: EffectComposer | null = null;
-    let aoPass: GTAOPass | null = null;
-    if (!lightweight) {
-      composer = new EffectComposer(renderer);
-      composer.addPass(new RenderPass(scene, camera));
-      aoPass = new GTAOPass(scene, camera, 1, 1);
-      aoPass.updateGtaoMaterial({ radius: 0.3, distanceFallOff: 1, thickness: 1, scale: 1 });
-      aoPass.blendIntensity = 0.85;
-      composer.addPass(aoPass);
-      composer.addPass(new OutputPass());
-    }
-
     // ── Light ──────────────────────────────────────────────────────────
     const hemisphere = new THREE.HemisphereLight('#fff8ee', '#b8a994', day.hemi);
     scene.add(hemisphere);
     const sun = new THREE.DirectionalLight('#fff1dc', day.sun);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(lightweight ? 1024 : 2048, lightweight ? 1024 : 2048);
+    sun.shadow.mapSize.set(1024, 1024);
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.02;
     sun.shadow.radius = 4;
@@ -150,7 +135,7 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       black: keep(new THREE.MeshStandardMaterial({ color: '#1f1c19', metalness: 0.4, roughness: 0.45 })),
       wood: keep(new THREE.MeshStandardMaterial({ map: wood, roughness: 0.55 })),
       stone: keep(new THREE.MeshStandardMaterial({ color: '#e3ddd3', roughness: 0.3 })),
-      glass: keep(new THREE.MeshPhysicalMaterial({ color: '#eef5f4', metalness: 0, roughness: 0.04, transmission: 1, thickness: 0.01, ior: 1.5, transparent: true, opacity: 1 })),
+      glass: keep(new THREE.MeshStandardMaterial({ color: '#e8f1f0', metalness: 0, roughness: 0.05, transparent: true, opacity: 0.22, depthWrite: false })),
       mirror: keep(new THREE.MeshStandardMaterial({ color: '#e7ecec', metalness: 1, roughness: 0.03 })),
       glow,
       plaster: keep(new THREE.MeshStandardMaterial({ color: '#efe9e0', roughness: 0.85 })),
@@ -203,9 +188,10 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     [bulkheadBack, bulkheadSide].forEach((mesh) => { mesh.castShadow = true; mesh.receiveShadow = true; });
     ceiling.add(bulkheadBack, bulkheadSide, shadowGapBack, shadowGapSide);
     const spots = Array.from({ length: 4 }, () => spotModel(materials));
-    const spotLights = spots.map(() => {
-      const light = new THREE.SpotLight('#ffd9a0', 0, 5, 0.75, 0.75, 1.6);
-      scene.add(light, light.target);
+    // Two real lights for the four spots: each light costs on every pixel.
+    const spotLights = spots.map((_, index) => {
+      const light = new THREE.SpotLight('#ffd9a0', 0, 5, 0.85, 0.75, 1.6);
+      if (index % 2 === 0) scene.add(light, light.target);
       return light;
     });
     let heating: THREE.Mesh | null = null;
@@ -488,6 +474,7 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     let frameRequested = false;
     let running = true;
     let introStart = 0;
+    let sceneDirty = true;
     const render = (now: number) => {
       frameRequested = false;
       if (!running) return;
@@ -517,8 +504,13 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
         busy = true;
       }
 
-      layout(current.length, current.width);
-      applyMood();
+      // Rebuild the room only while something in it changes; camera moves just redraw.
+      if (sceneDirty || busy) {
+        layout(current.length, current.width);
+        applyMood();
+        renderer.shadowMap.needsUpdate = true;
+        sceneDirty = false;
+      }
 
       if (intro.active) {
         if (!introStart) introStart = now;
@@ -535,8 +527,7 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       const moved = controls.update();
       lengthLabel.place();
       widthLabel.place();
-      if (composer) composer.render();
-      else renderer.render(scene, camera);
+      renderer.render(scene, camera);
       if (busy || moved) requestRender();
     };
     const requestRender = () => {
@@ -551,8 +542,6 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       const { clientWidth, clientHeight } = container;
       if (!clientWidth || !clientHeight) return;
       renderer.setSize(clientWidth, clientHeight);
-      composer?.setPixelRatio(renderer.getPixelRatio());
-      composer?.setSize(clientWidth, clientHeight);
       camera.aspect = clientWidth / clientHeight;
       camera.updateProjectionMatrix();
       requestRender();
@@ -565,11 +554,13 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       setTarget(next) {
         const resized = Math.abs(next.length - target.length) > 0.01 || Math.abs(next.width - target.width) > 0.01;
         target = next;
+        sceneDirty = true;
         if (resized && !intro.active) frameCamera(false);
         requestRender();
       },
       setEvening(on) {
         moodTarget = on ? 1 : 0;
+        sceneDirty = true;
         requestRender();
       },
       resetView() {
@@ -590,8 +581,6 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
       if (heating) heating.geometry.dispose();
       disposeModelGeometries();
       disposables.forEach((item) => item.dispose());
-      aoPass?.dispose();
-      composer?.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };

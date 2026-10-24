@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { averageRating, reviewCategory } from '../data/reviews';
-import { usePublishedReviews } from '../hooks/usePublishedReviews';
+import { reviewCategory, averageRating } from '../data/reviews';
+import ReviewCard from './ReviewCard';
 import { useLanguage } from '../i18n/useLanguage';
-import { fill } from '../i18n/format';
 import { formatNumber } from '../lib/calculator';
-import ReviewCard, { Stars } from './ReviewCard';
-import Reveal from './ui/Reveal';
+import { usePublishedReviews } from '../hooks/usePublishedReviews';
 
 interface ReviewsSectionProps {
   preview?: boolean;
@@ -19,80 +18,26 @@ const filters = ['Alle', 'Badkamer', 'Toilet', 'Renovatie', 'Aanbouw'] as const;
 export default function ReviewsSection({ preview = false, showIntro = true }: ReviewsSectionProps) {
   const { language, t } = useLanguage();
   const reviews = usePublishedReviews(language);
+  const translatedFilters = [t('reviewsPage.filterAll'), t('reviewsPage.filterBathroom'), t('reviewsPage.filterToilet'), t('reviewsPage.filterRenovation'), t('reviewsPage.filterExtension')];
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('Alle');
-  const filterLabels = [t('reviewsPage.filterAll'), t('reviewsPage.filterBathroom'), t('reviewsPage.filterToilet'), t('reviewsPage.filterRenovation'), t('reviewsPage.filterExtension')];
+  const displayedReviews = preview ? reviews.slice(0, 3) : reviews.filter((review) => activeFilter === 'Alle' || reviewCategory(review) === activeFilter);
   const rating = averageRating(reviews);
+  const averageRatingText = rating === null ? '–' : formatNumber(rating, language, 1);
 
-  if (preview) {
-    // The newest five-star review about a bathroom or toilet leads; the next two follow.
-    const featured = reviews.find((review) => review.rating === 5 && ['Badkamer', 'Toilet'].includes(reviewCategory(review)) && review.text.length > 120) ?? reviews[0];
-    const others = reviews.filter((review) => review !== featured && review.text.length > 60).slice(0, 2);
-    if (!featured) return null;
-    return (
-      <section className="py-20 md:py-28" aria-labelledby="ervaringen-heading">
-        <div className="shell">
-          <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="eyebrow">{t('shared.customerReviews')}</p>
-              <h2 id="ervaringen-heading" className="display-lg mt-5">{t('shared.whatCustomersSay')}</h2>
-            </div>
-            {rating !== null && (
-              <Link to="/ervaringen" className="flex items-center gap-4 self-start border-l border-denra-line pl-5 md:self-auto">
-                <span className="font-serif text-5xl leading-none">{formatNumber(rating, language, 1)}</span>
-                <span>
-                  <Stars rating={Math.round(rating)} />
-                  <span className="mt-1 block text-sm text-denra-muted">{fill(t('site.reviewsBasedOn'), { count: reviews.length })}</span>
-                </span>
-              </Link>
-            )}
-          </Reveal>
-          <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <Reveal className="lg:col-span-7"><ReviewCard review={featured} variant="featured" /></Reveal>
-            <div className="grid gap-10 lg:col-span-5">
-              {others.map((review, index) => <Reveal key={review.id} delay={0.06 * (index + 1)}><ReviewCard review={review} variant="compact" /></Reveal>)}
-            </div>
-          </div>
-          <Link to="/ervaringen" className="link-arrow mt-12">
-            {t('shared.viewAllReviews')}
-            <ArrowRight size={15} aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  const displayed = reviews.filter((review) => activeFilter === 'Alle' || reviewCategory(review) === activeFilter);
   return (
-    <section className="pb-20 md:pb-28" aria-labelledby={showIntro ? 'ervaringen-heading' : undefined} aria-label={showIntro ? undefined : t('shared.customerReviews')}>
-      <div className="shell">
-        {showIntro && <h2 id="ervaringen-heading" className="display-lg">{t('shared.whatCustomersSay')}</h2>}
-        <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="group" aria-label={t('site.reviewsFilter')}>
-          <div className="flex min-w-max gap-2 border-b border-denra-line pb-4">
-            {filters.map((filter, index) => {
-              const count = filter === 'Alle' ? reviews.length : reviews.filter((review) => reviewCategory(review) === filter).length;
-              return (
-                <button
-                  key={filter}
-                  type="button"
-                  onClick={() => setActiveFilter(filter)}
-                  aria-pressed={activeFilter === filter}
-                  className={`min-h-11 border px-4 text-sm transition-colors ${activeFilter === filter ? 'border-denra-ink bg-denra-ink text-denra-ivory' : 'border-denra-ink/20 text-denra-ink hover:border-denra-ink'}`}
-                >
-                  {filterLabels[index]} <span className="opacity-60">{count}</span>
-                </button>
-              );
-            })}
+    <section className="denra-review-background relative overflow-hidden border-y border-[#5c5147]/12 py-20 md:py-24" aria-labelledby={showIntro ? 'ervaringen-heading' : undefined} aria-label={showIntro ? undefined : t('shared.customerReviews')}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {showIntro && <motion.div initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }} className="grid gap-8 border-b border-[#bdaa95]/55 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div className="max-w-2xl">
+            <div className="mb-5 flex items-center gap-3"><div className="denra-line" /><span className="denra-label">{t('shared.customerReviews')}</span></div>
+            <h2 id="ervaringen-heading" className="font-serif text-4xl font-semibold leading-tight text-[#231A12] md:text-5xl">{t('shared.whatCustomersSay')}</h2>
+            <p className="mt-4 leading-relaxed text-[#6b5d50]">{t('shared.reviewsDescription')}</p>
           </div>
-        </div>
-        {displayed.length ? (
-          <ul className="mt-10 grid items-start gap-x-12 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
-            {displayed.map((review) => (
-              <li key={review.id}>
-                <ReviewCard review={review} />
-              </li>
-            ))}
-          </ul>
-        ) : <p className="mt-10 text-denra-muted">{t('site.noReviews')}</p>}
+          <div className="flex items-center gap-4 border-l border-[#bdaa95]/60 pl-5"><div className="flex gap-0.5 text-[#8b6b45]" aria-hidden="true">{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={13} fill="currentColor" />)}</div><div><p className="font-serif text-3xl font-semibold leading-none text-[#231A12]">{averageRatingText}</p><p className="mt-1 text-[10px] uppercase tracking-[0.13em] text-[#6b5d50]">{reviews.length} {t('reviewsPage.experiencesCount')}</p></div></div>
+        </motion.div>}
+        {!preview && <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.1 }} className="mt-8 overflow-x-auto pb-2 [scrollbar-width:none]" role="group" aria-label={t('shared.filterReviews')}><div className="inline-flex min-w-max gap-1 border border-[#bdaa95]/55 bg-transparent p-1 shadow-[0_8px_22px_rgba(72,50,32,0.06)]">{filters.map((filter, index) => <button key={filter} type="button" onClick={() => setActiveFilter(filter)} aria-pressed={activeFilter === filter} className={`relative min-h-11 px-4 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors ${activeFilter === filter ? 'text-[#231A12]' : 'text-[#6b5d50] hover:text-[#231A12]'}`}>{activeFilter === filter && <motion.span layoutId="active-review-filter" className="absolute inset-0 -z-0 border border-[#7a6552]/70 shadow-[0_4px_10px_rgba(72,50,32,0.08)]" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}{translatedFilters[index]}</button>)}</div></motion.div>}
+        {preview ? <div className="mt-10 grid gap-5 lg:grid-cols-[1.12fr_0.88fr] lg:items-stretch"><motion.div initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}><ReviewCard review={displayedReviews[0]} featured /></motion.div><div className="grid gap-5"><motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.52, delay: 0.08 }}><ReviewCard review={displayedReviews[1]} compact /></motion.div><motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.52, delay: 0.16 }}><ReviewCard review={displayedReviews[2]} compact /></motion.div></div></div> : <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{displayedReviews.map((review, index) => <motion.div key={review.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32, delay: index * 0.025, ease: 'easeOut' }} className="min-w-0"><ReviewCard review={review} featured={index === 0} /></motion.div>)}</div>}
+        {preview && <div className="mt-12"><Link to="/ervaringen" className="inline-flex items-center gap-2 text-sm font-semibold text-[#231A12] underline decoration-[#a99278] underline-offset-8 transition-colors hover:text-[#7a6552]">{t('shared.viewAllReviews')} <ArrowRight size={16} aria-hidden="true" /></Link></div>}
       </div>
     </section>
   );
