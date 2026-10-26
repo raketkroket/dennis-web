@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="./fotos/denralogobg.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers</title>
 
     <!-- Google tag (gtag.js) -->
@@ -16,45 +17,69 @@
     </script>
 
     <meta name="description" content="Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Flevoland en Noord-Holland. Vraag vrijblijvend een offerte aan voor een badkamerrenovatie in Almere, Amsterdam en omgeving." />
-    <meta name="keywords" content="badkamer renovatie Almere, wc renovatie Almere, badkamer renovatie Amsterdam, wc renovatie Amsterdam, badkamerrenovatie Flevoland, toilet renovatie Noord-Holland, Denra Badkamers" />
     <meta name="author" content="Denra Badkamers" />
     <meta name="robots" content="index, follow" />
+    <!-- Google Search Console ownership (backup to the Google Analytics check) -->
+    <meta name="google-site-verification" content="4476qqfKuRPR8Rn8d4jT2buOar2Aph2D8-IXV0cdkpU" />
     <link rel="canonical" href="https://denrabadkamers.nl/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://denrabadkamers.nl/" />
     <meta property="og:title" content="Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers" />
     <meta property="og:description" content="Complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Vraag vrijblijvend een offerte aan." />
-    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image" content="https://denrabadkamers.nl/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="nl_NL" />
     <meta property="og:site_name" content="Denra Badkamers" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers" />
     <meta name="twitter:description" content="Complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland." />
-    <meta name="twitter:image" content="/og-image.svg" />
+    <meta name="twitter:image" content="https://denrabadkamers.nl/og-image.jpg" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Denra Badkamers",
-      "description": "Complete badkamer- en WC-renovaties in Flevoland en Noord-Holland.",
-      "url": "https://denrabadkamers.nl/",
-      "telephone": "+31614966756",
-      "email": "info@denrabadkamers.nl",
-      "areaServed": ["Almere", "Amsterdam", "Amstelveen", "Lelystad", "Haarlem", "Blaricum", "Hilversum", "Laren", "Weesp", "Muiden", "Eemnes", "Diemen", "Muiderberg", "Naarden", "Amersfoort", "Flevoland", "Noord-Holland"],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Almere",
-        "addressRegion": "North Holland",
-        "addressCountry": "NL"
-      },
-      "sameAs": [
-        "https://www.instagram.com",
-        "https://www.facebook.com"
-      ],
-      "priceRange": "€€€"
+      "@graph": [
+        {
+          "@type": "HomeAndConstructionBusiness",
+          "@id": "https://denrabadkamers.nl/#business",
+          "name": "Denra Badkamers",
+          "legalName": "Denra Montage en Onderhoud",
+          "description": "Complete badkamer-, WC- en binnenrenovaties in Flevoland en Noord-Holland.",
+          "url": "https://denrabadkamers.nl/",
+          "image": "https://denrabadkamers.nl/og-image.jpg",
+          "telephone": "+31614966756",
+          "email": "info@denrabadkamers.nl",
+          "areaServed": ["Almere", "Amsterdam", "Amstelveen", "Lelystad", "Haarlem", "Blaricum", "Hilversum", "Laren", "Weesp", "Muiden", "Eemnes", "Diemen", "Muiderberg", "Naarden", "Amersfoort", "Flevoland", "Noord-Holland"],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Almere",
+            "addressRegion": "Flevoland",
+            "addressCountry": "NL"
+          },
+          "sameAs": [
+            "https://www.instagram.com/denrabadkamers",
+            "https://www.facebook.com/denrabadkamers",
+            "https://www.tiktok.com/@denrabadkamers.nl"
+          ],
+          "makesOffer": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Badkamerrenovatie", "url": "https://denrabadkamers.nl/badkamerrenovatie" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "WC-renovatie", "url": "https://denrabadkamers.nl/wc-renovatie" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Binnenrenovatie", "url": "https://denrabadkamers.nl/binnenrenovatie" } }
+          ],
+          "priceRange": "€€€"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://denrabadkamers.nl/#website",
+          "url": "https://denrabadkamers.nl/",
+          "name": "Denra Badkamers",
+          "inLanguage": "nl-NL",
+          "publisher": { "@id": "https://denrabadkamers.nl/#business" }
+        }
+      ]
     }
     </script>
   </head>

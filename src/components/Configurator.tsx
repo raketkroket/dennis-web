@@ -18,6 +18,7 @@ import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
 import { fill, useLocalized } from '../i18n/format';
 import { loadCalculatorDraft, saveCalculatorDraft, saveQuoteConfiguration, type CalculatorDraft } from '../types/quote';
+import { useStartedOnClient } from '../lib/hydration';
 import EstimateBreakdown from './EstimateBreakdown';
 import Img from './ui/Img';
 
@@ -33,11 +34,24 @@ export default function Configurator() {
   const pick = useLocalized();
   const navigate = useNavigate();
   const { calculator, projects } = useSiteContent();
-  const [draft, setDraft] = useState<CalculatorDraft>(() => loadCalculatorDraft() ?? emptyDraft);
+  // On a prerendered page the first render must match the HTML (an empty
+  // calculator); a saved draft is restored right after.
+  const clientRender = useStartedOnClient();
+  const [draft, setDraft] = useState<CalculatorDraft>(() => (clientRender ? loadCalculatorDraft() ?? emptyDraft : emptyDraft));
+  const [restoreDraft] = useState(!clientRender);
   const [showErrors, setShowErrors] = useState(false);
   const [notice, setNotice] = useState('');
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
+  const restoredStep = useRef(false);
+
+  useEffect(() => {
+    const saved = restoreDraft ? loadCalculatorDraft() : null;
+    if (!saved) return;
+    // Returning to a saved step is not a step change by the visitor: no scrolling.
+    if (saved.step !== emptyDraft.step) restoredStep.current = true;
+    setDraft(saved);
+  }, [restoreDraft]);
 
   useEffect(() => saveCalculatorDraft(draft), [draft]);
 
@@ -46,6 +60,10 @@ export default function Configurator() {
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
+      return;
+    }
+    if (restoredStep.current) {
+      restoredStep.current = false;
       return;
     }
     headingRef.current?.focus({ preventScroll: true });

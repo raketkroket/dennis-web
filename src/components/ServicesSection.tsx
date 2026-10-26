@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Bath, Toilet, Layers, Paintbrush, Grid3x3, Waves, ChevronRight } from 'lucide-react';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { altForSrc } from '../content/photoAlt';
 
 export default function ServicesSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const services = [
     { icon: Bath, title: t('marketing.bathroomService'), desc: t('marketing.bathroomServiceDesc'), path: '/badkamerrenovatie' },
     { icon: Waves, title: t('marketing.floorService'), desc: t('marketing.floorServiceDesc'), path: '/binnenrenovatie' },
@@ -21,7 +22,7 @@ export default function ServicesSection() {
         <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 lg:gap-16 items-start">
           {/* Left */}
           <div className="min-w-0">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -37,11 +38,11 @@ export default function ServicesSection() {
               <p className="text-[#5f544a] leading-relaxed mb-10 max-w-md">
                 {t('marketing.servicesDescription')}
               </p>
-            </motion.div>
+            </m.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {services.map((service, i) => (
-                <motion.div
+                <m.div
                   key={service.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -60,11 +61,11 @@ export default function ServicesSection() {
                       <p className="text-xs text-[#5f544a] leading-relaxed">{service.desc}</p>
                     </div>
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -78,11 +79,11 @@ export default function ServicesSection() {
                 {t('marketing.allServices')}
                 <ChevronRight size={16} />
               </Link>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right — Configurator teaser */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -122,15 +123,15 @@ export default function ServicesSection() {
 
             {/* Decorative image */}
             <div className="mt-6 overflow-hidden h-48 border border-[#5c5147]/12">
-              <img
+              <img loading="lazy" decoding="async"
                 src={sitePhotos[0]}
-                alt={t('marketing.bathroomService')}
+                alt={altForSrc(sitePhotos[0], language) ?? t('marketing.bathroomService')}
                 width={800}
                 height={400}
                 className="w-full h-full object-cover"
               />
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

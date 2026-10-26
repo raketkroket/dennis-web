@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLocalized } from '../i18n/format';
@@ -14,13 +14,15 @@ export default function ProjectsSection() {
     title: pick(project.titleNl, project.titleEn),
     category: pick(project.summaryNl, project.summaryEn),
     image: project.cover?.image.src ?? '',
+    srcSet: project.cover?.image.srcSet,
+    alt: project.cover ? pick(project.cover.altNl, project.cover.altEn) : '',
     tag: project.category === 'badkamer' ? 'Badkamer' : project.category === 'toilet' ? 'WC' : 'Binnen',
   }));
   return (
     <section className="py-24 lg:py-28 bg-transparent" aria-labelledby="projecten-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -33,8 +35,8 @@ export default function ProjectsSection() {
             <h2 id="projecten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight">
               Onze gerealiseerde<br />projecten
             </h2>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -47,12 +49,12 @@ export default function ProjectsSection() {
               Bekijk alle projecten
               <ArrowRight size={16} />
             </Link>
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-7">
           {projects.map((project, i) => (
-            <motion.div
+            <m.div
               key={project.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -62,9 +64,11 @@ export default function ProjectsSection() {
             >
               <Link to="/projecten" className="block h-full">
                 <div className="relative overflow-hidden rounded-[18px] aspect-[4/3] mb-4 border border-[#d9cdb8] bg-[#efe6dc] shadow-[0_12px_30px_rgba(29,23,18,0.03)]">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={project.image}
-                    alt={project.title}
+                    srcSet={project.srcSet}
+                    sizes="(min-width: 1280px) 400px, (min-width: 640px) 50vw, 100vw"
+                    alt={project.alt || project.title}
                     width={800}
                     height={600}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -80,7 +84,7 @@ export default function ProjectsSection() {
                   <p className="text-sm text-[#5f544a] leading-relaxed">{project.category}</p>
                 </div>
               </Link>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

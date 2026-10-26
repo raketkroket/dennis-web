@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
-import logo from '../../fotos/Denralogo.png';
+// 320 px wide is enough for the logo on sharp screens (it shows at about 90 px).
+import logo from '../../fotos/Denralogo.png?w=320&format=webp';
 import tiktokIcon from '../../fotos/tiktokicon.png';
 import { useLanguage } from '../i18n/useLanguage';
 import { useSiteContent } from '../content/SiteContentProvider';
@@ -31,6 +32,9 @@ export default function Footer() {
   const diensten = [
     { label: t('form.bathroom'), path: '/badkamerrenovatie' }, { label: t('form.toilet'), path: '/wc-renovatie' }, { label: t('form.interior'), path: '/binnenrenovatie' }, { label: t('form.plastering'), path: '/binnenrenovatie' }, { label: t('form.floors'), path: '/binnenrenovatie' }, { label: t('form.painting'), path: '/binnenrenovatie' }, { label: t('form.ceiling'), path: '/binnenrenovatie' },
   ];
+  const regionPages = language === 'en'
+    ? [{ label: 'Bathroom renovation Almere', path: '/badkamer-renovatie-almere' }, { label: 'Bathroom renovation Amsterdam', path: '/badkamer-renovatie-amsterdam' }, { label: 'Toilet renovation Almere', path: '/wc-renovatie-almere' }, { label: 'Toilet renovation Amsterdam', path: '/wc-renovatie-amsterdam' }]
+    : [{ label: 'Badkamer renovatie Almere', path: '/badkamer-renovatie-almere' }, { label: 'Badkamer renovatie Amsterdam', path: '/badkamer-renovatie-amsterdam' }, { label: 'WC renovatie Almere', path: '/wc-renovatie-almere' }, { label: 'WC renovatie Amsterdam', path: '/wc-renovatie-amsterdam' }];
   const informatie = [
     { label: t('nav.about'), path: '/over-ons' }, { label: t('nav.projects'), path: '/projecten' }, { label: t('common.calculatePrice'), path: '/configurator' }, { label: t('nav.contact'), path: '/contact' },
   ];
@@ -41,7 +45,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="mb-5 flex flex-col items-start gap-3">
-              <img src={logo} alt="DENRA Badkamers" className="h-12 w-auto object-contain" />
+              <img loading="lazy" decoding="async" src={logo} alt="DENRA Badkamers" width={320} height={215} className="h-12 w-auto object-contain" />
               <div className="flex items-center gap-3">
                 <span className="denra-line" />
                 <div className="denra-label">{t('shared.footerTagline')}</div>
@@ -88,7 +92,7 @@ export default function Footer() {
                 aria-label="DENRA op TikTok"
                 className="w-10 h-10 rounded-sm overflow-hidden transition-opacity duration-200 hover:opacity-75"
               >
-                <img src={tiktokIcon} alt="" className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={tiktokIcon} alt="" className="w-full h-full object-cover" />
               </a>
             </div>
           </div>
@@ -166,6 +170,16 @@ export default function Footer() {
                   </span>
                 ))}
               </div>
+              {/* The region pages, so visitors and search engines can reach them. */}
+              <ul className="mt-3 space-y-1.5">
+                {regionPages.map((page) => (
+                  <li key={page.path}>
+                    <Link to={page.path} className="text-xs text-[#5f544a] underline decoration-[#5c5147]/30 underline-offset-4 transition-colors duration-200 hover:text-[#1d1712]">
+                      {page.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
             <a
               href={`https://wa.me/${business.whatsappNumber}`}

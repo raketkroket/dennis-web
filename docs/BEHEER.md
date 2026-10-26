@@ -16,11 +16,11 @@ De startpagina van het beheer. U ziet hoeveel nieuwe aanvragen en reviews op u w
 - **Zichtbaar / Verborgen / Gearchiveerd**: verborgen projecten ziet alleen u. Gearchiveerde projecten staan apart onder **Archief** en kunt u later terugzetten.
 - **Volgorde**: met de pijltjes zet u projecten hoger of lager. De volgorde in het beheer is de volgorde op de website.
 - **Uitlichten**: projecten met een ster komen als eerste op de homepage.
-- **Review koppelen**: heeft de klant van dit project een review geschreven, koppel die dan; hij verschijnt op de projectpagina.
+- **Review koppelen**: heeft de klant van dit project een review geschreven, koppel die dan.
 
 ## Foto's
 
-Alle foto's op één plek. Upload hier meerdere foto's tegelijk; ze worden automatisch kleiner gemaakt zodat de website snel blijft. Klik op een foto om een korte omschrijving toe te voegen (handig voor Google en voor slechtziende bezoekers). Een foto die u zelf heeft geüpload en nergens gebruikt, kunt u verwijderen.
+Alle foto's op één plek. Upload hier meerdere foto's tegelijk; ze worden automatisch kleiner gemaakt zodat de website snel blijft. Klik op een foto om een korte omschrijving toe te voegen (handig voor Google en voor slechtziende bezoekers). Beschrijf wat er op de foto te zien is, bijvoorbeeld "Inloopdouche met glazen wand en zwarte regendouche". Zet er geen namen of adressen van klanten in. Een foto die u zelf heeft geüpload en nergens gebruikt, kunt u verwijderen.
 
 ## Reviews
 

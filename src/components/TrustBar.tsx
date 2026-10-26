@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Award, Shield, Clock, Home, MapPin } from 'lucide-react';
 import { useLanguage } from '../i18n/useLanguage';
 
@@ -11,7 +11,7 @@ export default function TrustBar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
           {items.map((item, i) => (
-            <motion.div
+            <m.div
               key={item.title}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function TrustBar() {
                 <p className="text-sm font-semibold text-[#1d1712] leading-snug">{item.title}</p>
                 <p className="text-xs text-[#5f544a] mt-1 leading-relaxed">{item.desc}</p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

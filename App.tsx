@@ -1,9 +1,6 @@
 import React, { Suspense, lazy } from 'react';
-import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { LazyMotion } from 'framer-motion';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './styles.css';
 import { LanguageProvider } from './src/i18n/LanguageProvider';
 import { SiteContentProvider } from './src/content/SiteContentProvider';
@@ -12,16 +9,50 @@ import Home from './src/pages/Home';
 import NotFound from './src/pages/NotFound';
 import LocalServicePage from './src/pages/LocalServicePage';
 import { useLanguage } from './src/i18n/useLanguage';
+import { canonicalUrl, metaFor } from './src/seo/pages';
 
-const Badkamerrenovatie = lazy(() => import('./src/pages/Badkamerrenovatie'));
-const WCRenovatie = lazy(() => import('./src/pages/WCRenovatie'));
-const Binnenrenovatie = lazy(() => import('./src/pages/Binnenrenovatie'));
-const Projecten = lazy(() => import('./src/pages/Projecten'));
-const OverOns = lazy(() => import('./src/pages/OverOns'));
-const Contact = lazy(() => import('./src/pages/Contact'));
-const ConfiguratorPage = lazy(() => import('./src/pages/ConfiguratorPage'));
-const AlgemeneVoorwaarden = lazy(() => import('./src/pages/AlgemeneVoorwaarden'));
-const Ervaringen = lazy(() => import('./src/pages/Ervaringen'));
+// Pages load as separate files. Before React takes over a prerendered page,
+// index.tsx loads that page's file first (preloadPage), so the whole page is
+// taken over at once instead of being redrawn when the file arrives.
+type PageModule = { default: React.ComponentType };
+function lazyPage(load: () => Promise<PageModule>) {
+  let Loaded: React.ComponentType | null = null;
+  const preload = () => load().then((module) => {
+    Loaded = module.default;
+    return module;
+  });
+  const Lazy = lazy(preload);
+  const Page = () => (Loaded ? <Loaded /> : <Lazy />);
+  return Object.assign(Page, { preload });
+}
+
+const Badkamerrenovatie = lazyPage(() => import('./src/pages/Badkamerrenovatie'));
+const WCRenovatie = lazyPage(() => import('./src/pages/WCRenovatie'));
+const Binnenrenovatie = lazyPage(() => import('./src/pages/Binnenrenovatie'));
+const Projecten = lazyPage(() => import('./src/pages/Projecten'));
+const OverOns = lazyPage(() => import('./src/pages/OverOns'));
+const Contact = lazyPage(() => import('./src/pages/Contact'));
+const ConfiguratorPage = lazyPage(() => import('./src/pages/ConfiguratorPage'));
+const AlgemeneVoorwaarden = lazyPage(() => import('./src/pages/AlgemeneVoorwaarden'));
+const Ervaringen = lazyPage(() => import('./src/pages/Ervaringen'));
+
+const pagesByPath: Record<string, { preload: () => Promise<unknown> }> = {
+  '/badkamerrenovatie': Badkamerrenovatie,
+  '/badkamer-renovatie': Badkamerrenovatie,
+  '/wc-renovatie': WCRenovatie,
+  '/binnenrenovatie': Binnenrenovatie,
+  '/projecten': Projecten,
+  '/over-ons': OverOns,
+  '/contact': Contact,
+  '/configurator': ConfiguratorPage,
+  '/algemene-voorwaarden': AlgemeneVoorwaarden,
+  '/ervaringen': Ervaringen,
+};
+
+/** Loads the file of the page at this address, if it is a separately loaded page. */
+// eslint-disable-next-line react-refresh/only-export-components
+export const preloadPage = (pathname: string) => pagesByPath[pathname.replace(/\/+$/, '') || '/']?.preload() ?? Promise.resolve();
+
 const AdminApp = lazy(() => import('./src/admin/AdminApp'));
 
 const localPages = {
@@ -127,6 +158,26 @@ const localPages = {
   },
 };
 
+// The animation features load as a separate file after the page is shown.
+const loadMotionFeatures = () => import('./src/lib/motionFeatures').then((module) => module.default);
+
+// Title, description and canonical link of the current page.
+function RouteMeta() {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    const page = metaFor(pathname);
+    document.title = page.title;
+    const setMeta = (selector: string, value: string) => document.head.querySelector(selector)?.setAttribute('content', value);
+    setMeta('meta[name="description"]', page.description);
+    setMeta('meta[property="og:title"]', page.title);
+    setMeta('meta[property="og:description"]', page.description);
+    setMeta('meta[property="og:url"]', canonicalUrl(page));
+    setMeta('meta[name="robots"]', page.noindex ? 'noindex, follow' : 'index, follow');
+    document.head.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl(page));
+  }, [pathname]);
+  return null;
+}
+
 // Start each new page at the top (the router keeps the old scroll position).
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -147,8 +198,9 @@ const AppRoutes = () => {
   const pages = localPages[language];
 
   return (
-    <Router>
+    <>
         <ScrollToTop />
+        <RouteMeta />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/admin/*" element={<AdminApp />} />
@@ -170,26 +222,23 @@ const AppRoutes = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          newestOnTop
-          closeOnClick
-          pauseOnHover
-        />
-    </Router>
+    </>
   );
 };
 
+// The router is added by the entry file: BrowserRouter in the browser,
+// StaticRouter when the build writes the HTML for each page.
 const App: React.FC = () => {
   return (
-    <Theme appearance="inherit" radius="large" scaling="100%">
-      <SiteContentProvider>
-        <LanguageProvider>
-          <AppRoutes />
-        </LanguageProvider>
-      </SiteContentProvider>
-    </Theme>
+    <div className="denra-root">
+      <LazyMotion features={loadMotionFeatures}>
+        <SiteContentProvider>
+          <LanguageProvider>
+            <AppRoutes />
+          </LanguageProvider>
+        </SiteContentProvider>
+      </LazyMotion>
+    </div>
   );
 };
 

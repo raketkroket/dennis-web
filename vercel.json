@@ -1,8 +1,21 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/badkamer-renovatie",
+      "destination": "/badkamerrenovatie",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/admin",
+      "destination": "/app"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/app"
     }
   ]
 }

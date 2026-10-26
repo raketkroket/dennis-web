@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { m } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -8,15 +8,24 @@ import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
 import denraLogoBg from '../../fotos/denralogobg.png';
 import { loadQuoteConfiguration, saveQuoteConfiguration, type QuoteConfiguration } from '../types/quote';
+import { useStartedOnClient } from '../lib/hydration';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
 
 export default function Contact() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once and pick up a
+  // saved quote right after; on later visits animate and read it directly.
+  const animateIn = useStartedOnClient();
   const { business } = useSiteContent();
   const [searchParams] = useSearchParams();
   // The calculator keeps the chosen configuration in session storage until it is sent or removed.
-  const [quote, setQuote] = useState<QuoteConfiguration | null>(() => loadQuoteConfiguration());
+  // On a prerendered page the quote is picked up right after the first render.
+  const [quote, setQuote] = useState<QuoteConfiguration | null>(() => (animateIn ? loadQuoteConfiguration() : null));
+  const [restoreQuote] = useState(!animateIn);
+  useEffect(() => {
+    if (restoreQuote) setQuote(loadQuoteConfiguration());
+  }, [restoreQuote]);
   const removeQuote = () => {
     saveQuoteConfiguration(null);
     setQuote(null);
@@ -33,8 +42,8 @@ export default function Contact() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16">
               {/* Left */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
+              <m.div
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
               >
@@ -70,19 +79,19 @@ export default function Contact() {
                 </div>
 
                 <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-[#f1e7dc] border border-[#cfbca7]/55 flex items-center justify-center p-6">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={denraLogoBg}
-                    alt={t('home.denraBackgroundLogo')}
+                    alt=""
                     width={800}
                     height={450}
                     className="w-full h-full object-contain opacity-80"
                   />
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Right — Form */}
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
+              <m.div
+                initial={animateIn && { opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="bg-[#faf6f0] rounded-sm p-8 md:p-10 border border-[#cfbca7]/55"
@@ -90,7 +99,7 @@ export default function Contact() {
                   <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('home.sendMessage')}</h2>
                 <p className="text-sm text-[#8A7A6A] mb-8">{t('home.contactWithin24')}</p>
                 <ContactForm quote={quote} onRemoveQuote={removeQuote} defaultService={searchParams.get('dienst') ?? ''} />
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>

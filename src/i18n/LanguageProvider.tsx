@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import { translations, type Language, type TranslationKey } from './translations';
 import { LanguageContext } from './languageContext';
 import { useSiteContent } from '../content/SiteContentProvider';
+import { startedFromPrerender } from '../lib/hydration';
 
 const storageKey = 'denra-language';
 
-function initialLanguage(): Language {
+function savedLanguage(): Language {
   try {
     return typeof window !== 'undefined' && window.localStorage.getItem(storageKey) === 'en' ? 'en' : 'nl';
   } catch {
@@ -20,8 +21,13 @@ function lookup(language: Language, key: string): string | undefined {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(initialLanguage);
+  // Prerendered pages are Dutch; a saved English choice is applied right after.
+  const [language, setLanguage] = useState<Language>(() => (startedFromPrerender ? 'nl' : savedLanguage()));
   const { texts } = useSiteContent();
+
+  useEffect(() => {
+    if (startedFromPrerender && savedLanguage() === 'en') setLanguage('en');
+  }, []);
 
   useEffect(() => {
     try {

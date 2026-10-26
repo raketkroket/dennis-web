@@ -7,7 +7,7 @@ React 19, Vite, TypeScript and Tailwind, hosted on Vercel with serverless functi
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Site on localhost, including the `api/*` functions. |
-| `npm run build` | Production build. |
+| `npm run build` | Production build: the site, then a ready HTML file per page (`scripts/prerender.mjs`), `404.html` and `sitemap.xml`. |
 | `npm run typecheck` | Site, API and tooling. |
 | `npm run lint` | ESLint. |
 | `npm test` | Calculator rules (prices, Dutch decimals, double counting). |
@@ -21,6 +21,8 @@ Supabase, environment variables and the first admin account: [supabase/README.md
 - **Content**: `src/content/defaults.ts` holds the built-in content (projects with their photos, business details, FAQs). `SiteContentProvider` shows it immediately and replaces it with the live content from Supabase when configured; each part falls back separately if it cannot be loaded.
 - **Photos**: project photos in `fotos/` are listed once in `staticPhotos` under a stable key and served as responsive WebP by `vite-imagetools` (`src/content/photoLibrary.ts`). Photos Dennis uploads are resized in the browser and stored in the `project-photos` bucket.
 - **Texts**: `src/i18n/translations.ts` holds Dutch and English texts. Texts edited in the admin are stored per translation key and override the built-in text; `src/admin/contentFields.ts` lists which texts are editable.
+- **Search engines**: every public page is written out as finished HTML at build time (`src/entry-server.tsx` renders it, `scripts/prerender.mjs` writes `dist/<page>.html` with that page's title, description, canonical link and breadcrumb data). In the browser React takes this HTML over (`hydrateRoot` in `index.tsx`); anything read from browser storage (language, calculator draft, quote) is applied right after that first render (`src/lib/hydration.ts`). Titles and descriptions live in `src/seo/pages.ts`; add a new public page there too. `vercel.json` serves `/projecten` from `projecten.html`, returns `404.html` with a 404 status for unknown addresses and sends only `/admin` to the empty app shell (`app.html`, written as `/app` because of cleanUrls).
+- **Photo descriptions**: `src/content/photoAlt.ts` describes what is visible in each built-in photo; it is the alt text on the site and was copied into the database by `20261026120000_photo_alt_text.sql`. Descriptions Dennis edits under Foto's take precedence.
 - **Calculator**: `src/lib/calculator.ts` is the single implementation of the pricing rules, used by the calculator, the admin preview and `api/offerte.ts`, which recalculates every total on the server.
 
 ## Decisions and open points
@@ -34,9 +36,11 @@ These need a decision or a check by Dennis; nothing here was changed silently.
 - **Business address.** The site says "Almere, Noord-Holland", but Almere is in Flevoland, and the terms and conditions give an Amsterdam address. Editable under Bedrijfsgegevens.
 - **"Beelthoven"** is the location of six projects. It may be a misspelling of Bilthoven; kept as entered.
 - **"100+ tevreden klanten" and "10+ jaar ervaring"** on Over ons come from the previous site and are not verified here. They can be changed or hidden under Website aanpassen.
-- **Visually identical photos.** `badkamer2.png`/`badkamer67.jpeg` and `wc6.jpeg`/`wc8.png` are the same pictures. The duplicate project (same photo, same location) is merged; the files are kept. `src/data/sitePhotos.ts`, which imported two files twice, is replaced by the keyed list in `src/content/defaults.ts` with every project keeping its photo.
+- **Visually identical photos.** `badkamer2.png`/`badkamer67.jpeg` and `wc6.jpeg`/`wc8.png` are the same pictures. The duplicate project (same photo, same location) is merged; the files are kept. `src/data/sitePhotos.ts` keeps the numbering the page designs use and points each number at the photo library, loading each picture once.
+- **Rendered-looking photos.** Most photos in `fotos/` named `badkamer…`, `wc…`, `binnen…`, `binnenrenovatie…` and `headerimg.png` look like computer visualisations rather than photos of finished work, while the review photos (Partoredjo, Natalie, Nikie, Amersfoort) look like real photos. They are shown under "Gerealiseerde projecten" with place names. Dennis should confirm these are his own projects; if they are designs or examples, the wording or the photos should change.
 - **Before/after.** Only one genuine "during the work" photo exists (`Partoredjo4.jpg`); it is labelled as such. Before/after pairs appear automatically once Dennis marks photos that way.
 - **Privacy and cookies.** Google Analytics (`index.html`) loads without consent, and there is no privacy statement (the old footer linked to a missing `/privacy` page; the link is removed). With quote requests now stored, a privacy statement and a decision on analytics consent are needed.
 - **Instagram link.** `https://instagram.com/@denrabadkamers` may not open the profile (`instagram.com/denrabadkamers` usually does). Editable under Bedrijfsgegevens.
-- **Static SEO data.** The structured data and social preview in `index.html` are not updated from the admin.
-- **`dist/` is committed** but Vercel builds the site itself; the folder is out of date and can be removed.
+- **Static SEO data.** The business structured data and social preview image in `index.html` are not updated from the admin; change them there if the business details change.
+- **www address.** `https://www.denrabadkamers.nl` gives a certificate error: the name points to Vercel but is not added to the Vercel project. Add it under Vercel → Project → Settings → Domains and let it redirect to `denrabadkamers.nl`.
+- **Prerendered content is the built-in content.** The HTML files are made at build time from `src/content/defaults.ts`; projects and texts Dennis changes in the admin appear after the page loads (and for search engines once they render the page). Search engines that run JavaScript (Google does) see the admin version too.

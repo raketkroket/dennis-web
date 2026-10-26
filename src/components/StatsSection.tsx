@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useLanguage } from '../i18n/useLanguage';
 
 export default function StatsSection() {
@@ -10,7 +10,7 @@ export default function StatsSection() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           {stats.map((stat, i) => (
-            <motion.div
+            <m.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -23,7 +23,7 @@ export default function StatsSection() {
                 {stat.value}
               </div>
               <div className="text-sm text-[#5f544a]">{stat.label}</div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

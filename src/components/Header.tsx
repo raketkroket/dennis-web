@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calculator, Menu, X, MessageCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../fotos/Denralogo.png';
+import { m, AnimatePresence } from 'framer-motion';
+// 320 px wide is enough for the logo on sharp screens (it shows at about 90 px).
+import logo from '../../fotos/Denralogo.png?w=320&format=webp';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useLanguage } from '../i18n/useLanguage';
 import { useSiteContent } from '../content/SiteContentProvider';
@@ -62,7 +63,7 @@ export default function Header() {
             to="/" 
             className="group flex min-w-0 items-center"
           >
-            <img src={logo} alt="DENRA Badkamers" className="h-14 w-auto max-w-[8rem] object-contain sm:h-16 sm:max-w-none" />
+            <img src={logo} alt="DENRA Badkamers" width={320} height={215} className="h-14 w-auto max-w-[8rem] object-contain sm:h-16 sm:max-w-none" />
           </Link>
 
           {/* Desktop Nav */}
@@ -135,7 +136,7 @@ export default function Header() {
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div
+            <m.div
               id="mobile-navigation"
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -183,7 +184,7 @@ export default function Header() {
                 </a>
               </div>
             </nav>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>
