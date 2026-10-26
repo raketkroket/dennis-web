@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { altForSrc } from '../content/photoAlt';
 
 export default function WCRenovatie() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const features = t('wcPage.features').split('|');
   const pricingLabels = t('wcPage.pricing').split('|');
   const adviceLabels = t('wcPage.advice').split('|');
@@ -24,7 +25,7 @@ export default function WCRenovatie() {
         <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label={t('wcPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
@@ -32,13 +33,13 @@ export default function WCRenovatie() {
               >
                 <img
                   src={sitePhotos[8]}
-                  alt={t('wcPage.heroAlt')}
+                  alt={altForSrc(sitePhotos[8], language) ?? t('wcPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
                 />
-              </motion.div>
-              <motion.div
+              </m.div>
+              <m.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
@@ -69,14 +70,14 @@ export default function WCRenovatie() {
                     {t('wcPage.consultation')}
                   </Link>
                 </div>
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
 
         <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-features-heading">
           <div className="max-w-4xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -87,10 +88,10 @@ export default function WCRenovatie() {
                 {t('wcPage.featuresTitle')}
               </h2>
               <p className="text-[#6B5D50]">{t('wcPage.featuresDescription')}</p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {features.map((f, i) => (
-                <motion.div
+                <m.div
                   key={f}
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -102,7 +103,7 @@ export default function WCRenovatie() {
                     <Check size={12} className="text-[#7a6552]" />
                   </div>
                   <span className="text-sm font-medium text-[#4A3F35]">{f}</span>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -133,7 +134,7 @@ export default function WCRenovatie() {
         <section className="py-20 bg-[#f6f0e8]" aria-labelledby="wc-luxe-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -166,9 +167,9 @@ export default function WCRenovatie() {
                   <p className="font-serif text-4xl font-semibold mb-2">€3.800 tot €5.200</p>
                   <p className="text-sm text-[#B7A892]">{t('wcPage.pricingTotalDescription')}</p>
                 </div>
-              </motion.div>
+              </m.div>
 
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -190,14 +191,14 @@ export default function WCRenovatie() {
                   <p className="font-serif text-4xl font-semibold">€5.500 tot €6.500</p>
                 </div>
                 <p className="mt-6 text-sm text-[#B7A892]">{t('wcPage.adviceDescription')}</p>
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
 
         <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -207,10 +208,10 @@ export default function WCRenovatie() {
               <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
                 {t('wcPage.projectsTitle')}
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {projects.map((p, i) => (
-                <motion.div
+                <m.div
                   key={p.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -219,9 +220,9 @@ export default function WCRenovatie() {
                   className="group"
                 >
                   <div className="rounded-2xl overflow-hidden aspect-[4/3] mb-4">
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={p.image}
-                      alt={p.title}
+                      alt={altForSrc(p.image, language) ?? p.title}
                       width={800}
                       height={600}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -229,7 +230,7 @@ export default function WCRenovatie() {
                   </div>
                   <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
                   <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>

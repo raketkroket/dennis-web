@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { altForSrc } from '../content/photoAlt';
 
 export default function Badkamerrenovatie() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const features = t('bathroomPage.features').split('|');
   const projectTitles = t('bathroomPage.projectTitles').split('|');
   const projectDescriptions = t('bathroomPage.projectDescriptions').split('|');
@@ -23,7 +24,7 @@ export default function Badkamerrenovatie() {
         <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label={t('bathroomPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-14 xl:gap-20 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
@@ -54,8 +55,8 @@ export default function Badkamerrenovatie() {
                     {t('bathroomPage.consultation')}
                   </Link>
                 </div>
-              </motion.div>
-              <motion.div
+              </m.div>
+              <m.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -64,12 +65,12 @@ export default function Badkamerrenovatie() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d]/10 to-transparent" />
                 <img
                   src={sitePhotos[0]}
-                  alt={t('bathroomPage.heroAlt')}
+                  alt={altForSrc(sitePhotos[0], language) ?? t('bathroomPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
                 />
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
@@ -78,7 +79,7 @@ export default function Badkamerrenovatie() {
         <section className="py-20 bg-[#faf6f0]" aria-labelledby="features-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -92,7 +93,7 @@ export default function Badkamerrenovatie() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {features.map((f, i) => (
-                    <motion.div
+                    <m.div
                       key={f}
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -104,25 +105,25 @@ export default function Badkamerrenovatie() {
                         <Check size={11} className="text-[#7a6552]" />
                       </div>
                       <span className="text-sm text-[#4A3F35]">{f}</span>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
-              </motion.div>
-              <motion.div
+              </m.div>
+              <m.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
                 className="rounded-3xl overflow-hidden aspect-square"
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={sitePhotos[8]}
-                  alt={t('bathroomPage.featuresAlt')}
+                  alt={altForSrc(sitePhotos[8], language) ?? t('bathroomPage.featuresAlt')}
                   width={800}
                   height={800}
                   className="w-full h-full object-cover"
                 />
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
@@ -152,7 +153,7 @@ export default function Badkamerrenovatie() {
         {/* Projects */}
         <section className="py-20 bg-[#f6f0e8]" aria-labelledby="badkamer-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -162,10 +163,10 @@ export default function Badkamerrenovatie() {
               <h2 id="badkamer-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
                 {t('bathroomPage.projectsTitle')}
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {projects.map((p, i) => (
-                <motion.div
+                <m.div
                   key={p.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -174,9 +175,9 @@ export default function Badkamerrenovatie() {
                   className="group"
                 >
                   <div className="rounded-2xl overflow-hidden aspect-[4/3] mb-4">
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={p.image}
-                      alt={p.title}
+                      alt={altForSrc(p.image, language) ?? p.title}
                       width={800}
                       height={600}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -184,7 +185,7 @@ export default function Badkamerrenovatie() {
                   </div>
                   <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
                   <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRight, Phone } from 'lucide-react';
 import { useLanguage } from '../i18n/useLanguage';
 import { useSiteContent } from '../content/SiteContentProvider';
@@ -11,7 +11,7 @@ export default function CTASection() {
   return (
     <section className="py-24 bg-transparent" aria-label={t('shared.callToAction')}>
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -44,7 +44,7 @@ export default function CTASection() {
               {t('shared.callUs')}
             </a>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

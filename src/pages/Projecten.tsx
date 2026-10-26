@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowLeft, ArrowRight, MapPin, X } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -13,6 +13,8 @@ interface Project {
   title: string;
   category: 'Badkamer' | 'WC' | 'Binnen';
   image: string;
+  srcSet?: string;
+  alt: string;
   desc: string;
   location?: string;
 }
@@ -40,6 +42,8 @@ export default function Projecten() {
     title: pick(project.titleNl, project.titleEn),
     category: project.category === 'badkamer' ? 'Badkamer' : project.category === 'toilet' ? 'WC' : 'Binnen',
     image: project.cover?.image.src ?? '',
+    srcSet: project.cover?.image.srcSet,
+    alt: project.cover ? pick(project.cover.altNl, project.cover.altEn) : '',
     desc: pick(project.summaryNl, project.summaryEn),
     location: project.location ?? undefined,
   })), [projects, pick]);
@@ -88,7 +92,7 @@ export default function Projecten() {
       <main>
         <section className="denra-portfolio-hero pt-36 pb-16 lg:pt-44 lg:pb-20" aria-label={t('portfolioPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
@@ -104,7 +108,7 @@ export default function Projecten() {
               <div className="mx-auto mt-10 flex max-w-lg flex-wrap justify-center gap-x-6 gap-y-2 border-t border-[#7a6552]/20 pt-5 text-xs uppercase tracking-[0.14em] text-[#5f544a]">
                 <span><strong className="mr-1 font-medium text-[#231A12]">{allProjects.length}</strong>{t('portfolioPage.projects')}</span><span>{t('portfolioPage.bathroom')}</span><span>{t('portfolioPage.toilet')}</span><span>{t('portfolioPage.interior')}</span>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
@@ -121,7 +125,7 @@ export default function Projecten() {
             <h2 id="projecten-grid-heading" className="sr-only">{t('portfolioPage.overview')}</h2>
             {filtered.length > 0 ? <div className="grid grid-cols-1 gap-x-7 gap-y-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-16">
               {filtered.map((project, index) => (
-                <motion.article
+                <m.article
                   key={project.id}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -137,7 +141,9 @@ export default function Projecten() {
                   >
                     <img
                       src={project.image}
-                      alt={projectTitle(project)}
+                      srcSet={project.srcSet}
+                      sizes="(min-width: 1024px) 60vw, (min-width: 640px) 50vw, 100vw"
+                      alt={project.alt || projectTitle(project)}
                       width={800}
                       height={600}
                       loading={index < 3 ? 'eager' : 'lazy'}
@@ -153,7 +159,7 @@ export default function Projecten() {
                     <p className="mt-3 max-w-md break-words text-sm leading-relaxed text-[#71665b]">{projectDescription(project)}</p>
                     <button type="button" onClick={(event) => { triggerButtonRef.current = event.currentTarget; setSelectedProject(project); }} className="denra-project-link">{t('portfolioPage.viewProject')} <ArrowRight size={15} /></button>
                   </div>
-                </motion.article>
+                </m.article>
               ))}
             </div> : <div className="border-y border-[#7a6552]/20 py-14 text-center"><h3 className="font-serif text-2xl font-semibold text-[#231A12]">{t('portfolioPage.noProjects')}</h3><p className="mt-2 text-sm text-[#5f544a]">{t('portfolioPage.withinSelection')}</p><button type="button" onClick={() => setActiveCategory('Alle')} className="mt-5 border-b border-[#7a6552]/50 pb-1 text-sm font-medium text-[#231A12]">{t('portfolioPage.clearFilters')}</button></div>}
           </div>
@@ -161,7 +167,7 @@ export default function Projecten() {
         <section className="bg-[#231A12] py-20 text-[#F6F0E8] lg:py-24"><div className="max-w-7xl mx-auto px-6 lg:px-8"><div className="max-w-3xl"><p className="denra-label !text-[#d8c7b3] mb-5">{t('portfolioPage.ctaEyebrow')}</p><h2 className="font-serif text-4xl font-semibold leading-[0.95] sm:text-5xl">{t('portfolioPage.ctaTitle').split('|')[0]}<br />{t('portfolioPage.ctaTitle').split('|')[1]}</h2><p className="mt-6 max-w-xl leading-relaxed text-[#ddd3c5]">{t('portfolioPage.ctaDescription')}</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="/contact" className="denra-button-secondary border-[#f6f0e8]/45 bg-[#F6F0E8] !text-[#231A12] hover:bg-[#e5dbcd]">{t('portfolioPage.consultation')} <ArrowRight size={16} /></a><a href="/configurator" className="denra-button-secondary border-[#f6f0e8]/45 !text-[#F6F0E8] hover:bg-[#f6f0e8]/10">{t('portfolioPage.calculate')}</a></div></div></div></section>
       </main>
       {selectedProject && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -180,8 +186,8 @@ export default function Projecten() {
           >
             <X size={20} />
           </button>
-          <div className="flex min-h-0 max-w-full flex-col items-center" onClick={(event) => event.stopPropagation()}><motion.img initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.22 }} src={selectedProject.image} alt={projectTitle(selectedProject)} width={1400} height={1000} className="max-h-[72vh] max-w-[90vw] object-contain shadow-[0_20px_55px_rgba(0,0,0,0.35)]" /><div className="mt-4 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 text-[#f6f0e8]"><div><p className="font-serif text-xl">{projectTitle(selectedProject)}</p><p className="mt-1 text-sm text-[#d8c7b3]">{selectedProject.location} · {String(selectedIndex + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}</p></div><div className="flex gap-2"><button type="button" onClick={() => navigateLightbox(-1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.previous')}><ArrowLeft size={17} /></button><button type="button" onClick={() => navigateLightbox(1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.next')}><ArrowRight size={17} /></button></div></div></div>
-        </motion.div>
+          <div className="flex min-h-0 max-w-full flex-col items-center" onClick={(event) => event.stopPropagation()}><m.img initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.22 }} src={selectedProject.image} alt={selectedProject.alt || projectTitle(selectedProject)} width={1400} height={1000} className="max-h-[72vh] max-w-[90vw] object-contain shadow-[0_20px_55px_rgba(0,0,0,0.35)]" /><div className="mt-4 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 text-[#f6f0e8]"><div><p className="font-serif text-xl">{projectTitle(selectedProject)}</p><p className="mt-1 text-sm text-[#d8c7b3]">{selectedProject.location} · {String(selectedIndex + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}</p></div><div className="flex gap-2"><button type="button" onClick={() => navigateLightbox(-1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.previous')}><ArrowLeft size={17} /></button><button type="button" onClick={() => navigateLightbox(1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.next')}><ArrowRight size={17} /></button></div></div></div>
+        </m.div>
       )}
       <Footer />
       <WhatsAppButton />

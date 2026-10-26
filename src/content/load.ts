@@ -3,6 +3,7 @@ import { defaultCalculatorConfig, type CalculatorConfig } from '../lib/calculato
 import { calculatorFromRows, type CalculatorOptionRow, type CalculatorRoomRow, type CalculatorTierRow } from '../lib/calculatorRows';
 import { storagePublicUrl } from '../lib/env';
 import { defaultBusiness, defaultFaqs, defaultProjects, staticPhotos, type BusinessSettings, type Faq, type FaqPage, type PhotoKind, type ProjectCategory } from './defaults';
+import { photoAlt } from './photoAlt';
 import { photoLibrary } from './photoLibrary';
 import type { Project, ProjectPhoto, ResponsiveImage, SiteContent, TextOverrides } from './types';
 
@@ -35,8 +36,8 @@ export function defaultSiteContent(): SiteContent {
         kind: photo.kind ?? 'result',
         captionNl: photo.captionNl ?? '',
         captionEn: photo.captionEn ?? '',
-        altNl: photo.captionNl ? `${project.titleNl}: ${photo.captionNl.toLowerCase()}` : project.titleNl,
-        altEn: photo.captionEn ? `${project.titleEn}: ${photo.captionEn.toLowerCase()}` : project.titleEn,
+        altNl: photoAlt[photo.key]?.nl ?? project.titleNl,
+        altEn: photoAlt[photo.key]?.en ?? project.titleEn,
       }];
     });
     return {

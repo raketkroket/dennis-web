@@ -62,15 +62,16 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+      // Phones skip multisampling; their high pixel density already smooths edges.
+      renderer = new THREE.WebGLRenderer({ antialias: !lightweight, powerPreference: 'high-performance' });
     } catch {
       setFailed(true);
       return undefined;
     }
     // Kept modest so dragging stays smooth on high-density screens.
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, lightweight ? 1.25 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, lightweight ? 1 : 1.5));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = lightweight ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
     // Shadows are recalculated only when the room changes, not on every camera move.
     renderer.shadowMap.autoUpdate = false;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -105,7 +106,7 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     scene.add(hemisphere);
     const sun = new THREE.DirectionalLight('#fff1dc', day.sun);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.mapSize.set(lightweight ? 512 : 1024, lightweight ? 512 : 1024);
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.02;
     sun.shadow.radius = 4;
@@ -245,6 +246,9 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     };
     // Dimension labels are HTML on top of the canvas: crisp text, and they
     // stay out of the ambient-occlusion pass.
+    // Canvas size, kept here so placing the labels each frame never makes the
+    // browser recalculate the page layout.
+    const viewport = { width: container.clientWidth, height: container.clientHeight };
     const label = () => {
       const element = document.createElement('span');
       element.setAttribute('aria-hidden', 'true');
@@ -258,8 +262,8 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
         },
         place() {
           const projected = anchor.clone().project(camera);
-          const x = ((projected.x + 1) / 2) * container.clientWidth;
-          const y = ((1 - projected.y) / 2) * container.clientHeight;
+          const x = ((projected.x + 1) / 2) * viewport.width;
+          const y = ((1 - projected.y) / 2) * viewport.height;
           element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
           element.style.visibility = projected.z < 1 ? 'visible' : 'hidden';
         },
@@ -541,6 +545,8 @@ export default function RoomPreview3D({ roomType, length, width, optionIds, desc
     const resize = () => {
       const { clientWidth, clientHeight } = container;
       if (!clientWidth || !clientHeight) return;
+      viewport.width = clientWidth;
+      viewport.height = clientHeight;
       renderer.setSize(clientWidth, clientHeight);
       camera.aspect = clientWidth / clientHeight;
       camera.updateProjectionMatrix();

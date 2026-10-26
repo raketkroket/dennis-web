@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRight, Layers, Paintbrush, Grid3x3, Waves } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { altForSrc } from '../content/photoAlt';
 
 export default function Binnenrenovatie() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const serviceTitles = t('interiorPage.services').split('|');
   const serviceDescriptions = t('interiorPage.serviceDescriptions').split('|');
   const services = [Layers, Paintbrush, Waves, Grid3x3].map((icon, index) => ({ icon, title: serviceTitles[index], desc: serviceDescriptions[index] }));
@@ -20,7 +21,7 @@ export default function Binnenrenovatie() {
         <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label={t('interiorPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.03fr_0.97fr] gap-14 xl:gap-20 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
@@ -51,8 +52,8 @@ export default function Binnenrenovatie() {
                     {t('interiorPage.consultation')}
                   </Link>
                 </div>
-              </motion.div>
-              <motion.div
+              </m.div>
+              <m.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -61,19 +62,19 @@ export default function Binnenrenovatie() {
                 <div className="absolute inset-0 bg-gradient-to-l from-[#231a12]/10 via-transparent to-transparent" />
                 <img
                   src={sitePhotos[6]}
-                  alt={t('interiorPage.heroAlt')}
+                  alt={altForSrc(sitePhotos[6], language) ?? t('interiorPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
                 />
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
 
         <section className="py-20 bg-[#faf6f0]" aria-labelledby="binnen-diensten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -83,10 +84,10 @@ export default function Binnenrenovatie() {
               <h2 id="binnen-diensten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
                 {t('interiorPage.servicesTitle')}
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {services.map((s, i) => (
-                <motion.div
+                <m.div
                   key={s.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -101,7 +102,7 @@ export default function Binnenrenovatie() {
                     <h3 className="font-serif text-xl font-semibold text-[#231A12] mb-2">{s.title}</h3>
                     <p className="text-sm text-[#6B5D50] leading-relaxed">{s.desc}</p>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>

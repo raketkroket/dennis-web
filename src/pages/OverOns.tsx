@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BadgeCheck, Handshake, Layers, ShieldCheck, Sparkles } from 'lucide-react';
 import Header from '../components/Header';
@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { altForSrc } from '../content/photoAlt';
 
 export default function OverOns() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const valueTitles = t('aboutPage.values').split('|');
   const valueDescriptions = t('aboutPage.valueDescriptions').split('|');
   const values = [ShieldCheck, Sparkles, Layers].map((icon, index) => ({ icon, title: valueTitles[index], desc: valueDescriptions[index] }));
@@ -24,7 +25,7 @@ export default function OverOns() {
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-14 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
@@ -74,9 +75,9 @@ export default function OverOns() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </m.div>
 
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, scale: 0.96, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.15 }}
@@ -87,7 +88,7 @@ export default function OverOns() {
                     <div className="rounded-sm overflow-hidden min-h-[420px] border border-[#cfbca7]/55">
                     <img
                       src={sitePhotos[0]}
-                      alt={t('aboutPage.imageBathroomAlt')}
+                      alt={altForSrc(sitePhotos[0], language) ?? t('aboutPage.imageBathroomAlt')}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -95,7 +96,7 @@ export default function OverOns() {
                     <div className="rounded-sm overflow-hidden h-[250px] border border-[#cfbca7]/55">
                       <img
                         src={sitePhotos[3]}
-                        alt={t('aboutPage.imageDetailsAlt')}
+                        alt={altForSrc(sitePhotos[3], language) ?? t('aboutPage.imageDetailsAlt')}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -110,14 +111,14 @@ export default function OverOns() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
 
         <section className="py-20 bg-[#faf6f0]" aria-labelledby="waarom-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -134,13 +135,13 @@ export default function OverOns() {
               <p className="text-[#6B5D50] leading-relaxed text-lg">
                 {t('aboutPage.whyDescription')}
               </p>
-            </motion.div>
+            </m.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {values.map((value, index) => {
                 const Icon = value.icon;
                 return (
-                  <motion.div
+                  <m.div
                     key={value.title}
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +154,7 @@ export default function OverOns() {
                     </div>
                     <h3 className="font-serif text-2xl font-semibold mb-4">{value.title}</h3>
                     <p className={`leading-relaxed ${index === 1 ? 'text-white/75' : 'text-[#6B5D50]'}`}>{value.desc}</p>
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
@@ -163,7 +164,7 @@ export default function OverOns() {
         <section className="py-20 bg-[#f6f0e8] border-y border-[#cfbca7]/60" aria-labelledby="belofte-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 items-center">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -186,11 +187,11 @@ export default function OverOns() {
                   {t('aboutPage.startProject')}
                   <ArrowRight size={16} />
                 </Link>
-              </motion.div>
+              </m.div>
 
               <div className="grid gap-4">
                 {promises.map((promise, index) => (
-                  <motion.div
+                  <m.div
                     key={promise}
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -202,7 +203,7 @@ export default function OverOns() {
                       <Handshake size={18} />
                     </div>
                     <p className="text-[#231A12] font-medium">{promise}</p>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </div>
@@ -211,7 +212,7 @@ export default function OverOns() {
 
         <section className="py-20 bg-[#f6f0e8]" aria-label={t('aboutPage.ctaAria')}>
           <div className="max-w-5xl mx-auto px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -250,7 +251,7 @@ export default function OverOns() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
       </main>

@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { supabaseConfigured } from '../lib/env';
+import { startedFromPrerender } from '../lib/hydration';
 import { defaultSiteContent, loadSiteContent } from './load';
 import type { SiteContent } from './types';
 
@@ -24,7 +25,8 @@ function cachedStrings(): Partial<Pick<SiteContent, 'texts' | 'business'>> {
 }
 
 export function SiteContentProvider({ children }: { children: ReactNode }) {
-  const [content, setContent] = useState<SiteContent>(() => ({ ...defaultSiteContent(), ...(supabaseConfigured ? cachedStrings() : {}) }));
+  // A prerendered page starts from the built-in content it was rendered with.
+  const [content, setContent] = useState<SiteContent>(() => ({ ...defaultSiteContent(), ...(supabaseConfigured && !startedFromPrerender ? cachedStrings() : {}) }));
   const [ready, setReady] = useState(!supabaseConfigured);
 
   const reload = useCallback(async () => {
@@ -43,6 +45,10 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (supabaseConfigured && startedFromPrerender) {
+      const cached = cachedStrings();
+      if (cached.texts || cached.business) setContent((current) => ({ ...current, ...cached }));
+    }
     reload().catch((error) => {
       console.error('Could not load website content; showing the built-in version.', error);
       setReady(true);

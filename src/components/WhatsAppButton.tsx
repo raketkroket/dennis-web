@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useLanguage } from '../i18n/useLanguage';
 import { useSiteContent } from '../content/SiteContentProvider';
 
@@ -8,7 +8,7 @@ export default function WhatsAppButton() {
   const { t } = useLanguage();
   const { business } = useSiteContent();
   return (
-    <motion.a
+    <m.a
       href={`https://wa.me/${business.whatsappNumber}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -19,6 +19,6 @@ export default function WhatsAppButton() {
       transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}
     >
           <MessageCircle size={26} className="text-[#3c342c]" />
-    </motion.a>
+    </m.a>
   );
 }

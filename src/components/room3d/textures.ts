@@ -23,7 +23,7 @@ function finish(element: HTMLCanvasElement, color: boolean) {
   const texture = new THREE.CanvasTexture(element);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.anisotropy = 8;
+  texture.anisotropy = 4;
   if (color) texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 }
