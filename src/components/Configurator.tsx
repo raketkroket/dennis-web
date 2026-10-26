@@ -18,7 +18,7 @@ import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
 import { fill, useLocalized } from '../i18n/format';
 import { loadCalculatorDraft, saveCalculatorDraft, saveQuoteConfiguration, type CalculatorDraft } from '../types/quote';
-import { useHasMounted } from '../lib/hydration';
+import { useStartedOnClient } from '../lib/hydration';
 import EstimateBreakdown from './EstimateBreakdown';
 import Img from './ui/Img';
 
@@ -36,7 +36,7 @@ export default function Configurator() {
   const { calculator, projects } = useSiteContent();
   // On a prerendered page the first render must match the HTML (an empty
   // calculator); a saved draft is restored right after.
-  const clientRender = useHasMounted();
+  const clientRender = useStartedOnClient();
   const [draft, setDraft] = useState<CalculatorDraft>(() => (clientRender ? loadCalculatorDraft() ?? emptyDraft : emptyDraft));
   const [restoreDraft] = useState(!clientRender);
   const [showErrors, setShowErrors] = useState(false);

@@ -6,10 +6,13 @@ import Configurator from '../components/Configurator';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function ConfiguratorPage() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   return (
     <>
       <Header />
@@ -18,7 +21,7 @@ export default function ConfiguratorPage() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <m.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
               >
@@ -51,7 +54,7 @@ export default function ConfiguratorPage() {
               </m.div>
 
               <m.div
-                initial={{ opacity: 0, x: 24 }}
+                initial={animateIn && { opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="rounded-2xl overflow-hidden aspect-[16/9]"

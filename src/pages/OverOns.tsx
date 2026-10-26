@@ -7,10 +7,13 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function OverOns() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   const valueTitles = t('aboutPage.values').split('|');
   const valueDescriptions = t('aboutPage.valueDescriptions').split('|');
   const values = [ShieldCheck, Sparkles, Layers].map((icon, index) => ({ icon, title: valueTitles[index], desc: valueDescriptions[index] }));
@@ -26,7 +29,7 @@ export default function OverOns() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-14 items-center">
               <m.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
               >
@@ -78,7 +81,7 @@ export default function OverOns() {
               </m.div>
 
               <m.div
-                initial={{ opacity: 0, scale: 0.96, y: 20 }}
+                initial={animateIn && { opacity: 0, scale: 0.96, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.15 }}
                 className="relative"

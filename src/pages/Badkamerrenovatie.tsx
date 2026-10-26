@@ -7,10 +7,13 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function Badkamerrenovatie() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   const features = t('bathroomPage.features').split('|');
   const projectTitles = t('bathroomPage.projectTitles').split('|');
   const projectDescriptions = t('bathroomPage.projectDescriptions').split('|');
@@ -25,7 +28,7 @@ export default function Badkamerrenovatie() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-14 xl:gap-20 items-center">
               <m.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 className="max-w-xl"
@@ -57,7 +60,7 @@ export default function Badkamerrenovatie() {
                 </div>
               </m.div>
               <m.div
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={animateIn && { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="relative rounded-[32px] overflow-hidden aspect-[4/3] border border-[#d6c3a9] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#efe4d5]"
@@ -167,7 +170,7 @@ export default function Badkamerrenovatie() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {projects.map((p, i) => (
                 <m.div
-                  key={p.title}
+                  key={p.image}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}

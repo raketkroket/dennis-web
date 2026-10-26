@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 
 /**
  * True when the page arrived as prerendered HTML (scripts/prerender.ts). The
@@ -15,4 +15,15 @@ const subscribe = () => () => {};
  */
 export function useHasMounted(): boolean {
   return useSyncExternalStore(subscribe, () => true, () => false);
+}
+
+/**
+ * Whether this component was first rendered in the browser (a visit within
+ * the site) rather than taken over from prerendered HTML. Fixed for the life
+ * of the component, so entrance animations never switch on afterwards.
+ */
+export function useStartedOnClient(): boolean {
+  const mounted = useHasMounted();
+  const [startedOnClient] = useState(mounted);
+  return startedOnClient;
 }

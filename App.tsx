@@ -11,15 +11,48 @@ import LocalServicePage from './src/pages/LocalServicePage';
 import { useLanguage } from './src/i18n/useLanguage';
 import { canonicalUrl, metaFor } from './src/seo/pages';
 
-const Badkamerrenovatie = lazy(() => import('./src/pages/Badkamerrenovatie'));
-const WCRenovatie = lazy(() => import('./src/pages/WCRenovatie'));
-const Binnenrenovatie = lazy(() => import('./src/pages/Binnenrenovatie'));
-const Projecten = lazy(() => import('./src/pages/Projecten'));
-const OverOns = lazy(() => import('./src/pages/OverOns'));
-const Contact = lazy(() => import('./src/pages/Contact'));
-const ConfiguratorPage = lazy(() => import('./src/pages/ConfiguratorPage'));
-const AlgemeneVoorwaarden = lazy(() => import('./src/pages/AlgemeneVoorwaarden'));
-const Ervaringen = lazy(() => import('./src/pages/Ervaringen'));
+// Pages load as separate files. Before React takes over a prerendered page,
+// index.tsx loads that page's file first (preloadPage), so the whole page is
+// taken over at once instead of being redrawn when the file arrives.
+type PageModule = { default: React.ComponentType };
+function lazyPage(load: () => Promise<PageModule>) {
+  let Loaded: React.ComponentType | null = null;
+  const preload = () => load().then((module) => {
+    Loaded = module.default;
+    return module;
+  });
+  const Lazy = lazy(preload);
+  const Page = () => (Loaded ? <Loaded /> : <Lazy />);
+  return Object.assign(Page, { preload });
+}
+
+const Badkamerrenovatie = lazyPage(() => import('./src/pages/Badkamerrenovatie'));
+const WCRenovatie = lazyPage(() => import('./src/pages/WCRenovatie'));
+const Binnenrenovatie = lazyPage(() => import('./src/pages/Binnenrenovatie'));
+const Projecten = lazyPage(() => import('./src/pages/Projecten'));
+const OverOns = lazyPage(() => import('./src/pages/OverOns'));
+const Contact = lazyPage(() => import('./src/pages/Contact'));
+const ConfiguratorPage = lazyPage(() => import('./src/pages/ConfiguratorPage'));
+const AlgemeneVoorwaarden = lazyPage(() => import('./src/pages/AlgemeneVoorwaarden'));
+const Ervaringen = lazyPage(() => import('./src/pages/Ervaringen'));
+
+const pagesByPath: Record<string, { preload: () => Promise<unknown> }> = {
+  '/badkamerrenovatie': Badkamerrenovatie,
+  '/badkamer-renovatie': Badkamerrenovatie,
+  '/wc-renovatie': WCRenovatie,
+  '/binnenrenovatie': Binnenrenovatie,
+  '/projecten': Projecten,
+  '/over-ons': OverOns,
+  '/contact': Contact,
+  '/configurator': ConfiguratorPage,
+  '/algemene-voorwaarden': AlgemeneVoorwaarden,
+  '/ervaringen': Ervaringen,
+};
+
+/** Loads the file of the page at this address, if it is a separately loaded page. */
+// eslint-disable-next-line react-refresh/only-export-components
+export const preloadPage = (pathname: string) => pagesByPath[pathname.replace(/\/+$/, '') || '/']?.preload() ?? Promise.resolve();
+
 const AdminApp = lazy(() => import('./src/admin/AdminApp'));
 
 const localPages = {

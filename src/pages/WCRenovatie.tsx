@@ -7,10 +7,13 @@ import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function WCRenovatie() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   const features = t('wcPage.features').split('|');
   const pricingLabels = t('wcPage.pricing').split('|');
   const adviceLabels = t('wcPage.advice').split('|');
@@ -26,7 +29,7 @@ export default function WCRenovatie() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">
               <m.div
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={animateIn && { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
                 className="order-2 lg:order-1 rounded-[30px] overflow-hidden aspect-[4/3] border border-[#d3c5b6] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e9dfd3]"
@@ -40,7 +43,7 @@ export default function WCRenovatie() {
                 />
               </m.div>
               <m.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 className="order-1 lg:order-2 max-w-xl ml-auto"
@@ -212,7 +215,7 @@ export default function WCRenovatie() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {projects.map((p, i) => (
                 <m.div
-                  key={p.title}
+                  key={p.image}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}

@@ -7,6 +7,7 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLocalized } from '../i18n/format';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 
 interface Project {
   id: string;
@@ -34,6 +35,8 @@ const gridVariant = (index: number) => {
 
 export default function Projecten() {
   const { t } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   const pick = useLocalized();
   const { projects } = useSiteContent();
   // Projects as Dennis manages them in the admin, in his order.
@@ -93,7 +96,7 @@ export default function Projecten() {
         <section className="denra-portfolio-hero pt-36 pb-16 lg:pt-44 lg:pb-20" aria-label={t('portfolioPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <m.div
-              initial={{ opacity: 0, y: 14 }}
+              initial={animateIn && { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
               className="border-b border-[#7a6552]/20 pb-12 text-center lg:pb-16"
@@ -186,7 +189,7 @@ export default function Projecten() {
           >
             <X size={20} />
           </button>
-          <div className="flex min-h-0 max-w-full flex-col items-center" onClick={(event) => event.stopPropagation()}><m.img initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.22 }} src={selectedProject.image} alt={selectedProject.alt || projectTitle(selectedProject)} width={1400} height={1000} className="max-h-[72vh] max-w-[90vw] object-contain shadow-[0_20px_55px_rgba(0,0,0,0.35)]" /><div className="mt-4 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 text-[#f6f0e8]"><div><p className="font-serif text-xl">{projectTitle(selectedProject)}</p><p className="mt-1 text-sm text-[#d8c7b3]">{selectedProject.location} · {String(selectedIndex + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}</p></div><div className="flex gap-2"><button type="button" onClick={() => navigateLightbox(-1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.previous')}><ArrowLeft size={17} /></button><button type="button" onClick={() => navigateLightbox(1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.next')}><ArrowRight size={17} /></button></div></div></div>
+          <div className="flex min-h-0 max-w-full flex-col items-center" onClick={(event) => event.stopPropagation()}><m.img initial={animateIn && { opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.22 }} src={selectedProject.image} alt={selectedProject.alt || projectTitle(selectedProject)} width={1400} height={1000} className="max-h-[72vh] max-w-[90vw] object-contain shadow-[0_20px_55px_rgba(0,0,0,0.35)]" /><div className="mt-4 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 text-[#f6f0e8]"><div><p className="font-serif text-xl">{projectTitle(selectedProject)}</p><p className="mt-1 text-sm text-[#d8c7b3]">{selectedProject.location} · {String(selectedIndex + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}</p></div><div className="flex gap-2"><button type="button" onClick={() => navigateLightbox(-1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.previous')}><ArrowLeft size={17} /></button><button type="button" onClick={() => navigateLightbox(1)} className="flex h-10 w-10 items-center justify-center border border-white/30 text-white hover:bg-white/10" aria-label={t('portfolioPage.next')}><ArrowRight size={17} /></button></div></div></div>
         </m.div>
       )}
       <Footer />

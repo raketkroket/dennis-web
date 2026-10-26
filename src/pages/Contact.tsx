@@ -8,19 +8,21 @@ import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
 import denraLogoBg from '../../fotos/denralogobg.png';
 import { loadQuoteConfiguration, saveQuoteConfiguration, type QuoteConfiguration } from '../types/quote';
-import { useHasMounted } from '../lib/hydration';
+import { useStartedOnClient } from '../lib/hydration';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLanguage } from '../i18n/useLanguage';
 
 export default function Contact() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once and pick up a
+  // saved quote right after; on later visits animate and read it directly.
+  const animateIn = useStartedOnClient();
   const { business } = useSiteContent();
   const [searchParams] = useSearchParams();
   // The calculator keeps the chosen configuration in session storage until it is sent or removed.
   // On a prerendered page the quote is picked up right after the first render.
-  const clientRender = useHasMounted();
-  const [quote, setQuote] = useState<QuoteConfiguration | null>(() => (clientRender ? loadQuoteConfiguration() : null));
-  const [restoreQuote] = useState(!clientRender);
+  const [quote, setQuote] = useState<QuoteConfiguration | null>(() => (animateIn ? loadQuoteConfiguration() : null));
+  const [restoreQuote] = useState(!animateIn);
   useEffect(() => {
     if (restoreQuote) setQuote(loadQuoteConfiguration());
   }, [restoreQuote]);
@@ -41,7 +43,7 @@ export default function Contact() {
             <div className="grid lg:grid-cols-2 gap-16">
               {/* Left */}
               <m.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={animateIn && { opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
               >
@@ -89,7 +91,7 @@ export default function Contact() {
 
               {/* Right — Form */}
               <m.div
-                initial={{ opacity: 0, x: 24 }}
+                initial={animateIn && { opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="bg-[#faf6f0] rounded-sm p-8 md:p-10 border border-[#cfbca7]/55"

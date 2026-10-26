@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { m } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../i18n/useLanguage';
+import { useStartedOnClient } from '../lib/hydration';
 
 import heroImage from '../../headerimg.png?w=768;1280;1720&format=webp&as=picture';
 
 export default function HeroSection() {
   const { t, language } = useLanguage();
+  // First page load: show the prerendered content at once; animate on later visits.
+  const animateIn = useStartedOnClient();
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" aria-label={t('marketing.heroTitle')}>
       {/* Background image */}
@@ -31,7 +34,7 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-28 md:py-32 w-full">
         <div className="max-w-xl">
           <m.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={animateIn && { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="flex items-center gap-3 mb-8"
@@ -43,7 +46,7 @@ export default function HeroSection() {
           </m.div>
 
           <m.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={animateIn && { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[26rem]"
@@ -54,7 +57,7 @@ export default function HeroSection() {
           </m.h1>
 
           <m.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={animateIn && { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
             className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
@@ -64,7 +67,7 @@ export default function HeroSection() {
           </m.p>
 
           <m.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={animateIn && { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4"
@@ -88,7 +91,7 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <m.div
-        initial={{ opacity: 0 }}
+        initial={animateIn && { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 right-8 hidden lg:flex flex-col items-center gap-2"
