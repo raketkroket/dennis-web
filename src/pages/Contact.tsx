@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import FaqList from '../components/FaqList';
+import ServiceArea from '../components/ServiceArea';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
 import denraLogoBg from '../../fotos/denralogobg.png';
@@ -103,6 +105,8 @@ export default function Contact() {
             </div>
           </div>
         </section>
+        <FaqList pages={['algemeen']} id="contact-faq" />
+        <ServiceArea service="badkamer" id="contact-werkgebied" />
       </main>
       <Footer />
       <WhatsAppButton />

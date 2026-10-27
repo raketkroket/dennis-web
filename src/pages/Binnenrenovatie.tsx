@@ -4,6 +4,9 @@ import { ArrowRight, Layers, Paintbrush, Grid3x3, Waves } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import RelatedProjects from '../components/RelatedProjects';
+import FaqList from '../components/FaqList';
+import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
@@ -110,6 +113,9 @@ export default function Binnenrenovatie() {
             </div>
           </div>
         </section>
+        <RelatedProjects category="interieur" title={t('site.relatedInterior')} id="binnen-projecten" />
+        <FaqList pages={['binnen', 'algemeen']} id="binnen-faq" />
+        <ServiceArea service="binnen" id="binnen-werkgebied" />
       </main>
       <Footer />
       <WhatsAppButton />

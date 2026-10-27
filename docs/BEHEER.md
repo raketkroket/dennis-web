@@ -32,7 +32,7 @@ Elke offerteaanvraag via de website staat hier, ook als een e-mail niet aankomt.
 
 ## Website aanpassen
 
-Pas hier de teksten van de homepage, de dienstenpagina's, Over ons en Contact aan.
+Pas hier de teksten van de homepage, de dienstenpagina's, Over ons en Contact aan, en de **veelgestelde vragen** per pagina. De prijzen op de badkamer- en calculatorpagina komen rechtstreeks uit **Calculator en prijzen**; pas ze daar aan.
 
 - Links staat de Nederlandse tekst, rechts de Engelse. Laat u de Engelse tekst leeg, dan ziet een Engelstalige bezoeker uw Nederlandse tekst.
 - Heeft u de Nederlandse tekst aangepast maar de Engelse niet, dan krijgt u een melding.
