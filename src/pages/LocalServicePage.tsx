@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Check, CircleHelp, MapPin, Sparkles } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import RelatedProjects from '../components/RelatedProjects';
+import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
+import { fill } from '../i18n/format';
 
 type LocalServicePageProps = {
   city: string;
@@ -149,6 +152,10 @@ export default function LocalServicePage({
             </div>
           </div>
         </section>
+
+        {/* Work done in this city, as entered in the admin. */}
+        <RelatedProjects category={isBathroom ? 'badkamer' : 'toilet'} place={city} title={fill(t('site.relatedInPlace'), { place: city })} id="lokaal-projecten" />
+        <ServiceArea service={serviceType} id="lokaal-werkgebied" />
 
         <section className="py-20 bg-[#231A12] text-[#F6F0E8]">
           <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">

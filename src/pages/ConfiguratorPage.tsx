@@ -2,6 +2,8 @@ import React from 'react';
 import { m } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PriceOverview from '../components/PriceOverview';
+import FaqList from '../components/FaqList';
 import Configurator from '../components/Configurator';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
@@ -75,6 +77,8 @@ export default function ConfiguratorPage() {
             </div>
           </div>
         </section>
+        <PriceOverview roomTypes={['badkamer', 'wc']} id="calculator-prijzen" />
+        <FaqList pages={['algemeen']} id="calculator-faq" />
       </main>
       <Footer />
       <WhatsAppButton />

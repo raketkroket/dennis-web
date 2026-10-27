@@ -4,6 +4,9 @@ import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import RelatedProjects from '../components/RelatedProjects';
+import FaqList from '../components/FaqList';
+import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
@@ -238,6 +241,9 @@ export default function WCRenovatie() {
             </div>
           </div>
         </section>
+        <RelatedProjects category="toilet" title={t('site.relatedToilets')} id="wc-meer-projecten" />
+        <FaqList pages={['wc', 'algemeen']} id="wc-faq" />
+        <ServiceArea service="wc" id="wc-werkgebied" />
       </main>
       <Footer />
       <WhatsAppButton />

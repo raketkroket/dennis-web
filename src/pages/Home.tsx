@@ -8,6 +8,7 @@ import ProjectsSection from '../components/ProjectsSection';
 import StatsSection from '../components/StatsSection';
 import ReviewsSection from '../components/ReviewsSection';
 import CTASection from '../components/CTASection';
+import FaqList from '../components/FaqList';
 import WhatsAppButton from '../components/WhatsAppButton';
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
         <StatsSection />
         <ReviewsSection preview />
         <ProjectsSection />
+        <FaqList pages={['algemeen', 'badkamer', 'wc']} id="home-faq" />
         <CTASection />
       </main>
       <Footer />

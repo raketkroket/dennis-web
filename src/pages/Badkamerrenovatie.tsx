@@ -4,6 +4,10 @@ import { Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PriceOverview from '../components/PriceOverview';
+import RelatedProjects from '../components/RelatedProjects';
+import FaqList from '../components/FaqList';
+import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
@@ -194,6 +198,10 @@ export default function Badkamerrenovatie() {
           </div>
         </section>
 
+        <PriceOverview roomTypes={['badkamer']} id="badkamer-prijzen" />
+        <RelatedProjects category="badkamer" title={t('site.relatedBathrooms')} id="badkamer-meer-projecten" />
+        <FaqList pages={['badkamer', 'algemeen']} id="badkamer-faq" />
+        <ServiceArea service="badkamer" id="badkamer-werkgebied" />
       </main>
       <Footer />
       <WhatsAppButton />

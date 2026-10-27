@@ -239,7 +239,7 @@ export const defaultBusiness: BusinessSettings = {
 
 export type FaqPage = 'algemeen' | 'badkamer' | 'wc' | 'binnen';
 export const faqPages: { id: FaqPage; label: string }[] = [
-  { id: 'algemeen', label: 'Algemeen (homepage en contact)' },
+  { id: 'algemeen', label: 'Algemeen (ook op de homepage, de calculator en contact)' },
   { id: 'badkamer', label: 'Badkamerrenovatie' },
   { id: 'wc', label: 'WC-renovatie' },
   { id: 'binnen', label: 'Binnenrenovatie' },
