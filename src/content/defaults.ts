@@ -232,7 +232,7 @@ export const defaultBusiness: BusinessSettings = {
   hoursNl: 'Ma-Za: 08:00-18:00',
   hoursEn: 'Mon-Sat: 08:00-18:00',
   instagramUrl: 'https://www.instagram.com/denrabadkamers',
-  facebookUrl: 'https://facebook.com/denrabadkamers',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=100061153247453',
   tiktokUrl: 'https://www.tiktok.com/@denrabadkamers.nl',
   serviceAreas: ['Almere', 'Amsterdam', 'Amstelveen', 'Lelystad', "'t Gooi", 'Haarlem', 'Blaricum', 'Hilversum', 'Laren', 'Weesp', 'Muiden', 'Eemnes', 'Diemen', 'Muiderberg', 'Naarden', 'Amersfoort'],
 };
