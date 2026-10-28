@@ -1,5 +1,6 @@
 import React from 'react';
 import { m } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PriceOverview from '../components/PriceOverview';
@@ -34,8 +35,11 @@ export default function ConfiguratorPage() {
                 <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
                   {t('configuratorPage.title').split('|')[0]}<br />{t('configuratorPage.title').split('|')[1]}
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-md">
+                <p className="text-[#6B5D50] leading-relaxed mb-4 max-w-md">
                   {t('configuratorPage.description')}
+                </p>
+                <p className="mb-8 text-sm">
+                  <Link to="/badkamer-renovatie-kosten" className="text-[#231A12] underline decoration-[#7a6552]/40 underline-offset-4 hover:decoration-[#231A12]">{t('configuratorPage.costLink')}</Link>
                 </p>
                 <div className="space-y-4">
                   {[

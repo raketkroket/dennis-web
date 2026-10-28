@@ -23,15 +23,22 @@ export interface PageMeta {
 export const pages: PageMeta[] = [
   {
     path: '/',
-    title: 'Badkamer & WC Renovatie Almere & Amsterdam | Denra Badkamers',
-    description: 'Complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Bereken direct de kosten of vraag een offerte aan.',
+    title: 'Denra Badkamers | Badkamer & WC renovatie Flevoland & Noord-Holland',
+    description: 'Denra Badkamers renoveert badkamers en toiletten in Flevoland en Noord-Holland, van sloop tot afwerking. Bekijk projecten of bereken direct uw prijs.',
   },
   {
     path: '/badkamerrenovatie',
     name: 'Badkamerrenovatie',
     service: { name: 'Badkamerrenovatie' },
-    title: 'Badkamerrenovatie: kosten en werkwijze | Denra Badkamers',
-    description: 'Badkamer renoveren van sloop tot afwerking: leidingwerk, tegelwerk en sanitair door één vast team. Bekijk de kosten per m² en bereken direct uw prijs.',
+    title: 'Badkamer renoveren of verbouwen | Denra Badkamers',
+    description: 'Uw badkamer renoveren of verbouwen, van sloop en leidingwerk tot tegelwerk, sanitair en afwerking. Eén aanspreekpunt en een duidelijke offerte vooraf.',
+  },
+  {
+    path: '/badkamer-renovatie-kosten',
+    name: 'Kosten',
+    parent: '/badkamerrenovatie',
+    title: 'Badkamer renovatie kosten: prijzen per m² | Denra Badkamers',
+    description: 'Wat kost een badkamerrenovatie? Prijsvoorbeelden per oppervlakte, wat de kosten bepaalt en wat niet in de prijs zit. Met directe link naar onze prijscalculator.',
   },
   {
     path: '/wc-renovatie',
@@ -100,7 +107,7 @@ export const pages: PageMeta[] = [
   {
     path: '/configurator',
     name: 'Prijs berekenen',
-    title: 'Badkamer prijs berekenen | Denra Badkamers',
+    title: 'Badkamer kosten berekenen in 2 minuten | Denra Badkamers',
     description: 'Bereken in een paar stappen een prijsindicatie voor uw badkamer- of WC-renovatie, inclusief btw, en bekijk uw ruimte direct in 3D.',
   },
   {

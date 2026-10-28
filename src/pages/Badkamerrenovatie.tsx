@@ -4,7 +4,6 @@ import { Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import PriceOverview from '../components/PriceOverview';
 import RelatedProjects from '../components/RelatedProjects';
 import FaqList from '../components/FaqList';
 import ServiceArea from '../components/ServiceArea';
@@ -13,6 +12,9 @@ import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
+import { useSiteContent } from '../content/SiteContentProvider';
+import { fill } from '../i18n/format';
+import { formatEuro, formatNumber } from '../lib/calculator';
 
 export default function Badkamerrenovatie() {
   const { t, language } = useLanguage();
@@ -22,6 +24,10 @@ export default function Badkamerrenovatie() {
   const projectTitles = t('bathroomPage.projectTitles').split('|');
   const projectDescriptions = t('bathroomPage.projectDescriptions').split('|');
   const projects = [0, 1, 2].map((photoIndex, index) => ({ image: sitePhotos[photoIndex], title: projectTitles[index], desc: projectDescriptions[index] }));
+  const processSteps = t('bathroomPage.processSteps').split('|');
+  const processDescriptions = t('bathroomPage.processDescriptions').split('|');
+  const { calculator } = useSiteContent();
+  const bathroom = calculator.rooms.find((room) => room.roomType === 'badkamer' && room.isActive);
 
   return (
     <>
@@ -135,6 +141,41 @@ export default function Badkamerrenovatie() {
           </div>
         </section>
 
+        <section className="py-20 bg-[#f4efe8]" aria-labelledby="badkamer-werkwijze-heading">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="denra-line" />
+              <span className="denra-label">{t('bathroomPage.processEyebrow')}</span>
+            </div>
+            <h2 id="badkamer-werkwijze-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-10">{t('bathroomPage.processTitle')}</h2>
+            <ol className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+              {processSteps.map((step, index) => (
+                <li key={step} className="flex gap-5 border-t border-[#cfbca7]/55 pt-5">
+                  <span className="font-serif text-2xl font-semibold text-[#7a6552]/40 w-10 shrink-0" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{step}</h3>
+                    <p className="text-[#5f544a] leading-relaxed">{processDescriptions[index]}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-10 text-[#4A3F35] leading-relaxed max-w-3xl">{t('bathroomPage.processDuration')}</p>
+          </div>
+        </section>
+
+        <section className="py-20 bg-[#faf6f0]" aria-labelledby="badkamer-verbouwen-heading">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8 grid gap-12 md:grid-cols-2">
+            <div>
+              <h2 id="badkamer-verbouwen-heading" className="font-serif text-3xl font-semibold text-[#231A12] mb-4">{t('bathroomPage.remodelTitle')}</h2>
+              <p className="text-[#5f544a] leading-relaxed">{t('bathroomPage.remodelText')}</p>
+            </div>
+            <div>
+              <h2 className="font-serif text-3xl font-semibold text-[#231A12] mb-4">{t('bathroomPage.showerTitle')}</h2>
+              <p className="text-[#5f544a] leading-relaxed">{t('bathroomPage.showerText')}</p>
+            </div>
+          </div>
+        </section>
+
         <section className="py-20 bg-[#f4efe8]" aria-labelledby="badkamer-begeleiding-heading">
           <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-5">
@@ -198,7 +239,25 @@ export default function Badkamerrenovatie() {
           </div>
         </section>
 
-        <PriceOverview roomTypes={['badkamer']} id="badkamer-prijzen" />
+        {bathroom && (
+          <section className="py-20 bg-[#f6f0e8]" aria-labelledby="badkamer-kosten-heading">
+            <div className="max-w-3xl mx-auto px-6 lg:px-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="denra-line" />
+                <span className="denra-label">{t('site.priceLabel')}</span>
+              </div>
+              <h2 id="badkamer-kosten-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">{t('bathroomPage.costTitle')}</h2>
+              <p className="text-[#6B5D50] leading-relaxed mb-8">{fill(t('bathroomPage.costText'), { price: formatEuro(bathroom.basePrice, language), area: formatNumber(bathroom.includedArea, language) })}</p>
+              <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+                <Link to="/badkamer-renovatie-kosten" className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm">
+                  {t('bathroomPage.costLink')}
+                  <ArrowRight size={16} />
+                </Link>
+                <Link to="/configurator" className="text-sm font-medium text-[#231A12] underline decoration-[#7a6552]/40 underline-offset-4 hover:decoration-[#231A12]">{t('common.calculatePrice')}</Link>
+              </div>
+            </div>
+          </section>
+        )}
         <RelatedProjects category="badkamer" title={t('site.relatedBathrooms')} id="badkamer-meer-projecten" />
         <FaqList pages={['badkamer', 'algemeen']} id="badkamer-faq" />
         <ServiceArea service="badkamer" id="badkamer-werkgebied" />
