@@ -126,11 +126,27 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return response.status(405).json({ error: error('Methode niet toegestaan.', 'Method not allowed.') });
   }
 
+  // Only the website itself may post here (same check as the review form).
+  const origin = request.headers.origin;
+  const allowedOrigins = new Set(['https://denrabadkamers.nl', 'https://www.denrabadkamers.nl']);
+  if (process.env.PUBLIC_SITE_URL) allowedOrigins.add(new URL(process.env.PUBLIC_SITE_URL).origin);
+  if (process.env.VERCEL_URL) allowedOrigins.add(`https://${process.env.VERCEL_URL}`);
+  if (origin && !allowedOrigins.has(origin)) return response.status(403).json({ error: error('Niet toegestaan.', 'Forbidden.') });
+
   const parsedRequest = requestSchema.safeParse(request.body);
   if (!parsedRequest.success) return response.status(400).json({ error: error('Controleer de ingevulde gegevens en probeer het opnieuw.', 'Check the entered details and try again.'), code: 'INVALID_REQUEST' });
   const data = parsedRequest.data;
 
   const client = serviceClient();
+  // Every request also e-mails a confirmation to the given address, so limit
+  // how often one address can be used: a real customer never needs more.
+  if (client) {
+    const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count, error: countError } = await client.from('quote_requests').select('id', { count: 'exact', head: true }).eq('email', data.email).gte('created_at', since);
+    if (countError) console.error('Could not check recent requests', countError);
+    else if ((count ?? 0) >= 3) return response.status(429).json({ error: error('U heeft het afgelopen uur al meerdere aanvragen gestuurd. Wij nemen contact met u op; u kunt ons ook bellen of WhatsAppen.', 'You have already sent several requests in the past hour. We will contact you; you can also call or WhatsApp us.'), code: 'TOO_MANY_REQUESTS' });
+  }
+
   let estimate: Estimate | null = null;
   if (data.configuration) {
     let prices: CalculatorConfig;

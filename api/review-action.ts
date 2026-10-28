@@ -24,7 +24,7 @@ function reviewClient() {
 }
 
 function page(title: string, message: string, form?: string) {
-  return `<!doctype html><html lang="nl"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;padding:32px 16px;background:#f4efe8;font-family:Arial,sans-serif;color:#231A12;"><main style="max-width:560px;margin:auto;padding:32px;background:#faf6f0;border:1px solid #cfbca7;"><p style="margin:0 0 8px;font-size:12px;letter-spacing:1.5px;color:#7a6552;font-weight:700;">DENRA BADKAMERS</p><h1 style="margin:0 0 16px;font-family:Georgia,serif;font-size:30px;">${escapeHtml(title)}</h1><p style="margin:0;color:#6B5D50;line-height:1.6;">${escapeHtml(message)}</p>${form ?? ''}</main></body></html>`;
+  return `<!doctype html><html lang="nl"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>${escapeHtml(title)} | Denra Badkamers</title></head><body style="margin:0;padding:32px 16px;background:#f4efe8;font-family:Arial,sans-serif;color:#231A12;"><main style="max-width:560px;margin:auto;padding:32px;background:#faf6f0;border:1px solid #cfbca7;"><p style="margin:0 0 8px;font-size:12px;letter-spacing:1.5px;color:#7a6552;font-weight:700;">DENRA BADKAMERS</p><h1 style="margin:0 0 16px;font-family:Georgia,serif;font-size:30px;">${escapeHtml(title)}</h1><p style="margin:0;color:#6B5D50;line-height:1.6;">${escapeHtml(message)}</p>${form ?? ''}</main></body></html>`;
 }
 
 function actionForm(action: Action, token: string) {

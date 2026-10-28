@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowRight, Check, ChevronDown } from 'lucide-react';
+import { track, trackOnce } from '../lib/analytics';
 import { calculateEstimate } from '../lib/calculator';
 import { useSiteContent } from '../content/SiteContentProvider';
 import type { QuoteConfiguration } from '../types/quote';
@@ -78,6 +79,8 @@ export default function ContactForm({ quote, onRemoveQuote, defaultService = '',
       const result = await response.json().catch(() => null) as { error?: string; confirmationSent?: boolean } | null;
       if (!response.ok) throw new Error(result?.error ?? t('form.sendFailed'));
       setSent({ confirmationSent: result?.confirmationSent !== false });
+      // The lead itself, without anything the visitor typed.
+      track('generate_lead', { form: 'quote', service: data.service, with_calculation: Boolean(estimate), value: estimate?.total, currency: estimate ? 'EUR' : undefined });
       reset();
       onRemoveQuote();
     } catch (error) {
@@ -103,7 +106,7 @@ export default function ContactForm({ quote, onRemoveQuote, defaultService = '',
   const describedBy = (name: keyof FormData) => (errors[name] ? `${name}-error` : undefined);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} onFocus={() => trackOnce('quote_form_start', { with_calculation: Boolean(estimate) })} noValidate className="space-y-6">
       <p className="text-sm text-denra-muted">{t('site.formIntro')}</p>
 
       {quote && (

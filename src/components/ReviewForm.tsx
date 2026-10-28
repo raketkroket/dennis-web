@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowRight, ChevronDown, Star, Check } from 'lucide-react';
 import type { FormEvent } from 'react';
+import { track } from '../lib/analytics';
 import { useLanguage } from '../i18n/useLanguage';
 
 export default function ReviewForm() {
@@ -30,6 +31,7 @@ export default function ReviewForm() {
         throw new Error('Review not sent');
       }
       setStatus('success');
+      track('review_submit');
       form.reset();
       setRating(0);
     } catch { setStatus('error'); }

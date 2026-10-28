@@ -10,6 +10,7 @@ import NotFound from './src/pages/NotFound';
 import LocalServicePage from './src/pages/LocalServicePage';
 import { useLanguage } from './src/i18n/useLanguage';
 import { canonicalUrl, metaFor } from './src/seo/pages';
+import { trackLinkClick } from './src/lib/analytics';
 
 // Pages load as separate files. Before React takes over a prerendered page,
 // index.tsx loads that page's file first (preloadPage), so the whole page is
@@ -180,6 +181,15 @@ function RouteMeta() {
   return null;
 }
 
+// Phone, e-mail, WhatsApp and call-to-action clicks, for the whole site.
+function TrackClicks() {
+  React.useEffect(() => {
+    document.addEventListener('click', trackLinkClick, { capture: true });
+    return () => document.removeEventListener('click', trackLinkClick, { capture: true });
+  }, []);
+  return null;
+}
+
 // Start each new page at the top (the router keeps the old scroll position).
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -203,6 +213,7 @@ const AppRoutes = () => {
     <>
         <ScrollToTop />
         <RouteMeta />
+        <TrackClicks />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/admin/*" element={<AdminApp />} />

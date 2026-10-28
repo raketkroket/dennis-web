@@ -90,6 +90,22 @@ test('visitors and logged-in non-admins cannot change content', async () => {
   assert.equal((await rows('authenticated', visitorId, `update public.reviews set status = 'approved' returning id`)).length, 0);
 });
 
+test('visitors cannot delete content, post reviews directly or touch quote requests', async () => {
+  for (const [role, sub] of [['anon', null], ['authenticated', visitorId]] as const) {
+    assert.equal((await rows(role, sub, `delete from public.projects returning id`)).length, 0);
+    assert.equal((await rows(role, sub, `delete from public.faqs returning id`)).length, 0);
+    await rejects(role, sub, `delete from public.reviews`);
+    await rejects(role, sub, `insert into public.reviews (name, email, rating, text) values ('X', 'x@example.com', 5, 'Nep review van buitenaf')`);
+    await rejects(role, sub, `select public.save_faqs('badkamer', '[]'::jsonb)`);
+    await rejects(role, sub, `select public.reorder_projects(array[]::uuid[])`);
+    // Refused outright or zero rows changed: both mean nothing happened.
+    for (const sql of [`update public.quote_requests set status = 'done' returning id`, `delete from storage.objects where bucket_id = 'project-photos' returning id`]) {
+      const changed = await rows(role, sub, sql).then((result) => result.length, () => 0);
+      assert.equal(changed, 0, sql);
+    }
+  }
+});
+
 test('the admin can save a project with photos atomically', async () => {
   const media = await rows('authenticated', adminId, `select id from public.media where static_key in ('wc-5', 'wc-6') order by static_key`);
   const created = await as('authenticated', adminId, async (tx) => {
