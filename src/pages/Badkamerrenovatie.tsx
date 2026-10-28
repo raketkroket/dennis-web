@@ -32,7 +32,7 @@ export default function Badkamerrenovatie() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* Hero */}
         <section className="relative pt-40 pb-24 bg-[#f7f1ea] overflow-hidden" aria-label={t('bathroomPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -151,7 +151,7 @@ export default function Badkamerrenovatie() {
             <ol className="grid gap-x-12 gap-y-8 md:grid-cols-2">
               {processSteps.map((step, index) => (
                 <li key={step} className="flex gap-5 border-t border-[#cfbca7]/55 pt-5">
-                  <span className="font-serif text-2xl font-semibold text-[#7a6552]/40 w-10 shrink-0" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-2xl font-semibold text-[#7a6552]/80 w-10 shrink-0" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                   <div>
                     <h3 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{step}</h3>
                     <p className="text-[#5f544a] leading-relaxed">{processDescriptions[index]}</p>

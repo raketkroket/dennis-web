@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { LazyMotion } from 'framer-motion';
+import { LazyMotion, MotionConfig } from 'framer-motion';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import './styles.css';
 import { LanguageProvider } from './src/i18n/LanguageProvider';
@@ -246,11 +246,14 @@ const App: React.FC = () => {
   return (
     <div className="denra-root">
       <LazyMotion features={loadMotionFeatures}>
+        {/* Visitors who ask for less motion get fades without movement. */}
+        <MotionConfig reducedMotion="user">
         <SiteContentProvider>
           <LanguageProvider>
             <AppRoutes />
           </LanguageProvider>
         </SiteContentProvider>
+        </MotionConfig>
       </LazyMotion>
     </div>
   );

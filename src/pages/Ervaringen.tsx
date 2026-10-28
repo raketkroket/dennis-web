@@ -26,7 +26,7 @@ export default function Ervaringen() {
   return (
     <>
       <Header />
-      <main className="pt-[74px]">
+      <main id="main" tabIndex={-1} className="pt-[74px]">
         <section className="denra-review-background overflow-hidden px-6 py-20 md:py-24 lg:px-8" aria-labelledby="ervaringen-hero-heading">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-end">
             <m.div initial={animateIn && { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>

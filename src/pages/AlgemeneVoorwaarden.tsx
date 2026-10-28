@@ -183,7 +183,7 @@ export default function AlgemeneVoorwaarden() {
     <>
       <Header />
       <div className="denra-legal-progress print:hidden" aria-hidden="true"><div ref={progressBar} /></div>
-      <main className="denra-legal-page pt-[74px] pb-20">
+      <main id="main" tabIndex={-1} className="denra-legal-page pt-[74px] pb-20">
         <section className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-12 lg:pt-24 lg:pb-20">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1.65fr)_minmax(255px,0.7fr)] lg:items-end">
             <div className="animate-fade-in">

@@ -6,7 +6,7 @@ import { useLanguage } from '../i18n/useLanguage';
 export default function NotFound() {
   const { t } = useLanguage();
   return (
-    <main className="min-h-screen bg-[#f6f0e8] flex items-center justify-center px-6">
+    <main id="main" tabIndex={-1} className="min-h-screen bg-[#f6f0e8] flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         <p className="font-serif text-8xl font-semibold text-[#7a6552]/20 mb-4">404</p>
         <h1 className="font-serif text-3xl font-semibold text-[#231A12] mb-4">{t('notFound.title')}</h1>

@@ -13,7 +13,13 @@ const ssrDir = join(root, 'dist-ssr');
 const server = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
 const { pages, notFound, canonicalUrl, siteUrl, render } = server;
 
-const template = await readFile(join(dist, 'index.html'), 'utf8');
+// The stylesheet goes straight into each page: one round trip less before
+// the first paint, which matters most on a phone's first visit.
+const builtTemplate = await readFile(join(dist, 'index.html'), 'utf8');
+const stylesheet = builtTemplate.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/);
+if (!stylesheet) throw new Error('index.html has no stylesheet link');
+const css = await readFile(join(dist, stylesheet[1]), 'utf8');
+const template = builtTemplate.replace(stylesheet[0], () => `<style>${css}</style>`);
 
 const escapeHtml = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 

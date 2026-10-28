@@ -48,7 +48,7 @@ export default function LocalServicePage({
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="relative pt-40 pb-20 bg-[#f7f1ea]" aria-label={`${title} ${t('localServicePage.hero')}`}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">

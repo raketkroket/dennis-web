@@ -94,7 +94,7 @@ export default function Projecten() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="denra-portfolio-hero pt-36 pb-16 lg:pt-44 lg:pb-20" aria-label={t('portfolioPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <m.div

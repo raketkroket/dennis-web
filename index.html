@@ -10,12 +10,19 @@
     <title>Denra Badkamers | Badkamer & WC renovatie Flevoland & Noord-Holland</title>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GM46YG3TDX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'G-GM46YG3TDX');
+      // The library loads after the page itself, so it does not hold up the
+      // first paint; events wait in dataLayer until then.
+      addEventListener('load', function () {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-GM46YG3TDX';
+        document.head.appendChild(script);
+      });
     </script>
 
     <meta name="description" content="Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Flevoland en Noord-Holland. Vraag vrijblijvend een offerte aan voor een badkamerrenovatie in Almere, Amsterdam en omgeving." />
