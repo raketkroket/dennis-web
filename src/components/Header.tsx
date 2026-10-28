@@ -54,6 +54,9 @@ export default function Header() {
   }, [mobileOpen]);
 
   return (
+    <>
+    {/* First stop for keyboard users: straight past the navigation. */}
+    <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-[#231A12] focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-[#F6F0E8]">{t('site.skipToContent')}</a>
     <header
       className={`fixed inset-x-0 top-0 z-40 h-[74px] border-b backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled ? 'border-[#5c5147]/22 bg-[#eae2d6]/90 shadow-[0_10px_26px_rgba(29,23,18,0.1)]' : 'border-[#5c5147]/10 bg-[#eae2d6]/60'}`}
     >
@@ -189,5 +192,6 @@ export default function Header() {
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 }

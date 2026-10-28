@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <HeroSection />
         <TrustBar />
         <ServicesSection />

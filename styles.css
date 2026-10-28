@@ -77,6 +77,9 @@
     outline-offset: 3px;
   }
 
+  /* The skip link moves focus to <main>; no outline around the whole page. */
+  main[tabindex="-1"]:focus { outline: none; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;

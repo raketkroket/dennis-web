@@ -27,7 +27,7 @@ export default function WCRenovatie() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label={t('wcPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">

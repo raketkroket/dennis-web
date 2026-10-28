@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
+import { track, trackOnce } from '../lib/analytics';
 import {
   calculateEstimate,
   formatEuro,
@@ -100,6 +101,8 @@ export default function Configurator() {
     setShowErrors(false);
     setNotice('');
     update({ step });
+    if (step === 2 && room) trackOnce('calculator_start', { room_type: room.roomType });
+    if (step === 4 && estimate) track('calculator_complete', { room_type: estimate.roomType, value: estimate.total, currency: 'EUR' });
   };
 
   const stepNames = [t('site.stepRoom'), t('site.stepSize'), t('site.stepOptions'), t('site.stepSummary')];
@@ -118,6 +121,7 @@ export default function Configurator() {
 
   const requestQuote = () => {
     if (!estimate || !room) return;
+    track('calculator_quote_click', { room_type: room.roomType, value: estimate.total, currency: 'EUR' });
     saveQuoteConfiguration({ roomType: room.roomType, length: estimate.length, width: estimate.width, optionIds });
     navigate(`/contact?dienst=${room.roomType}`);
   };

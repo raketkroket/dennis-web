@@ -4,6 +4,8 @@ import { ArrowLeft, ArrowRight, MapPin, X } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import ServiceLinks from '../components/ServiceLinks';
+import { track } from '../lib/analytics';
 import { useSiteContent } from '../content/SiteContentProvider';
 import { useLocalized } from '../i18n/format';
 import { useLanguage } from '../i18n/useLanguage';
@@ -92,7 +94,7 @@ export default function Projecten() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="denra-portfolio-hero pt-36 pb-16 lg:pt-44 lg:pb-20" aria-label={t('portfolioPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <m.div
@@ -139,7 +141,7 @@ export default function Projecten() {
                   <button
                     type="button"
                     className={`denra-project-image relative mb-4 block w-full overflow-hidden rounded-sm border border-[#cdb99f]/75 bg-[#f3ebdf] ${gridVariant(index)} focus:outline-none focus:ring-2 focus:ring-[#7a6552] focus:ring-offset-2`}
-                    onClick={(event) => { triggerButtonRef.current = event.currentTarget; setSelectedProject(project); }}
+                    onClick={(event) => { triggerButtonRef.current = event.currentTarget; setSelectedProject(project); track('project_view', { project: project.id, category: project.category }); }}
                     aria-label={`${t('portfolioPage.viewPhoto')} ${projectTitle(project)}`}
                   >
                     <img
@@ -160,14 +162,14 @@ export default function Projecten() {
                     <h3 className="break-words font-serif text-2xl font-semibold leading-tight text-[#231A12] transition-colors duration-200 group-hover:text-[#7a6552] md:text-[1.75rem]">{projectTitle(project)}</h3>
                     <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[#6B5D50]">{project.location && <span className="flex min-w-0 items-center gap-1"><MapPin size={14} aria-hidden="true" /><span className="break-words">{project.location}</span></span>}</div>
                     <p className="mt-3 max-w-md break-words text-sm leading-relaxed text-[#71665b]">{projectDescription(project)}</p>
-                    <button type="button" onClick={(event) => { triggerButtonRef.current = event.currentTarget; setSelectedProject(project); }} className="denra-project-link">{t('portfolioPage.viewProject')} <ArrowRight size={15} /></button>
+                    <button type="button" onClick={(event) => { triggerButtonRef.current = event.currentTarget; setSelectedProject(project); track('project_view', { project: project.id, category: project.category }); }} className="denra-project-link">{t('portfolioPage.viewProject')} <ArrowRight size={15} /></button>
                   </div>
                 </m.article>
               ))}
             </div> : <div className="border-y border-[#7a6552]/20 py-14 text-center"><h3 className="font-serif text-2xl font-semibold text-[#231A12]">{t('portfolioPage.noProjects')}</h3><p className="mt-2 text-sm text-[#5f544a]">{t('portfolioPage.withinSelection')}</p><button type="button" onClick={() => setActiveCategory('Alle')} className="mt-5 border-b border-[#7a6552]/50 pb-1 text-sm font-medium text-[#231A12]">{t('portfolioPage.clearFilters')}</button></div>}
           </div>
         </section>
-        <section className="bg-[#231A12] py-20 text-[#F6F0E8] lg:py-24"><div className="max-w-7xl mx-auto px-6 lg:px-8"><div className="max-w-3xl"><p className="denra-label !text-[#d8c7b3] mb-5">{t('portfolioPage.ctaEyebrow')}</p><h2 className="font-serif text-4xl font-semibold leading-[0.95] sm:text-5xl">{t('portfolioPage.ctaTitle').split('|')[0]}<br />{t('portfolioPage.ctaTitle').split('|')[1]}</h2><p className="mt-6 max-w-xl leading-relaxed text-[#ddd3c5]">{t('portfolioPage.ctaDescription')}</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="/contact" className="denra-button-secondary border-[#f6f0e8]/45 bg-[#F6F0E8] !text-[#231A12] hover:bg-[#e5dbcd]">{t('portfolioPage.consultation')} <ArrowRight size={16} /></a><a href="/configurator" className="denra-button-secondary border-[#f6f0e8]/45 !text-[#F6F0E8] hover:bg-[#f6f0e8]/10">{t('portfolioPage.calculate')}</a></div></div></div></section>
+        <section className="bg-[#231A12] py-20 text-[#F6F0E8] lg:py-24"><div className="max-w-7xl mx-auto px-6 lg:px-8"><div className="max-w-3xl"><p className="denra-label !text-[#d8c7b3] mb-5">{t('portfolioPage.ctaEyebrow')}</p><h2 className="font-serif text-4xl font-semibold leading-[0.95] sm:text-5xl">{t('portfolioPage.ctaTitle').split('|')[0]}<br />{t('portfolioPage.ctaTitle').split('|')[1]}</h2><p className="mt-6 max-w-xl leading-relaxed text-[#ddd3c5]">{t('portfolioPage.ctaDescription')}</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="/contact" className="denra-button-secondary border-[#f6f0e8]/45 !bg-[#F6F0E8] !text-[#231A12] hover:!bg-[#e5dbcd]">{t('portfolioPage.consultation')} <ArrowRight size={16} /></a><a href="/configurator" className="denra-button-secondary border-[#f6f0e8]/45 !text-[#F6F0E8] hover:bg-[#f6f0e8]/10">{t('portfolioPage.calculate')}</a></div><ServiceLinks /></div></div></section>
       </main>
       {selectedProject && (
         <m.div

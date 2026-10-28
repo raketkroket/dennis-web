@@ -11,7 +11,7 @@ import { formatEuro, formatNumber, optionGroups, optionsForRoom, type RoomType }
  * m² and every option with what it includes. Read from the same settings as
  * the calculator, so it changes when Dennis changes a price in the admin.
  */
-export default function PriceOverview({ roomTypes, id }: { roomTypes: RoomType[]; id: string }) {
+export default function PriceOverview({ roomTypes, id, title }: { roomTypes: RoomType[]; id: string; title?: string }) {
   const { t, language } = useLanguage();
   const pick = useLocalized();
   const { calculator } = useSiteContent();
@@ -29,7 +29,7 @@ export default function PriceOverview({ roomTypes, id }: { roomTypes: RoomType[]
           <span className="denra-label">{t('site.priceLabel')}</span>
         </div>
         <h2 id={`${id}-heading`} className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
-          {rooms.length === 1 ? fill(t('site.priceTitle'), { room: pick(rooms[0].descriptionNl, rooms[0].descriptionEn).toLowerCase() }) : t('site.priceTitleAll')}
+          {title ?? (rooms.length === 1 ? fill(t('site.priceTitle'), { room: pick(rooms[0].descriptionNl, rooms[0].descriptionEn).toLowerCase() }) : t('site.priceTitleAll'))}
         </h2>
         <p className="text-[#6B5D50] leading-relaxed mb-10 max-w-3xl">{t('site.priceIntro')}</p>
 

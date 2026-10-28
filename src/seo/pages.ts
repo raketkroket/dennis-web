@@ -11,77 +11,114 @@ export interface PageMeta {
   description: string;
   /** Leave out of the sitemap and ask search engines not to index. */
   noindex?: boolean;
+  /** Short name in the breadcrumb trail. */
+  name?: string;
+  /** The page one level up in the breadcrumb trail. */
+  parent?: string;
+  /** The service this page offers, for the Service structured data. */
+  service?: { name: string; place?: string };
 }
 
 // /badkamer-renovatie (an older address) redirects to /badkamerrenovatie in vercel.json.
 export const pages: PageMeta[] = [
   {
     path: '/',
-    title: 'Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers',
-    description: 'Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Bereken direct uw prijs of vraag een offerte aan.',
+    title: 'Denra Badkamers | Badkamer & WC renovatie Flevoland & Noord-Holland',
+    description: 'Denra Badkamers renoveert badkamers en toiletten in Flevoland en Noord-Holland, van sloop tot afwerking. Bekijk projecten of bereken direct uw prijs.',
   },
   {
     path: '/badkamerrenovatie',
-    title: 'Badkamerrenovatie van sloop tot afwerking | Denra Badkamers',
-    description: 'Complete badkamerrenovatie: sloopwerk, leidingwerk, tegelwerk, sanitair en afwerking door één vast team. Actief in Flevoland en Noord-Holland. Bereken direct uw prijs.',
+    name: 'Badkamerrenovatie',
+    service: { name: 'Badkamerrenovatie' },
+    title: 'Badkamer renoveren of verbouwen | Denra Badkamers',
+    description: 'Uw badkamer renoveren of verbouwen, van sloop en leidingwerk tot tegelwerk, sanitair en afwerking. Eén aanspreekpunt en een duidelijke offerte vooraf.',
+  },
+  {
+    path: '/badkamer-renovatie-kosten',
+    name: 'Kosten',
+    parent: '/badkamerrenovatie',
+    title: 'Badkamer renovatie kosten: prijzen per m² | Denra Badkamers',
+    description: 'Wat kost een badkamerrenovatie? Prijsvoorbeelden per oppervlakte, wat de kosten bepaalt en wat niet in de prijs zit. Met directe link naar onze prijscalculator.',
   },
   {
     path: '/wc-renovatie',
+    name: 'WC-renovatie',
+    service: { name: 'WC-renovatie' },
     title: 'WC-renovatie en toilet renoveren | Denra Badkamers',
-    description: 'Uw toilet compleet vernieuwd: hangtoilet, inbouwreservoir, tegelwerk, fonteintje en afwerking. WC-renovatie in Almere, Amsterdam en omgeving. Bekijk prijzen en projecten.',
+    description: 'Uw toilet compleet vernieuwd: hangtoilet, inbouwreservoir, tegelwerk en fonteintje. WC-renovatie in Almere, Amsterdam en omgeving. Bekijk prijzen en projecten.',
   },
   {
     path: '/binnenrenovatie',
-    title: 'Binnenrenovatie: stucwerk, vloeren en schilderwerk | Denra Badkamers',
+    name: 'Binnenrenovatie',
+    service: { name: 'Binnenrenovatie' },
+    title: 'Binnenrenovatie: stucwerk en vloeren | Denra Badkamers',
     description: 'Binnenrenovatie door Denra: stucwerk, vloeren leggen, schilderwerk en verlaagde plafonds met spotjes. Strak afgewerkt in Flevoland en Noord-Holland.',
   },
   {
     path: '/badkamer-renovatie-almere',
+    name: 'Almere',
+    parent: '/badkamerrenovatie',
+    service: { name: 'Badkamerrenovatie', place: 'Almere' },
     title: 'Badkamer renovatie Almere | Denra Badkamers',
     description: 'Complete badkamerrenovatie in Almere: van sloopwerk, leidingwerk en tegelwerk tot sanitair en afwerking. Vraag vrijblijvend een offerte aan bij Denra Badkamers.',
   },
   {
     path: '/badkamer-renovatie-amsterdam',
+    name: 'Amsterdam',
+    parent: '/badkamerrenovatie',
+    service: { name: 'Badkamerrenovatie', place: 'Amsterdam' },
     title: 'Badkamer renovatie Amsterdam | Denra Badkamers',
     description: 'Badkamer renovatie in Amsterdam van sloop en leidingwerk tot tegelwerk, sanitair en luxe afwerking, in een strak werkproces. Vraag vrijblijvend een offerte aan.',
   },
   {
     path: '/wc-renovatie-almere',
+    name: 'Almere',
+    parent: '/wc-renovatie',
+    service: { name: 'WC-renovatie', place: 'Almere' },
     title: 'WC renovatie Almere | Toilet renovatie | Denra Badkamers',
-    description: 'WC renovatie in Almere: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Een nette, stijlvolle toiletruimte. Vraag vrijblijvend een offerte aan.',
+    description: 'WC renovatie in Almere: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Vraag vrijblijvend een offerte aan bij Denra Badkamers.',
   },
   {
     path: '/wc-renovatie-amsterdam',
+    name: 'Amsterdam',
+    parent: '/wc-renovatie',
+    service: { name: 'WC-renovatie', place: 'Amsterdam' },
     title: 'WC renovatie Amsterdam | Toilet renovatie | Denra Badkamers',
-    description: 'WC renovatie in Amsterdam: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Een nette, stijlvolle toiletruimte. Vraag vrijblijvend een offerte aan.',
+    description: 'WC renovatie in Amsterdam: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Vraag vrijblijvend een offerte aan bij Denra Badkamers.',
   },
   {
     path: '/projecten',
-    title: 'Projecten: badkamers, toiletten en interieurs | Denra Badkamers',
+    name: 'Projecten',
+    title: "Projecten: badkamers, wc's en interieurs | Denra Badkamers",
     description: 'Bekijk gerealiseerde badkamers, toiletten en binnenrenovaties van Denra in Almere, Amsterdam en omgeving.',
   },
   {
     path: '/ervaringen',
+    name: 'Ervaringen',
     title: 'Ervaringen en reviews van klanten | Denra Badkamers',
     description: 'Lees hoe klanten de samenwerking met Denra Badkamers hebben ervaren bij hun badkamer-, WC- en binnenrenovatie.',
   },
   {
     path: '/over-ons',
+    name: 'Over ons',
     title: 'Over Denra Badkamers | Badkamer- en binnenrenovaties',
     description: 'Denra maakt badkamers, toiletten en interieurs die strak aanvoelen en slim zijn opgebouwd. Duidelijke afspraken, vaste planning en een verzorgde afwerking.',
   },
   {
     path: '/configurator',
-    title: 'Badkamer prijs berekenen | Denra Badkamers',
+    name: 'Prijs berekenen',
+    title: 'Badkamer kosten berekenen in 2 minuten | Denra Badkamers',
     description: 'Bereken in een paar stappen een prijsindicatie voor uw badkamer- of WC-renovatie, inclusief btw, en bekijk uw ruimte direct in 3D.',
   },
   {
     path: '/contact',
+    name: 'Contact',
     title: 'Contact en offerte aanvragen | Denra Badkamers',
     description: 'Neem contact op met Denra Badkamers voor een vrijblijvende offerte voor uw badkamer-, WC- of binnenrenovatie. Wij reageren binnen 24 uur.',
   },
   {
     path: '/algemene-voorwaarden',
+    name: 'Algemene voorwaarden',
     title: 'Algemene voorwaarden | Denra Badkamers',
     description: 'De algemene voorwaarden van Denra Badkamers voor renovatiewerkzaamheden.',
   },

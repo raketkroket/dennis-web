@@ -23,7 +23,7 @@ export default function Binnenrenovatie() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label={t('interiorPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.03fr_0.97fr] gap-14 xl:gap-20 items-center">

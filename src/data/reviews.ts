@@ -12,6 +12,14 @@ import karinAmsterdam3 from '../../fotos/karinamsterdam 3.jpg?w=1280&format=webp
 import joostAmsterdamReview from '../../fotos/joost amsterdam review.png?w=1280&format=webp';
 import type { Language } from '../i18n/translations';
 
+// What is visible in the review photos that are not in the photo library.
+export const reviewPhotoAlt: Record<string, { nl: string; en: string }> = {
+  [joostAmsterdamReview]: { nl: 'Aanbouw van rode baksteen met groene kozijnen en een tuindeur, aan een houten vlonder', en: 'Red-brick extension with green window frames and a garden door, next to wooden decking' },
+  [karinAmsterdam1]: { nl: 'Bakstenen gevel met witte kozijnen, een tuindeur en een groot raam aan een terras', en: 'Brick facade with white window frames, a garden door and a large window on a terrace' },
+  [karinAmsterdam2]: { nl: 'Terras met lichte vlonderplanken en witte openslaande deuren, verlicht in de avond', en: 'Terrace with light decking boards and white French doors, lit in the evening' },
+  [karinAmsterdam3]: { nl: 'Woonkamer met verhoogde houten vloer, inbouwspots en openslaande deuren naar een balkon', en: 'Living room with a raised wooden floor, recessed spotlights and French doors to a balcony' },
+};
+
 export interface Review {
   id: string;
   name: string;

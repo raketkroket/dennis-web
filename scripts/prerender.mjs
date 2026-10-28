@@ -13,7 +13,13 @@ const ssrDir = join(root, 'dist-ssr');
 const server = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
 const { pages, notFound, canonicalUrl, siteUrl, render } = server;
 
-const template = await readFile(join(dist, 'index.html'), 'utf8');
+// The stylesheet goes straight into each page: one round trip less before
+// the first paint, which matters most on a phone's first visit.
+const builtTemplate = await readFile(join(dist, 'index.html'), 'utf8');
+const stylesheet = builtTemplate.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/);
+if (!stylesheet) throw new Error('index.html has no stylesheet link');
+const css = await readFile(join(dist, stylesheet[1]), 'utf8');
+const template = builtTemplate.replace(stylesheet[0], () => `<style>${css}</style>`);
 
 const escapeHtml = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -38,19 +44,39 @@ function withMeta(html, page) {
   return page.noindex ? result.replace(/\s*<link rel="canonical"[^>]*>/, '') : result;
 }
 
-// Home › page, for every page below the homepage.
+const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', ...data }).replace(/</g, '\\u003c')}</script>`;
+
+// Home › (parent ›) page, for every page below the homepage.
 function breadcrumbs(page) {
   if (page.path === '/' || page.noindex) return '';
-  const name = page.title.split(/ \| |: /)[0];
-  const data = {
-    '@context': 'https://schema.org',
+  const trail = [page];
+  while (trail[0].parent) trail.unshift(pages.find((candidate) => candidate.path === trail[0].parent));
+  return jsonLd({
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-      { '@type': 'ListItem', position: 2, name, item: canonicalUrl(page) },
-    ],
-  };
-  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+    itemListElement: [{ path: '/', name: 'Home' }, ...trail].map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name ?? item.title.split(/ \| |: /)[0],
+      item: item.path === '/' ? `${siteUrl}/` : canonicalUrl(item),
+    })),
+  });
+}
+
+// The service a page offers, provided by the business described in index.html.
+function service(page) {
+  if (!page.service) return '';
+  const { name, place } = page.service;
+  return jsonLd({
+    '@type': 'Service',
+    name: place ? `${name} ${place}` : name,
+    serviceType: name,
+    url: canonicalUrl(page),
+    description: page.description,
+    provider: { '@id': `${siteUrl}/#business` },
+    areaServed: place
+      ? { '@type': 'City', name: place }
+      : [{ '@type': 'AdministrativeArea', name: 'Flevoland' }, { '@type': 'AdministrativeArea', name: 'Noord-Holland' }],
+  });
 }
 
 // /projecten is served from projecten.html (cleanUrls in vercel.json).
@@ -66,7 +92,7 @@ async function writePage(page, url, file) {
   const markup = rendered.slice(allHints.length);
   const hints = (allHints.match(/<link [^>]*\/?>/g) ?? []).filter((hint) => hint.includes('fetchPriority="high"')).join('');
   const html = withMeta(template, page)
-    .replace('</head>', `${hints}${breadcrumbs(page)}</head>`)
+    .replace('</head>', `${hints}${breadcrumbs(page)}${service(page)}</head>`)
     .replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, html);
@@ -81,10 +107,11 @@ await writePage(notFound, '/404', join(dist, '404.html'));
 const shell = withMeta(template, { path: '/', title: 'Denra Badkamers', description: pages[0].description, noindex: true });
 await writeFile(join(dist, 'app.html'), shell);
 
-const today = new Date().toISOString().slice(0, 10);
+// No lastmod: a build date on every page would tell Google that all pages
+// changed on every deploy.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.filter((page) => !page.noindex).map((page) => `  <url><loc>${siteUrl}${page.path}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+${pages.filter((page) => !page.noindex).map((page) => `  <url><loc>${siteUrl}${page.path}</loc></url>`).join('\n')}
 </urlset>
 `;
 await writeFile(join(dist, 'sitemap.xml'), sitemap);

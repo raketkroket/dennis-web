@@ -49,6 +49,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
   response.setHeader('Cache-Control', 'no-store');
   if (request.method === 'GET') {
     if (request.query.published !== '1') return response.status(400).json({ error: 'Invalid review request.' });
+    // Without review storage there are simply no published reviews yet; the
+    // site then shows its built-in reviews. Not an error for visitors.
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return response.status(200).json({ reviews: [] });
 
     try {
       const { data, error } = await reviewClient()

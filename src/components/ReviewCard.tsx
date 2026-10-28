@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, m } from 'framer-motion';
 import { ArrowLeft, ArrowRight, MapPin, Star, X } from 'lucide-react';
-import type { Review } from '../data/reviews';
+import { reviewPhotoAlt, type Review } from '../data/reviews';
 import { useLanguage } from '../i18n/useLanguage';
 import { useHasMounted } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
@@ -25,7 +25,7 @@ export default function ReviewCard({ review, featured = false, compact = false }
   const hasMounted = useHasMounted();
   // What is in the photo, and whose review it belongs to.
   const photoAlt = (src: string) => {
-    const description = altForSrc(src, language);
+    const description = altForSrc(src, language) ?? reviewPhotoAlt[src]?.[language];
     return description ? `${description} (${t('shared.projectPhotoFor').toLowerCase()} ${review.name})` : `${t('shared.projectPhotoFor')} ${review.name}`;
   };
 
@@ -55,7 +55,7 @@ export default function ReviewCard({ review, featured = false, compact = false }
     <article className={`denra-review-card group relative flex flex-col overflow-hidden p-6 transition-all duration-500 motion-reduce:transform-none sm:p-7 ${featured ? 'md:p-9' : ''} ${compact ? 'p-6' : ''}`}>
       <div className="absolute inset-x-0 top-0 h-px bg-white/90" aria-hidden="true" />
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-1 text-[#8b6b45]" role="img" aria-label={`${review.rating} ${t('shared.outOfFiveStars')} `}>
+        <div className="flex items-center gap-1 text-[#8b6b45]" role="img" aria-label={`${review.rating} ${t('shared.outOfFiveStars')}`}>
           {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={15} fill={star <= review.rating ? 'currentColor' : 'none'} strokeWidth={1.6} />)}
         </div>
         <time className="shrink-0 text-[10px] font-medium uppercase tracking-[0.16em] text-[#8a7a6a]">{review.date}</time>

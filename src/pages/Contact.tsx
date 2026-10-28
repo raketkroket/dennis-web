@@ -8,7 +8,7 @@ import FaqList from '../components/FaqList';
 import ServiceArea from '../components/ServiceArea';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
-import denraLogoBg from '../../fotos/denralogobg.png';
+import denraLogoBg from '../../fotos/denralogobg.png?w=854&format=webp';
 import { loadQuoteConfiguration, saveQuoteConfiguration, type QuoteConfiguration } from '../types/quote';
 import { useStartedOnClient } from '../lib/hydration';
 import { useSiteContent } from '../content/SiteContentProvider';
@@ -39,7 +39,7 @@ export default function Contact() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label={t('nav.contact')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16">

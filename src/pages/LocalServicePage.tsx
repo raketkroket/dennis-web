@@ -4,11 +4,13 @@ import { ArrowRight, Check, CircleHelp, MapPin, Sparkles } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import RelatedProjects from '../components/RelatedProjects';
+import ReviewCard from '../components/ReviewCard';
 import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 import { fill } from '../i18n/format';
+import { usePublishedReviews } from '../hooks/usePublishedReviews';
 
 type LocalServicePageProps = {
   city: string;
@@ -27,8 +29,16 @@ export default function LocalServicePage({
   bullets,
   faq,
 }: LocalServicePageProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const isBathroom = serviceType === 'badkamer';
+  // Reviews from customers in this city, best rated first.
+  const localReviews = usePublishedReviews(language)
+    .filter((review) => review.city === city)
+    .sort((first, second) => second.rating - first.rating)
+    .slice(0, 3);
+  const guideLinks = isBathroom
+    ? [{ to: '/badkamerrenovatie', label: t('site.bathroomGuide') }, { to: '/badkamer-renovatie-kosten', label: t('site.costGuide') }]
+    : [{ to: '/wc-renovatie', label: t('site.toiletGuide') }];
   const service = t(isBathroom ? 'localServicePage.bathroomService' : 'localServicePage.toiletService');
   const scope = t(isBathroom ? 'localServicePage.bathroomScope' : 'localServicePage.toiletScope');
   const replace = (value: string) => value.replace('{city}', city).replace('{service}', service).replace('{scope}', scope);
@@ -38,7 +48,7 @@ export default function LocalServicePage({
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="relative pt-40 pb-20 bg-[#f7f1ea]" aria-label={`${title} ${t('localServicePage.hero')}`}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
@@ -102,6 +112,15 @@ export default function LocalServicePage({
                 </div>
               ))}
             </div>
+            <p className="mt-8 text-sm text-[#5f544a]">
+              <span className="font-semibold text-[#231A12]">{t('site.localMoreTitle')}</span>{' '}
+              {guideLinks.map((link, index) => (
+                <React.Fragment key={link.to}>
+                  {index > 0 && <span aria-hidden="true"> · </span>}
+                  <Link to={link.to} className="text-[#231A12] underline decoration-[#7a6552]/40 underline-offset-4 hover:decoration-[#231A12]">{link.label}</Link>
+                </React.Fragment>
+              ))}
+            </p>
           </div>
         </section>
 
@@ -152,6 +171,17 @@ export default function LocalServicePage({
             </div>
           </div>
         </section>
+
+        {localReviews.length > 0 && (
+          <section className="py-20 bg-[#faf6f0]" aria-labelledby="lokaal-ervaringen-heading">
+            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+              <h2 id="lokaal-ervaringen-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-10">{fill(t('site.localReviewsTitle'), { place: city })}</h2>
+              <div className="grid gap-6 md:grid-cols-3">
+                {localReviews.map((review) => <ReviewCard key={review.id} review={review} compact />)}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Work done in this city, as entered in the admin. */}
         <RelatedProjects category={isBathroom ? 'badkamer' : 'toilet'} place={city} title={fill(t('site.relatedInPlace'), { place: city })} id="lokaal-projecten" />

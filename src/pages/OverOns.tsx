@@ -21,7 +21,7 @@ export default function OverOns() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1}>
         <section
           className="pt-36 pb-20 bg-[radial-gradient(circle_at_top_left,_rgba(203,185,165,0.18),_transparent_34%),linear-gradient(180deg,_#f6f0e8_0%,_#eee3d6_100%)] overflow-hidden"
           aria-label={t('aboutPage.heroAria')}
