@@ -8,7 +8,7 @@ import FaqList from '../components/FaqList';
 import ServiceArea from '../components/ServiceArea';
 import ContactForm from '../components/ContactForm';
 import WhatsAppButton from '../components/WhatsAppButton';
-import denraLogoBg from '../../fotos/denralogobg.png';
+import denraLogoBg from '../../fotos/denralogobg.png?format=webp';
 import { loadQuoteConfiguration, saveQuoteConfiguration, type QuoteConfiguration } from '../types/quote';
 import { useStartedOnClient } from '../lib/hydration';
 import { useSiteContent } from '../content/SiteContentProvider';

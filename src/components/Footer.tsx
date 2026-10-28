@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
 // 320 px wide is enough for the logo on sharp screens (it shows at about 90 px).
 import logo from '../../fotos/Denralogo.png?w=320&format=webp';
-import tiktokIcon from '../../fotos/tiktokicon.png';
+import tiktokIcon from '../../fotos/tiktokicon.png?w=80&format=webp';
 import { useLanguage } from '../i18n/useLanguage';
 import { useSiteContent } from '../content/SiteContentProvider';
 
@@ -92,7 +92,7 @@ export default function Footer() {
                 aria-label="DENRA op TikTok"
                 className="w-10 h-10 rounded-sm overflow-hidden transition-opacity duration-200 hover:opacity-75"
               >
-                <img loading="lazy" decoding="async" src={tiktokIcon} alt="" className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={tiktokIcon} alt="" width={40} height={40} className="w-full h-full object-cover" />
               </a>
             </div>
           </div>

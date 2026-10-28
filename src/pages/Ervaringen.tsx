@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import ReviewForm from '../components/ReviewForm';
 import ReviewsSection from '../components/ReviewsSection';
 import WhatsAppButton from '../components/WhatsAppButton';
+import ServiceLinks from '../components/ServiceLinks';
 import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 import { formatNumber } from '../lib/calculator';
@@ -42,7 +43,7 @@ export default function Ervaringen() {
         <ReviewForm />
         <section className="bg-[#231A12] px-6 py-20 text-[#f6f0e8] lg:px-8" aria-labelledby="ervaringen-cta-heading">
           <div className="mx-auto max-w-7xl border-y border-[#cfbca7]/25 py-12 md:flex md:items-end md:justify-between md:gap-10">
-            <div className="max-w-2xl"><p className="denra-label mb-5 text-[#cfbca7]">{t('reviewsPage.ownRenovation')}</p><h2 id="ervaringen-cta-heading" className="font-serif text-4xl font-semibold leading-tight md:text-5xl">{t('reviewsPage.ctaTitle')}</h2><p className="mt-5 max-w-xl leading-relaxed text-[#ddd3c5]">{t('reviewsPage.ctaDescription')}</p></div>
+            <div className="max-w-2xl"><p className="denra-label mb-5 text-[#cfbca7]">{t('reviewsPage.ownRenovation')}</p><h2 id="ervaringen-cta-heading" className="font-serif text-4xl font-semibold leading-tight md:text-5xl">{t('reviewsPage.ctaTitle')}</h2><p className="mt-5 max-w-xl leading-relaxed text-[#ddd3c5]">{t('reviewsPage.ctaDescription')}</p><ServiceLinks /></div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-0"><Link to="/contact" className="denra-button-primary bg-[#f6f0e8] text-[#231A12] hover:bg-white">{t('bathroomPage.consultation')} <ArrowRight size={16} /></Link><Link to="/configurator" className="denra-button-secondary border-[#cfbca7]/45 text-[#f6f0e8] hover:bg-white/10 hover:text-[#f6f0e8]">{t('common.calculatePrice')}</Link></div>
           </div>
         </section>
