@@ -17,22 +17,22 @@ export interface PageMeta {
 export const pages: PageMeta[] = [
   {
     path: '/',
-    title: 'Badkamer & WC Renovatie Flevoland & Noord-Holland | Denra Badkamers',
-    description: 'Denra Badkamers verzorgt complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Bereken direct uw prijs of vraag een offerte aan.',
+    title: 'Badkamer & WC Renovatie Almere & Amsterdam | Denra Badkamers',
+    description: 'Complete badkamer- en WC-renovaties in Almere, Amsterdam en de rest van Flevoland en Noord-Holland. Bereken direct de kosten of vraag een offerte aan.',
   },
   {
     path: '/badkamerrenovatie',
-    title: 'Badkamerrenovatie van sloop tot afwerking | Denra Badkamers',
-    description: 'Complete badkamerrenovatie: sloopwerk, leidingwerk, tegelwerk, sanitair en afwerking door één vast team. Actief in Flevoland en Noord-Holland. Bereken direct uw prijs.',
+    title: 'Badkamerrenovatie: kosten en werkwijze | Denra Badkamers',
+    description: 'Badkamer renoveren van sloop tot afwerking: leidingwerk, tegelwerk en sanitair door één vast team. Bekijk de kosten per m² en bereken direct uw prijs.',
   },
   {
     path: '/wc-renovatie',
     title: 'WC-renovatie en toilet renoveren | Denra Badkamers',
-    description: 'Uw toilet compleet vernieuwd: hangtoilet, inbouwreservoir, tegelwerk, fonteintje en afwerking. WC-renovatie in Almere, Amsterdam en omgeving. Bekijk prijzen en projecten.',
+    description: 'Uw toilet compleet vernieuwd: hangtoilet, inbouwreservoir, tegelwerk en fonteintje. WC-renovatie in Almere, Amsterdam en omgeving. Bekijk prijzen en projecten.',
   },
   {
     path: '/binnenrenovatie',
-    title: 'Binnenrenovatie: stucwerk, vloeren en schilderwerk | Denra Badkamers',
+    title: 'Binnenrenovatie: stucwerk en vloeren | Denra Badkamers',
     description: 'Binnenrenovatie door Denra: stucwerk, vloeren leggen, schilderwerk en verlaagde plafonds met spotjes. Strak afgewerkt in Flevoland en Noord-Holland.',
   },
   {
@@ -48,16 +48,16 @@ export const pages: PageMeta[] = [
   {
     path: '/wc-renovatie-almere',
     title: 'WC renovatie Almere | Toilet renovatie | Denra Badkamers',
-    description: 'WC renovatie in Almere: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Een nette, stijlvolle toiletruimte. Vraag vrijblijvend een offerte aan.',
+    description: 'WC renovatie in Almere: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Vraag vrijblijvend een offerte aan bij Denra Badkamers.',
   },
   {
     path: '/wc-renovatie-amsterdam',
     title: 'WC renovatie Amsterdam | Toilet renovatie | Denra Badkamers',
-    description: 'WC renovatie in Amsterdam: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Een nette, stijlvolle toiletruimte. Vraag vrijblijvend een offerte aan.',
+    description: 'WC renovatie in Amsterdam: van sloopwerk en tegelwerk tot hangtoilet, sanitair en afwerking. Vraag vrijblijvend een offerte aan bij Denra Badkamers.',
   },
   {
     path: '/projecten',
-    title: 'Projecten: badkamers, toiletten en interieurs | Denra Badkamers',
+    title: "Projecten: badkamers, wc's en interieurs | Denra Badkamers",
     description: 'Bekijk gerealiseerde badkamers, toiletten en binnenrenovaties van Denra in Almere, Amsterdam en omgeving.',
   },
   {

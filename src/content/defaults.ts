@@ -231,7 +231,7 @@ export const defaultBusiness: BusinessSettings = {
   addressEn: 'Almere, North Holland, the Netherlands',
   hoursNl: 'Ma-Za: 08:00-18:00',
   hoursEn: 'Mon-Sat: 08:00-18:00',
-  instagramUrl: 'https://instagram.com/@denrabadkamers',
+  instagramUrl: 'https://www.instagram.com/denrabadkamers',
   facebookUrl: 'https://facebook.com/denrabadkamers',
   tiktokUrl: 'https://www.tiktok.com/@denrabadkamers.nl',
   serviceAreas: ['Almere', 'Amsterdam', 'Amstelveen', 'Lelystad', "'t Gooi", 'Haarlem', 'Blaricum', 'Hilversum', 'Laren', 'Weesp', 'Muiden', 'Eemnes', 'Diemen', 'Muiderberg', 'Naarden', 'Amersfoort'],
