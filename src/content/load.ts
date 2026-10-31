@@ -5,7 +5,8 @@ import { storagePublicUrl } from '../lib/env';
 import { defaultBusiness, defaultFaqs, defaultProjects, staticPhotos, type BusinessSettings, type Faq, type FaqPage, type PhotoKind, type ProjectCategory } from './defaults';
 import { photoAlt } from './photoAlt';
 import { photoLibrary } from './photoLibrary';
-import type { Project, ProjectPhoto, ResponsiveImage, SiteContent, TextOverrides } from './types';
+import { pagePhotoKey, pagePhotoSlots } from './pagePhotoSlots';
+import type { PagePhoto, Project, ProjectPhoto, ResponsiveImage, SiteContent, TextOverrides } from './types';
 
 export interface MediaRow {
   id: string;
@@ -55,7 +56,7 @@ export function defaultSiteContent(): SiteContent {
       photos,
     };
   });
-  return { business: defaultBusiness, projects, faqs: defaultFaqs, texts: {}, calculator: defaultCalculatorConfig };
+  return { business: defaultBusiness, projects, faqs: defaultFaqs, texts: {}, calculator: defaultCalculatorConfig, pagePhotos: {} };
 }
 
 // Shapes of the database rows (see supabase/migrations/20261023120000_cms.sql).
@@ -160,6 +161,7 @@ export async function loadSiteContent(client: SupabaseClient, fallback: SiteCont
 
   const overrides: TextOverrides = {};
   for (const row of textRows ?? []) overrides[row.key] = { nl: row.value_nl, en: row.value_en };
+  const pagePhotos = await loadPagePhotos(client, overrides);
 
   return {
     business: businessRow ? businessFromRow(businessRow) : fallback.business,
@@ -167,7 +169,27 @@ export async function loadSiteContent(client: SupabaseClient, fallback: SiteCont
     faqs: faqRows ? faqRows.map(faqFromRow) : fallback.faqs,
     projects: projectRows ? projectRows.map(projectFromRow).filter((project) => project.photos.length > 0) : fallback.projects,
     calculator: calculator.status === 'fulfilled' && calculator.value ? calculator.value : fallback.calculator,
+    pagePhotos,
   };
+}
+
+/** The photos chosen for fixed places on the pages; a missing one keeps the built-in photo. */
+async function loadPagePhotos(client: SupabaseClient, texts: TextOverrides): Promise<Record<string, PagePhoto>> {
+  const chosen = pagePhotoSlots.flatMap((slot) => (texts[pagePhotoKey(slot.id)]?.nl ? [[slot.id, texts[pagePhotoKey(slot.id)].nl] as const] : []));
+  if (!chosen.length) return {};
+  const { data, error } = await client.from('media').select('id, storage_path, static_key, width, height, alt_nl, alt_en').in('id', chosen.map(([, id]) => id));
+  if (error) {
+    console.error('Could not load the chosen page photos; showing the built-in photos.', error);
+    return {};
+  }
+  const byId = new Map((data as MediaRow[]).map((row) => [row.id, row]));
+  const photos: Record<string, PagePhoto> = {};
+  for (const [slot, id] of chosen) {
+    const row = byId.get(id);
+    const image = row && mediaImage(row);
+    if (row && image) photos[slot] = { image, altNl: row.alt_nl, altEn: row.alt_en || row.alt_nl };
+  }
+  return photos;
 }
 
 export const staticPhotoKeys = staticPhotos.map((photo) => photo.key);

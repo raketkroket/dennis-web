@@ -13,6 +13,7 @@ import { RequestDetail, RequestsList } from './pages/Requests';
 import SiteContent from './pages/SiteContent';
 import CalculatorAdmin from './pages/CalculatorAdmin';
 import Business from './pages/Business';
+import Appearance from './pages/Appearance';
 
 function AdminRoutes() {
   const { state } = useAuth();
@@ -34,6 +35,7 @@ function AdminRoutes() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="aanvragen" element={<RequestsList />} />
           <Route path="aanvragen/:id" element={<RequestDetail />} />
+          <Route path="uitstraling" element={<Appearance />} />
           <Route path="website" element={<SiteContent />} />
           <Route path="calculator" element={<CalculatorAdmin />} />
           <Route path="bedrijf" element={<Business />} />

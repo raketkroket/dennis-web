@@ -40,7 +40,7 @@ export default function Contact() {
     <>
       <Header />
       <main id="main" tabIndex={-1}>
-        <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label={t('nav.contact')}>
+        <section className="pt-40 pb-24 bg-c-f6f0e8" aria-label={t('nav.contact')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16">
               {/* Left */}
@@ -53,34 +53,34 @@ export default function Contact() {
                   <div className="denra-line" />
                   <span className="denra-label">{t('home.contactUs')}</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-c-231a12 leading-tight mb-6">
                   {t('home.getAcquainted')}
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-10 max-w-md">
+                <p className="text-c-6b5d50 leading-relaxed mb-10 max-w-md">
                   {t('home.contactDescription')}
                 </p>
 
                 <div className="space-y-5 mb-10">
                   {contactInfo.map((item) => (
                     <div key={item.label} className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-sm bg-[#f4ede4] border border-[#cfbca7]/55 flex items-center justify-center shrink-0">
-                        <item.icon size={18} className="text-[#7a6552]" />
+                      <div className="w-10 h-10 rounded-sm bg-c-f4ede4 border border-c-cfbca7/55 flex items-center justify-center shrink-0">
+                        <item.icon size={18} className="text-c-7a6552" />
                       </div>
                       <div>
-                        <p className="text-xs text-[#8A7A6A] mb-0.5">{item.label}</p>
+                        <p className="text-xs text-c-8a7a6a mb-0.5">{item.label}</p>
                         {item.href ? (
-                          <a href={item.href} className="text-sm font-medium text-[#231A12] hover:text-[#7a6552] transition-colors duration-200">
+                          <a href={item.href} className="text-sm font-medium text-c-231a12 hover:text-c-7a6552 transition-colors duration-200">
                             {item.value}
                           </a>
                         ) : (
-                          <p className="text-sm font-medium text-[#231A12]">{item.value}</p>
+                          <p className="text-sm font-medium text-c-231a12">{item.value}</p>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-[#f1e7dc] border border-[#cfbca7]/55 flex items-center justify-center p-6">
+                <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-c-f1e7dc border border-c-cfbca7/55 flex items-center justify-center p-6">
                   <img loading="lazy" decoding="async"
                     src={denraLogoBg}
                     alt=""
@@ -96,10 +96,10 @@ export default function Contact() {
                 initial={animateIn && { opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="bg-[#faf6f0] rounded-sm p-8 md:p-10 border border-[#cfbca7]/55"
+                className="bg-c-faf6f0 rounded-sm p-8 md:p-10 border border-c-cfbca7/55"
               >
-                  <h2 className="font-serif text-2xl font-semibold text-[#231A12] mb-2">{t('home.sendMessage')}</h2>
-                <p className="text-sm text-[#8A7A6A] mb-8">{t('home.contactWithin24')}</p>
+                  <h2 className="font-serif text-2xl font-semibold text-c-231a12 mb-2">{t('home.sendMessage')}</h2>
+                <p className="text-sm text-c-8a7a6a mb-8">{t('home.contactWithin24')}</p>
                 <ContactForm quote={quote} onRemoveQuote={removeQuote} defaultService={searchParams.get('dienst') ?? ''} />
               </m.div>
             </div>

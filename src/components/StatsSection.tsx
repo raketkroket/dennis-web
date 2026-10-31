@@ -6,7 +6,7 @@ export default function StatsSection() {
   const { t } = useLanguage();
   const stats = [{ value: t('aboutPage.customersValue'), label: t('home.satisfiedCustomers') }, { value: t('aboutPage.experienceValue'), label: t('home.experience') }, { value: 'Premium', label: t('home.materials') }, { value: 'Strak', label: t('home.design') }];
   return (
-    <section className="py-20 bg-transparent border-y border-[#5c5147]/12" aria-label={t('home.statistics')}>
+    <section className="py-20 bg-transparent border-y border-c-5c5147/12" aria-label={t('home.statistics')}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           {stats.map((stat, i) => (
@@ -19,10 +19,10 @@ export default function StatsSection() {
               className="text-center"
             >
               <div className="denra-line mx-auto mb-4" />
-              <div className="font-serif text-3xl md:text-4xl font-semibold mb-2 text-[#1d1712]">
+              <div className="font-serif text-3xl md:text-4xl font-semibold mb-2 text-c-1d1712">
                 {stat.value}
               </div>
-              <div className="text-sm text-[#5f544a]">{stat.label}</div>
+              <div className="text-sm text-c-5f544a">{stat.label}</div>
             </m.div>
           ))}
         </div>

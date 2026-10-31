@@ -24,9 +24,10 @@ function cachedStrings(): Partial<Pick<SiteContent, 'texts' | 'business'>> {
   }
 }
 
-export function SiteContentProvider({ children }: { children: ReactNode }) {
-  // A prerendered page starts from the built-in content it was rendered with.
-  const [content, setContent] = useState<SiteContent>(() => ({ ...defaultSiteContent(), ...(supabaseConfigured && !startedFromPrerender ? cachedStrings() : {}) }));
+export function SiteContentProvider({ children, initialContent }: { children: ReactNode; initialContent: SiteContent | null }) {
+  // A prerendered page starts from the content it was rendered with: Dennis's
+  // content when it was baked in at build time, otherwise the built-in content.
+  const [content, setContent] = useState<SiteContent>(() => initialContent ?? ({ ...defaultSiteContent(), ...(supabaseConfigured && !startedFromPrerender ? cachedStrings() : {}) }));
   const [ready, setReady] = useState(!supabaseConfigured);
 
   const reload = useCallback(async () => {
@@ -45,7 +46,7 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (supabaseConfigured && startedFromPrerender) {
+    if (supabaseConfigured && startedFromPrerender && !initialContent) {
       const cached = cachedStrings();
       if (cached.texts || cached.business) setContent((current) => ({ ...current, ...cached }));
     }
@@ -53,7 +54,7 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
       console.error('Could not load website content; showing the built-in version.', error);
       setReady(true);
     });
-  }, [reload]);
+  }, [reload, initialContent]);
 
   const value = useMemo(() => ({ ...content, ready, reload }), [content, ready, reload]);
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;

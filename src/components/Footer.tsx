@@ -39,7 +39,7 @@ export default function Footer() {
     { label: t('nav.about'), path: '/over-ons' }, { label: t('nav.projects'), path: '/projecten' }, { label: t('common.calculatePrice'), path: '/configurator' }, { label: t('nav.contact'), path: '/contact' },
   ];
   return (
-    <footer className="bg-transparent text-[#5f544a] border-t border-[#5c5147]/12">
+    <footer className="bg-transparent text-c-5f544a border-t border-c-5c5147/12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-10">
           {/* Brand */}
@@ -51,11 +51,11 @@ export default function Footer() {
                 <div className="denra-label">{t('shared.footerTagline')}</div>
               </div>
             </div>
-            <p className="text-sm text-[#5f544a] leading-relaxed max-w-sm mb-6">
+            <p className="text-sm text-c-5f544a leading-relaxed max-w-sm mb-6">
               {t('shared.footerDescription')}
             </p>
-            <p className="text-xs text-[#71665b] mb-6">
-              {t('shared.performedBy')} <span className="text-[#1d1712] font-medium">{business.legalName}</span>
+            <p className="text-xs text-c-71665b mb-6">
+              {t('shared.performedBy')} <span className="text-c-1d1712 font-medium">{business.legalName}</span>
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -63,7 +63,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="DENRA Instagram"
-                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
+                className="w-10 h-10 rounded-sm border border-c-5c5147/15 flex items-center justify-center text-c-71665b hover:border-c-5c5147/30 hover:text-c-1d1712 transition-all duration-200"
               >
                 <Instagram size={16} />
               </a>
@@ -72,7 +72,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="DENRA Facebook"
-                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
+                className="w-10 h-10 rounded-sm border border-c-5c5147/15 flex items-center justify-center text-c-71665b hover:border-c-5c5147/30 hover:text-c-1d1712 transition-all duration-200"
               >
                 <Facebook size={16} />
               </a>
@@ -81,7 +81,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t('common.whatsappDenra')}
-                className="w-10 h-10 rounded-sm border border-[#5c5147]/15 flex items-center justify-center text-[#71665b] hover:border-[#5c5147]/30 hover:text-[#1d1712] transition-all duration-200"
+                className="w-10 h-10 rounded-sm border border-c-5c5147/15 flex items-center justify-center text-c-71665b hover:border-c-5c5147/30 hover:text-c-1d1712 transition-all duration-200"
               >
                 <MessageCircle size={16} />
               </a>
@@ -105,7 +105,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     to={item.path}
-                    className="text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
+                    className="text-sm text-c-5f544a hover:text-c-1d1712 transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -122,7 +122,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     to={item.path}
-                    className="text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
+                    className="text-sm text-c-5f544a hover:text-c-1d1712 transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -138,23 +138,23 @@ export default function Footer() {
               <li>
                 <a
                   href={`tel:${business.phoneLink}`}
-                  className="flex items-center gap-3 text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
+                  className="flex items-center gap-3 text-sm text-c-5f544a hover:text-c-1d1712 transition-colors duration-200"
                 >
-                  <Phone size={14} className="text-[#5c5147] shrink-0" />
+                  <Phone size={14} className="text-c-5c5147 shrink-0" />
                   {business.phoneDisplay}
                 </a>
               </li>
               <li>
                 <a
                   href={`mailto:${business.email}`}
-                  className="flex items-center gap-3 text-sm text-[#5f544a] hover:text-[#1d1712] transition-colors duration-200"
+                  className="flex items-center gap-3 text-sm text-c-5f544a hover:text-c-1d1712 transition-colors duration-200"
                 >
-                  <Mail size={14} className="text-[#5c5147] shrink-0" />
+                  <Mail size={14} className="text-c-5c5147 shrink-0" />
                   {business.email}
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-sm text-[#5f544a]">
-                <MapPin size={14} className="text-[#5c5147] shrink-0 mt-0.5" />
+              <li className="flex items-start gap-3 text-sm text-c-5f544a">
+                <MapPin size={14} className="text-c-5c5147 shrink-0 mt-0.5" />
                 <span>{language === 'en' ? business.addressEn || business.addressNl : business.addressNl}</span>
               </li>
             </ul>
@@ -164,7 +164,7 @@ export default function Footer() {
                 {locaties.map((loc) => (
                   <span
                     key={loc}
-                    className="text-xs text-[#5f544a] bg-[#e5ddcf] border border-[#5c5147]/12 px-2.5 py-1 rounded-sm"
+                    className="text-xs text-c-5f544a bg-c-e5ddcf border border-c-5c5147/12 px-2.5 py-1 rounded-sm"
                   >
                     {loc}
                   </span>
@@ -174,7 +174,7 @@ export default function Footer() {
               <ul className="mt-3 space-y-1.5">
                 {regionPages.map((page) => (
                   <li key={page.path}>
-                    <Link to={page.path} className="text-xs text-[#5f544a] underline decoration-[#5c5147]/30 underline-offset-4 transition-colors duration-200 hover:text-[#1d1712]">
+                    <Link to={page.path} className="text-xs text-c-5f544a underline decoration-c-5c5147/30 underline-offset-4 transition-colors duration-200 hover:text-c-1d1712">
                       {page.label}
                     </Link>
                   </li>
@@ -201,13 +201,13 @@ export default function Footer() {
       </div>
 
       {/* Sub-footer */}
-      <div className="border-t border-[#5c5147]/12">
+      <div className="border-t border-c-5c5147/12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#71665b]">
+          <p className="text-xs text-c-71665b">
             &copy; 2026 DENRA. {t('shared.allRightsReserved')}
           </p>
           <div className="flex items-center gap-6">
-            <Link to="/algemene-voorwaarden" className="text-xs text-[#71665b] hover:text-[#1d1712] transition-colors duration-200">
+            <Link to="/algemene-voorwaarden" className="text-xs text-c-71665b hover:text-c-1d1712 transition-colors duration-200">
               {t('shared.terms')}
             </Link>
           </div>

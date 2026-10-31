@@ -228,7 +228,7 @@ export default function CalculatorAdmin() {
                         <legend className="mb-2 text-[15px] font-medium">Te kiezen bij</legend>
                         {draft.rooms.map((room) => (
                           <label key={room.roomType} className="flex min-h-11 items-center gap-3 text-[16px]">
-                            <input type="checkbox" className="h-5 w-5 accent-[#231A12]" checked={option.rooms.includes(room.roomType)} onChange={(event) => setOption(option.id, { rooms: event.target.checked ? [...option.rooms, room.roomType] : option.rooms.filter((candidate) => candidate !== room.roomType) })} />
+                            <input type="checkbox" className="h-5 w-5 accent-c-231a12" checked={option.rooms.includes(room.roomType)} onChange={(event) => setOption(option.id, { rooms: event.target.checked ? [...option.rooms, room.roomType] : option.rooms.filter((candidate) => candidate !== room.roomType) })} />
                             {room.labelNl}
                           </label>
                         ))}
@@ -249,7 +249,7 @@ export default function CalculatorAdmin() {
                       <div className="grid gap-x-6 sm:grid-cols-2">
                         {draft.options.filter((other) => other.id !== option.id).map((other) => (
                           <label key={other.id} className="flex min-h-11 items-center gap-3 text-[15px]">
-                            <input type="checkbox" className="h-5 w-5 accent-[#231A12]" checked={option.conflictsWith.includes(other.id)} onChange={(event) => setConflict(option.id, other.id, event.target.checked)} />
+                            <input type="checkbox" className="h-5 w-5 accent-c-231a12" checked={option.conflictsWith.includes(other.id)} onChange={(event) => setConflict(option.id, other.id, event.target.checked)} />
                             {other.labelNl || 'Nieuwe optie'}
                           </label>
                         ))}
@@ -282,7 +282,7 @@ export default function CalculatorAdmin() {
           <div className="grid gap-x-6 sm:grid-cols-2">
             {optionsForRoom(problems.length ? saved : draft, preview.roomType).map((option) => (
               <label key={option.id} className="flex min-h-11 items-center gap-3 text-[15px]">
-                <input type="checkbox" className="h-5 w-5 accent-[#231A12]" checked={preview.optionIds.includes(option.id)} onChange={() => setPreview((current) => ({ ...current, optionIds: toggleOption(draft, current.optionIds, option.id) }))} />
+                <input type="checkbox" className="h-5 w-5 accent-c-231a12" checked={preview.optionIds.includes(option.id)} onChange={() => setPreview((current) => ({ ...current, optionIds: toggleOption(draft, current.optionIds, option.id) }))} />
                 {option.labelNl} (+ {formatEuro(Number.isFinite(option.price) ? option.price : 0)})
               </label>
             ))}

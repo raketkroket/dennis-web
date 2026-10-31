@@ -222,7 +222,7 @@ export default function ProjectEditor() {
                   </div>
                   <div className="space-y-3">
                     <label className="flex min-h-11 cursor-pointer items-center gap-3 text-[16px]">
-                      <input type="radio" name="cover" checked={(draft.coverMediaId ?? draft.photos[0]?.mediaId) === photo.mediaId} onChange={() => update({ coverMediaId: photo.mediaId })} className="h-5 w-5 accent-[#231A12]" />
+                      <input type="radio" name="cover" checked={(draft.coverMediaId ?? draft.photos[0]?.mediaId) === photo.mediaId} onChange={() => update({ coverMediaId: photo.mediaId })} className="h-5 w-5 accent-c-231a12" />
                       Omslagfoto
                     </label>
                     <label className="block text-[15px]">

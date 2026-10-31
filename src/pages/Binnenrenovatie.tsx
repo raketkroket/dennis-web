@@ -9,12 +9,14 @@ import FaqList from '../components/FaqList';
 import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
+import { pagePhotoAlt, usePagePhoto } from '../content/pagePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function Binnenrenovatie() {
   const { t, language } = useLanguage();
+  const heroPhoto = usePagePhoto('interiorHero');
   // First page load: show the prerendered content at once; animate on later visits.
   const animateIn = useStartedOnClient();
   const serviceTitles = t('interiorPage.services').split('|');
@@ -24,7 +26,7 @@ export default function Binnenrenovatie() {
     <>
       <Header />
       <main id="main" tabIndex={-1}>
-        <section className="relative pt-40 pb-24 bg-[#f4efe8]" aria-label={t('interiorPage.heroAria')}>
+        <section className="relative pt-40 pb-24 bg-c-f4efe8" aria-label={t('interiorPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.03fr_0.97fr] gap-14 xl:gap-20 items-center">
               <m.div
@@ -35,25 +37,25 @@ export default function Binnenrenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label bg-[#e6dfd7] text-[#433a32]">{t('interiorPage.eyebrow')}</span>
+                  <span className="denra-label bg-c-e6dfd7 text-c-433a32">{t('interiorPage.eyebrow')}</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-c-231a12 leading-[0.96] mb-6">
                   {t('interiorPage.title')}
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg max-w-lg">
+                <p className="text-c-6b5d50 leading-relaxed mb-8 text-lg max-w-lg">
                   {t('interiorPage.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-c-231a12 text-c-f6f0e8 font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-c-3a2d23 transition-all duration-200 text-sm"
                   >
                     {t('common.calculatePrice')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 border border-c-7a6552/20 text-c-231a12 font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-c-231a12 hover:text-white transition-all duration-200 text-sm"
                   >
                     {t('interiorPage.consultation')}
                   </Link>
@@ -63,12 +65,13 @@ export default function Binnenrenovatie() {
                 initial={animateIn && { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="relative rounded-[34px] overflow-hidden aspect-[4/3] border border-[#d7cab8] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e7ddcf]"
+                className="relative rounded-[34px] overflow-hidden aspect-[4/3] border border-c-d7cab8 shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-c-e7ddcf"
               >
-                <div className="absolute inset-0 bg-gradient-to-l from-[#231a12]/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-l from-c-231a12/10 via-transparent to-transparent" />
                 <img
-                  src={sitePhotos[6]}
-                  alt={altForSrc(sitePhotos[6], language) ?? t('interiorPage.heroAlt')}
+                  src={heroPhoto?.image.src ?? sitePhotos[6]}
+                  srcSet={heroPhoto?.image.srcSet}
+                  alt={heroPhoto ? pagePhotoAlt(heroPhoto, language) : altForSrc(sitePhotos[6], language) ?? t('interiorPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -78,7 +81,7 @@ export default function Binnenrenovatie() {
           </div>
         </section>
 
-        <section className="py-20 bg-[#faf6f0]" aria-labelledby="binnen-diensten-heading">
+        <section className="py-20 bg-c-faf6f0" aria-labelledby="binnen-diensten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <m.div
               initial={{ opacity: 0, y: 20 }}
@@ -87,7 +90,7 @@ export default function Binnenrenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-14"
             >
-              <h2 id="binnen-diensten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
+              <h2 id="binnen-diensten-heading" className="font-serif text-4xl font-semibold text-c-231a12">
                 {t('interiorPage.servicesTitle')}
               </h2>
             </m.div>
@@ -99,14 +102,14 @@ export default function Binnenrenovatie() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="flex items-start gap-6 p-8 bg-[#faf6f0] rounded-sm border border-[#cfbca7]/55 hover:border-[#7a6552]/40 transition-all duration-300"
+                  className="flex items-start gap-6 p-8 bg-c-faf6f0 rounded-sm border border-c-cfbca7/55 hover:border-c-7a6552/40 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-sm bg-[#f4ede4] border border-[#cfbca7]/55 flex items-center justify-center shrink-0">
-                    <s.icon size={22} className="text-[#7a6552]" />
+                  <div className="w-12 h-12 rounded-sm bg-c-f4ede4 border border-c-cfbca7/55 flex items-center justify-center shrink-0">
+                    <s.icon size={22} className="text-c-7a6552" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-semibold text-[#231A12] mb-2">{s.title}</h3>
-                    <p className="text-sm text-[#6B5D50] leading-relaxed">{s.desc}</p>
+                    <h3 className="font-serif text-xl font-semibold text-c-231a12 mb-2">{s.title}</h3>
+                    <p className="text-sm text-c-6b5d50 leading-relaxed">{s.desc}</p>
                   </div>
                 </m.div>
               ))}

@@ -65,6 +65,10 @@ test('visitors read published content only', async () => {
   const hiddenPhotos = await rows('anon', null, `select m.id from public.media m where m.static_key = 'natalie-diemen-1'`);
   assert.equal(hiddenPhotos.length, 0, 'photos of hidden projects stay private');
   assert.equal((await rows('anon', null, `select id from public.project_photos`)).length, 52);
+  // A photo chosen for a fixed place on a page is public, even from a hidden project.
+  await db.query(`insert into public.site_content (key, value_nl) select 'photo.bathroomHero', id::text from public.media where static_key = 'natalie-diemen-1'`);
+  assert.equal((await rows('anon', null, `select m.id from public.media m where m.static_key = 'natalie-diemen-1'`)).length, 1, 'chosen page photos are public');
+  await db.query(`delete from public.site_content where key = 'photo.bathroomHero'`);
   await db.query(`update public.projects set status = 'published' where slug = 'badkamer-diemen'`);
   assert.equal((await rows('anon', null, `select 1 from public.business_settings`)).length, 1);
   assert.equal((await rows('anon', null, `select 1 from public.calculator_tiers`)).length, 3);

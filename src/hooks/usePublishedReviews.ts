@@ -2,6 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import type { PublishedReview, Review } from '../data/reviews';
 import { getReviews, mergePublishedReviews } from '../data/reviews';
 import type { Language } from '../i18n/translations';
+import { useSiteContent } from '../content/SiteContentProvider';
+
+/** site_content key with the ids of built-in reviews Dennis hid in the admin. */
+export const hiddenReviewsKey = 'reviews.hidden';
+export const parseHiddenReviews = (value: string | undefined) => (value ?? '').split(',').map((id) => id.trim()).filter(Boolean);
 
 type PublishedReviewsResponse = {
   reviews?: PublishedReview[];
@@ -26,6 +31,7 @@ function loadPublishedReviews(): Promise<PublishedReview[]> {
 
 export function usePublishedReviews(language: Language): Review[] {
   const [publishedReviews, setPublishedReviews] = useState<PublishedReview[]>([]);
+  const hidden = useSiteContent().texts[hiddenReviewsKey]?.nl;
 
   useEffect(() => {
     let active = true;
@@ -37,5 +43,8 @@ export function usePublishedReviews(language: Language): Review[] {
     };
   }, []);
 
-  return useMemo(() => mergePublishedReviews(getReviews('nl'), publishedReviews, language), [publishedReviews, language]);
+  return useMemo(() => {
+    const hiddenIds = new Set(parseHiddenReviews(hidden));
+    return mergePublishedReviews(getReviews('nl').filter((review) => !hiddenIds.has(review.id)), publishedReviews, language);
+  }, [publishedReviews, language, hidden]);
 }

@@ -1,3 +1,11 @@
+// Brand colours are CSS variables (--c-<hex>), so a colour scheme chosen in
+// the admin can recolour the whole site. The list comes from
+// src/lib/themeColors.json; by default every variable is its own colour.
+const { colors: themeHexes } = require('./src/lib/themeColors.json');
+const channels = (hex) => [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(' ');
+const themeVar = (hex) => `rgb(var(--c-${hex.toLowerCase()}) / <alpha-value>)`;
+const themeTokens = Object.fromEntries(themeHexes.map((hex) => [`c-${hex}`, themeVar(hex)]));
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -15,6 +23,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        ...themeTokens,
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -49,21 +58,21 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))'
         },
         denra: {
-          ivory: '#F7F2EA',
-          paper: '#FBF8F3',
-          cream: '#FAF6F0',
-          limestone: '#EEE6DA',
-          stone: '#E9E1D5',
-          sand: '#DDD1C1',
-          greige: '#CBB9A5',
-          taupe: '#8E7A68',
-          bronze: '#7A6552',
-          muted: '#6B5D50',
-          ink: '#231A12',
-          espresso: '#231A12',
-          night: '#1B1510',
-          charcoal: '#2D261F',
-          line: '#D9CDBD',
+          ivory: themeVar('f7f2ea'),
+          paper: themeVar('fbf8f3'),
+          cream: themeVar('faf6f0'),
+          limestone: themeVar('eee6da'),
+          stone: themeVar('e9e1d5'),
+          sand: themeVar('ddd1c1'),
+          greige: themeVar('cbb9a5'),
+          taupe: themeVar('8e7a68'),
+          bronze: themeVar('7a6552'),
+          muted: themeVar('6b5d50'),
+          ink: themeVar('231a12'),
+          espresso: themeVar('231a12'),
+          night: themeVar('1b1510'),
+          charcoal: themeVar('2d261f'),
+          line: themeVar('d9cdbd'),
         }
       },
       borderRadius: {
@@ -104,5 +113,8 @@ module.exports = {
       }
     }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    ({ addBase }) => addBase({ ':root': Object.fromEntries(themeHexes.map((hex) => [`--c-${hex}`, channels(hex)])) }),
+  ],
 };

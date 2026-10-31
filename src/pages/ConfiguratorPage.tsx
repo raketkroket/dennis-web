@@ -8,19 +8,21 @@ import FaqList from '../components/FaqList';
 import Configurator from '../components/Configurator';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
+import { pagePhotoAlt, usePagePhoto } from '../content/pagePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function ConfiguratorPage() {
   const { t, language } = useLanguage();
+  const heroPhoto = usePagePhoto('calculatorHero');
   // First page load: show the prerendered content at once; animate on later visits.
   const animateIn = useStartedOnClient();
   return (
     <>
       <Header />
       <main id="main" tabIndex={-1}>
-        <section className="pt-40 pb-24 bg-[#f6f0e8]" aria-label={t('common.calculatePrice')}>
+        <section className="pt-40 pb-24 bg-c-f6f0e8" aria-label={t('common.calculatePrice')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <m.div
@@ -32,14 +34,14 @@ export default function ConfiguratorPage() {
                   <div className="denra-line" />
                   <span className="denra-label">{t('configuratorPage.label')}</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-tight mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-c-231a12 leading-tight mb-6">
                   {t('configuratorPage.title').split('|')[0]}<br />{t('configuratorPage.title').split('|')[1]}
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-4 max-w-md">
+                <p className="text-c-6b5d50 leading-relaxed mb-4 max-w-md">
                   {t('configuratorPage.description')}
                 </p>
                 <p className="mb-8 text-sm">
-                  <Link to="/badkamer-renovatie-kosten" className="text-[#231A12] underline decoration-[#7a6552]/40 underline-offset-4 hover:decoration-[#231A12]">{t('configuratorPage.costLink')}</Link>
+                  <Link to="/badkamer-renovatie-kosten" className="text-c-231a12 underline decoration-c-7a6552/40 underline-offset-4 hover:decoration-c-231a12">{t('configuratorPage.costLink')}</Link>
                 </p>
                 <div className="space-y-4">
                   {[
@@ -48,10 +50,10 @@ export default function ConfiguratorPage() {
                     { step: '03', title: t('configuratorPage.selectOptions'), desc: t('configuratorPage.selectOptionsDescription') },
                   ].map((item) => (
                     <div key={item.step} className="flex items-start gap-4">
-                      <span className="font-serif text-2xl font-semibold text-[#7a6552]/30 w-10 shrink-0">{item.step}</span>
+                      <span className="font-serif text-2xl font-semibold text-c-7a6552/30 w-10 shrink-0">{item.step}</span>
                       <div>
-                        <p className="font-semibold text-[#231A12] text-sm">{item.title}</p>
-                        <p className="text-xs text-[#8A7A6A]">{item.desc}</p>
+                        <p className="font-semibold text-c-231a12 text-sm">{item.title}</p>
+                        <p className="text-xs text-c-8a7a6a">{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -66,8 +68,9 @@ export default function ConfiguratorPage() {
                 className="rounded-2xl overflow-hidden aspect-[16/9]"
               >
                 <img
-                  src={sitePhotos[0]}
-                  alt={altForSrc(sitePhotos[0], language) ?? t('marketing.heroTitle')}
+                  src={heroPhoto?.image.src ?? sitePhotos[0]}
+                  srcSet={heroPhoto?.image.srcSet}
+                  alt={heroPhoto ? pagePhotoAlt(heroPhoto, language) : altForSrc(sitePhotos[0], language) ?? t('marketing.heroTitle')}
                   width={800}
                   height={450}
                   className="w-full h-full object-cover"
@@ -76,7 +79,7 @@ export default function ConfiguratorPage() {
             </div>
 
             {/* The calculator with its 3D preview needs the full width. */}
-            <div className="mt-16 rounded-sm bg-[#faf6f0] border border-[#cfbca7]/55 p-6 md:p-10">
+            <div className="mt-16 rounded-sm bg-c-faf6f0 border border-c-cfbca7/55 p-6 md:p-10">
               <Configurator />
             </div>
           </div>

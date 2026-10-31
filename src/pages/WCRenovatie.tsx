@@ -9,12 +9,14 @@ import FaqList from '../components/FaqList';
 import ServiceArea from '../components/ServiceArea';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { sitePhotos } from '../data/sitePhotos';
+import { pagePhotoAlt, usePagePhoto } from '../content/pagePhotos';
 import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 import { altForSrc } from '../content/photoAlt';
 
 export default function WCRenovatie() {
   const { t, language } = useLanguage();
+  const heroPhoto = usePagePhoto('toiletHero');
   // First page load: show the prerendered content at once; animate on later visits.
   const animateIn = useStartedOnClient();
   const features = t('wcPage.features').split('|');
@@ -28,18 +30,19 @@ export default function WCRenovatie() {
     <>
       <Header />
       <main id="main" tabIndex={-1}>
-        <section className="relative pt-40 pb-24 bg-[#f2eee9]" aria-label={t('wcPage.heroAria')}>
+        <section className="relative pt-40 pb-24 bg-c-f2eee9" aria-label={t('wcPage.heroAria')}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-20 items-center">
               <m.div
                 initial={animateIn && { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="order-2 lg:order-1 rounded-[30px] overflow-hidden aspect-[4/3] border border-[#d3c5b6] shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-[#e9dfd3]"
+                className="order-2 lg:order-1 rounded-[30px] overflow-hidden aspect-[4/3] border border-c-d3c5b6 shadow-[0_20px_40px_rgba(40,30,25,0.08)] bg-c-e9dfd3"
               >
                 <img
-                  src={sitePhotos[8]}
-                  alt={altForSrc(sitePhotos[8], language) ?? t('wcPage.heroAlt')}
+                  src={heroPhoto?.image.src ?? sitePhotos[8]}
+                  srcSet={heroPhoto?.image.srcSet}
+                  alt={heroPhoto ? pagePhotoAlt(heroPhoto, language) : altForSrc(sitePhotos[8], language) ?? t('wcPage.heroAlt')}
                   width={900}
                   height={675}
                   className="w-full h-full object-cover"
@@ -53,25 +56,25 @@ export default function WCRenovatie() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="denra-line" />
-                  <span className="denra-label bg-[#e6ddd3] text-[#42362d]">{t('wcPage.eyebrow')}</span>
+                  <span className="denra-label bg-c-e6ddd3 text-c-42362d">{t('wcPage.eyebrow')}</span>
                 </div>
-                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-[#231A12] leading-[0.96] mb-6">
+                <h1 className="font-serif text-5xl md:text-6xl font-semibold text-c-231a12 leading-[0.96] mb-6">
                   {t('wcPage.title')}
                 </h1>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 text-lg">
+                <p className="text-c-6b5d50 leading-relaxed mb-8 text-lg">
                   {t('wcPage.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/configurator"
-                    className="inline-flex items-center justify-center gap-2 bg-[#231A12] text-[#F6F0E8] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#3a2d23] transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-c-231a12 text-c-f6f0e8 font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-c-3a2d23 transition-all duration-200 text-sm"
                   >
                     {t('common.calculatePrice')}
                     <ArrowRight size={16} />
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 border border-[#7a6552]/20 text-[#231A12] font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-[#231A12] hover:text-white transition-all duration-200 text-sm"
+                    className="inline-flex items-center justify-center gap-2 border border-c-7a6552/20 text-c-231a12 font-medium px-8 py-4 rounded-sm tracking-[0.16em] uppercase hover:bg-c-231a12 hover:text-white transition-all duration-200 text-sm"
                   >
                     {t('wcPage.consultation')}
                   </Link>
@@ -81,7 +84,7 @@ export default function WCRenovatie() {
           </div>
         </section>
 
-        <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-features-heading">
+        <section className="py-20 bg-c-faf6f0" aria-labelledby="wc-features-heading">
           <div className="max-w-4xl mx-auto px-6 lg:px-8">
             <m.div
               initial={{ opacity: 0, y: 20 }}
@@ -90,10 +93,10 @@ export default function WCRenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
+              <h2 id="wc-features-heading" className="font-serif text-4xl font-semibold text-c-231a12 mb-4">
                 {t('wcPage.featuresTitle')}
               </h2>
-              <p className="text-[#6B5D50]">{t('wcPage.featuresDescription')}</p>
+              <p className="text-c-6b5d50">{t('wcPage.featuresDescription')}</p>
             </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {features.map((f, i) => (
@@ -103,41 +106,41 @@ export default function WCRenovatie() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.06 }}
-                  className="flex items-center gap-3 p-4 bg-[#faf6f0] rounded-sm border border-[#cfbca7]/55"
+                  className="flex items-center gap-3 p-4 bg-c-faf6f0 rounded-sm border border-c-cfbca7/55"
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#e8ddcf] flex items-center justify-center shrink-0">
-                    <Check size={12} className="text-[#7a6552]" />
+                  <div className="w-6 h-6 rounded-full bg-c-e8ddcf flex items-center justify-center shrink-0">
+                    <Check size={12} className="text-c-7a6552" />
                   </div>
-                  <span className="text-sm font-medium text-[#4A3F35]">{f}</span>
+                  <span className="text-sm font-medium text-c-4a3f35">{f}</span>
                 </m.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-[#f4efe8]" aria-labelledby="wc-begeleiding-heading">
+        <section className="py-20 bg-c-f4efe8" aria-labelledby="wc-begeleiding-heading">
           <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="denra-line" />
               <span className="denra-label">{t('wcPage.guidanceEyebrow')}</span>
               <div className="denra-line" />
             </div>
-            <h2 id="wc-begeleiding-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-6">
+            <h2 id="wc-begeleiding-heading" className="font-serif text-4xl font-semibold text-c-231a12 mb-6">
               {t('wcPage.guidanceTitle')}
             </h2>
-            <p className="text-[#6B5D50] leading-relaxed mb-4">
+            <p className="text-c-6b5d50 leading-relaxed mb-4">
               {t('wcPage.guidanceFirst')}
             </p>
-            <p className="text-[#6B5D50] leading-relaxed mb-4">
+            <p className="text-c-6b5d50 leading-relaxed mb-4">
               {t('wcPage.guidanceSecond')}
             </p>
-            <p className="text-[#4A3F35] font-medium leading-relaxed">
+            <p className="text-c-4a3f35 font-medium leading-relaxed">
               {t('wcPage.guidanceConclusion')}
             </p>
           </div>
         </section>
 
-        <section className="py-20 bg-[#f6f0e8]" aria-labelledby="wc-luxe-heading">
+        <section className="py-20 bg-c-f6f0e8" aria-labelledby="wc-luxe-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
               <m.div
@@ -145,33 +148,33 @@ export default function WCRenovatie() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="rounded-sm bg-[#faf6f0] border border-[#cfbca7]/55 p-8"
+                className="rounded-sm bg-c-faf6f0 border border-c-cfbca7/55 p-8"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="denra-line" />
                   <span className="denra-label">{t('wcPage.pricingEyebrow')}</span>
                 </div>
-                <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-[#231A12] mb-4">
+                <h2 id="wc-luxe-heading" className="font-serif text-4xl font-semibold text-c-231a12 mb-4">
                   {t('wcPage.pricingTitle')}
                 </h2>
-                <p className="text-[#6B5D50] leading-relaxed mb-8 max-w-2xl">
+                <p className="text-c-6b5d50 leading-relaxed mb-8 max-w-2xl">
                   {t('wcPage.pricingDescription')}
                 </p>
                 <div className="space-y-3">
                   {luxePricing.map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-center justify-between gap-4 rounded-sm border border-[#cfbca7] bg-[#f6f0e8] px-4 py-3"
+                      className="flex items-center justify-between gap-4 rounded-sm border border-c-cfbca7 bg-c-f6f0e8 px-4 py-3"
                     >
-                      <p className="font-medium text-[#231A12]">{item.label}</p>
-                      <p className="text-sm font-semibold text-[#7a6552]">{item.price}</p>
+                      <p className="font-medium text-c-231a12">{item.label}</p>
+                      <p className="text-sm font-semibold text-c-7a6552">{item.price}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 rounded-sm bg-[#231A12] p-6 text-white">
-                  <p className="denra-label text-[#cfbca7] mb-2">{t('wcPage.pricingTotalLabel')}</p>
+                <div className="mt-8 rounded-sm bg-c-231a12 p-6 text-white">
+                  <p className="denra-label text-c-cfbca7 mb-2">{t('wcPage.pricingTotalLabel')}</p>
                   <p className="font-serif text-4xl font-semibold mb-2">€3.800 tot €5.200</p>
-                  <p className="text-sm text-[#B7A892]">{t('wcPage.pricingTotalDescription')}</p>
+                  <p className="text-sm text-c-b7a892">{t('wcPage.pricingTotalDescription')}</p>
                 </div>
               </m.div>
 
@@ -180,29 +183,29 @@ export default function WCRenovatie() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="rounded-sm bg-[#231A12] p-8 text-white"
+                className="rounded-sm bg-c-231a12 p-8 text-white"
               >
-                <p className="denra-label text-[#cfbca7] mb-3">{t('wcPage.adviceEyebrow')}</p>
+                <p className="denra-label text-c-cfbca7 mb-3">{t('wcPage.adviceEyebrow')}</p>
                 <h3 className="font-serif text-3xl font-semibold mb-6">{t('wcPage.adviceTitle')}</h3>
                 <div className="space-y-4 mb-8">
                   {luxeAdvies.map((item) => (
                     <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
-                      <p className="text-sm text-[#E6DED1]">{item.label}</p>
+                      <p className="text-sm text-c-e6ded1">{item.label}</p>
                       <p className="text-sm font-semibold text-white">{item.price}</p>
                     </div>
                   ))}
                 </div>
                 <div className="rounded-2xl bg-white/5 p-5">
-                  <p className="denra-label text-[#cfbca7] mb-2">{t('wcPage.adviceTitle')}</p>
+                  <p className="denra-label text-c-cfbca7 mb-2">{t('wcPage.adviceTitle')}</p>
                   <p className="font-serif text-4xl font-semibold">€5.500 tot €6.500</p>
                 </div>
-                <p className="mt-6 text-sm text-[#B7A892]">{t('wcPage.adviceDescription')}</p>
+                <p className="mt-6 text-sm text-c-b7a892">{t('wcPage.adviceDescription')}</p>
               </m.div>
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-[#faf6f0]" aria-labelledby="wc-projecten-heading">
+        <section className="py-20 bg-c-faf6f0" aria-labelledby="wc-projecten-heading">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <m.div
               initial={{ opacity: 0, y: 20 }}
@@ -211,7 +214,7 @@ export default function WCRenovatie() {
               transition={{ duration: 0.6 }}
               className="text-center mb-14"
             >
-              <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-[#231A12]">
+              <h2 id="wc-projecten-heading" className="font-serif text-4xl font-semibold text-c-231a12">
                 {t('wcPage.projectsTitle')}
               </h2>
             </m.div>
@@ -234,8 +237,8 @@ export default function WCRenovatie() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
-                  <h3 className="font-serif text-lg font-semibold text-[#231A12] mb-1">{p.title}</h3>
-                  <p className="text-sm text-[#8A7A6A]">{p.desc}</p>
+                  <h3 className="font-serif text-lg font-semibold text-c-231a12 mb-1">{p.title}</h3>
+                  <p className="text-sm text-c-8a7a6a">{p.desc}</p>
                 </m.div>
               ))}
             </div>
