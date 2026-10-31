@@ -226,7 +226,7 @@ export function Toggle({ label, checked, onChange, help }: { label: string; chec
         onClick={() => onChange(!checked)}
         className={`relative mt-0.5 h-8 w-14 shrink-0 rounded-full transition-colors ${checked ? 'bg-denra-ink' : 'bg-denra-sand'}`}
       >
-        <span className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-7' : 'translate-x-1'}`} />
+        <span className={`absolute left-0 top-1 h-6 w-6 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-7' : 'translate-x-1'}`} />
       </button>
       <label htmlFor={id} className="cursor-pointer">
         <span className="block text-[16px] font-medium text-denra-ink">{label}</span>
