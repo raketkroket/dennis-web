@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Calculator, FileText, Image, Inbox, LayoutGrid, Star } from 'lucide-react';
-import { useAdminClient } from '../auth';
+import { ArrowRight, Calculator, FileText, Image, Inbox, LayoutGrid, Palette, Star } from 'lucide-react';
+import { useAdminClient, useAuth } from '../auth';
 import { formatDate, friendlyError, Notice, PageHeader, StatusBadge } from '../ui';
 
 interface Counts { newRequests: number; pendingReviews: number; published: number; hidden: number; photos: number }
@@ -12,6 +12,14 @@ export default function Overview() {
   const [counts, setCounts] = useState<Counts | null>(null);
   const [recent, setRecent] = useState<RecentRequest[]>([]);
   const [error, setError] = useState('');
+  const [name, setName] = useState('');
+  const { state } = useAuth();
+  const userId = state.status === 'admin' ? state.session.user.id : '';
+
+  useEffect(() => {
+    if (!userId) return;
+    client.from('admin_users').select('display_name').eq('user_id', userId).maybeSingle().then(({ data }) => setName(data?.display_name ?? ''));
+  }, [client, userId]);
 
   useEffect(() => {
     const count = async (table: string, apply: (query: any) => any) => {
@@ -41,13 +49,14 @@ export default function Overview() {
   ];
   const tasks = [
     { to: '/admin/projecten/nieuw', icon: LayoutGrid, label: 'Nieuw project toevoegen', text: 'Foto’s uploaden, titel en omschrijving invullen en publiceren.' },
+    { to: '/admin/uitstraling', icon: Palette, label: 'Kleuren en foto’s', text: 'De kleuren van de website en de grote foto’s op de pagina’s.' },
     { to: '/admin/website', icon: FileText, label: 'Teksten aanpassen', text: 'Homepage, dienstenpagina’s en veelgestelde vragen.' },
     { to: '/admin/calculator', icon: Calculator, label: 'Prijzen bijwerken', text: 'Basisprijzen en opties van de prijscalculator.' },
   ];
 
   return (
     <div className="space-y-10">
-      <PageHeader title="Overzicht" description="Welkom in het beheer van uw website. Hier ziet u wat er op u wacht en wat u kunt aanpassen." />
+      <PageHeader title={`${greeting()}${name ? `, ${name.split(' ')[0]}` : ''}`} description="Welkom in het beheer van uw website. Hier ziet u wat er op u wacht en wat u kunt aanpassen." />
       {error && <Notice tone="error">{error}</Notice>}
 
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -87,7 +96,7 @@ export default function Overview() {
 
       <section aria-labelledby="tasks-heading">
         <h2 id="tasks-heading" className="font-serif text-2xl">Snel naar</h2>
-        <ul className="mt-4 grid gap-4 md:grid-cols-3">
+        <ul className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {tasks.map((task) => (
             <li key={task.to}>
               <Link to={task.to} className="flex h-full flex-col border border-denra-line bg-white/60 p-5 hover:border-denra-ink">
@@ -102,3 +111,8 @@ export default function Overview() {
     </div>
   );
 }
+
+const greeting = () => {
+  const hour = new Date().getHours();
+  return hour < 6 ? 'Goedenacht' : hour < 12 ? 'Goedemorgen' : hour < 18 ? 'Goedemiddag' : 'Goedenavond';
+};

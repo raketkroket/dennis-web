@@ -6,28 +6,30 @@ import { useLanguage } from '../i18n/useLanguage';
 import { useStartedOnClient } from '../lib/hydration';
 
 import heroImage from '../../headerimg.png?w=768;1280;1720&format=webp&as=picture';
+import { pagePhotoAlt, usePagePhoto } from '../content/pagePhotos';
 
 export default function HeroSection() {
   const { t, language } = useLanguage();
   // First page load: show the prerendered content at once; animate on later visits.
   const animateIn = useStartedOnClient();
+  const chosenPhoto = usePagePhoto('homeHero');
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" aria-label={t('marketing.heroTitle')}>
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src={heroImage.img.src}
-          srcSet={Object.values(heroImage.sources)[0]}
+          src={chosenPhoto?.image.src ?? heroImage.img.src}
+          srcSet={chosenPhoto ? chosenPhoto.image.srcSet : Object.values(heroImage.sources)[0]}
           sizes="100vw"
-          alt={language === 'en' ? 'Light bathroom with a freestanding bath, wooden vanity unit with a basin and a tall window onto greenery' : 'Lichte badkamer met vrijstaand bad, houten wastafelmeubel met waskom en een hoog raam met uitzicht op groen'}
+          alt={chosenPhoto ? pagePhotoAlt(chosenPhoto, language) : language === 'en' ? 'Light bathroom with a freestanding bath, wooden vanity unit with a basin and a tall window onto greenery' : 'Lichte badkamer met vrijstaand bad, houten wastafelmeubel met waskom en een hoog raam met uitzicht op groen'}
           width={1800}
           height={1200}
           fetchPriority="high"
           decoding="async"
           className="w-full h-full object-cover object-center brightness-[0.78] contrast-[0.92] saturate-[0.88]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#120d09]/82 via-[#120d09]/42 to-[#120d09]/18" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#120d09]/58 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-c-120d09/82 via-c-120d09/42 to-c-120d09/18" />
+        <div className="absolute inset-0 bg-gradient-to-t from-c-120d09/58 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
@@ -39,8 +41,8 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
             className="flex items-center gap-3 mb-8"
           >
-            <div className="w-10 h-px bg-[#f3ece2]/50" />
-            <span className="text-xs tracking-[0.34em] uppercase text-[#f3ece2]/78 font-medium">
+            <div className="w-10 h-px bg-c-f3ece2/50" />
+            <span className="text-xs tracking-[0.34em] uppercase text-c-f3ece2/78 font-medium">
               {t('marketing.heroLabel')}
             </span>
           </m.div>
@@ -49,18 +51,18 @@ export default function HeroSection() {
             initial={animateIn && { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-[#f4eee5] leading-[0.96] mb-6 max-w-[26rem]"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-c-f4eee5 leading-[0.96] mb-6 max-w-[26rem]"
           >
             {t('marketing.heroTitle')}
             <br />
-            <span className="text-[#ddd3c5]">{t('marketing.heroTitleAccent')}</span>
+            <span className="text-c-ddd3c5">{t('marketing.heroTitleAccent')}</span>
           </m.h1>
 
           <m.p
             initial={animateIn && { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-base md:text-lg text-[#fffaf3] font-medium leading-relaxed mb-10 max-w-md"
+            className="text-base md:text-lg text-c-fffaf3 font-medium leading-relaxed mb-10 max-w-md"
             style={{ textShadow: '0 2px 8px rgba(18, 13, 9, 0.72)' }}
           >
             {t('marketing.heroDescription')}
@@ -74,14 +76,14 @@ export default function HeroSection() {
           >
             <Link
               to="/configurator"
-              className="inline-flex items-center justify-center gap-2 bg-[#f4eee5] text-[#120d09] font-medium px-8 py-4 rounded-sm hover:bg-[#e5dbcd] transition-all duration-200 text-sm tracking-[0.16em] uppercase"
+              className="inline-flex items-center justify-center gap-2 bg-c-f4eee5 text-c-120d09 font-medium px-8 py-4 rounded-sm hover:bg-c-e5dbcd transition-all duration-200 text-sm tracking-[0.16em] uppercase"
             >
               {t('common.calculatePrice')}
               <ArrowRight size={16} />
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 border border-[#f4eee5]/34 text-[#f4eee5] font-medium px-8 py-4 rounded-sm hover:bg-[#f4eee5] hover:text-[#120d09] transition-all duration-200 text-sm tracking-[0.16em] uppercase backdrop-blur-sm"
+              className="inline-flex items-center justify-center gap-2 border border-c-f4eee5/34 text-c-f4eee5 font-medium px-8 py-4 rounded-sm hover:bg-c-f4eee5 hover:text-c-120d09 transition-all duration-200 text-sm tracking-[0.16em] uppercase backdrop-blur-sm"
             >
               {t('marketing.consultation')}
             </Link>

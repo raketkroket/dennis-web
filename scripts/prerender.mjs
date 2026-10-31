@@ -3,6 +3,7 @@
 // without running JavaScript. In the browser React takes this markup over
 // (index.tsx). Also writes 404.html, sitemap.xml and an empty shell for the
 // admin (see vercel.json).
+import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -11,7 +12,20 @@ const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
 const ssrDir = join(root, 'dist-ssr');
 const server = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
-const { pages, notFound, canonicalUrl, siteUrl, render } = server;
+const { pages, notFound, canonicalUrl, siteUrl, render, loadPublishedContent, packContent } = server;
+
+// Dennis's texts, photos, colours and projects from the admin. Rendered into
+// every page, and saved once as a cacheable file the browser loads before it
+// takes over the page (index.tsx), so both start from the same content.
+const content = await loadPublishedContent();
+let contentTags = '';
+if (content) {
+  const packed = packContent(content);
+  const file = `/assets/content-${createHash('sha256').update(packed).digest('hex').slice(0, 12)}.json`;
+  await writeFile(join(dist, file), packed);
+  contentTags = `<meta name="denra-content" content="${file}"><link rel="preload" href="${file}" as="fetch" crossorigin="anonymous">`;
+}
+console.log(content ? 'Using the content from the admin' : 'No database configured: using the built-in content');
 
 // The stylesheet goes straight into each page: one round trip less before
 // the first paint, which matters most on a phone's first visit.
@@ -83,7 +97,7 @@ function service(page) {
 const target = (path) => (path === '/' ? join(dist, 'index.html') : join(dist, `${path.slice(1)}.html`));
 
 async function writePage(page, url, file) {
-  const rendered = await render(url);
+  const rendered = await render(url, content);
   if (!rendered.includes('<main')) throw new Error(`Prerendered ${page.path} has no <main>`);
   // React puts image preload hints in front of the markup; they belong in <head>.
   // Only the high-priority hint (the hero photo) is kept, so it is not held
@@ -92,8 +106,8 @@ async function writePage(page, url, file) {
   const markup = rendered.slice(allHints.length);
   const hints = (allHints.match(/<link [^>]*\/?>/g) ?? []).filter((hint) => hint.includes('fetchPriority="high"')).join('');
   const html = withMeta(template, page)
-    .replace('</head>', `${hints}${breadcrumbs(page)}${service(page)}</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
+    .replace('</head>', `${hints}${contentTags}${breadcrumbs(page)}${service(page)}</head>`)
+    .replace('<div id="root"></div>', () => `<div id="root">${markup}</div>`);
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, html);
 }

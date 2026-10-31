@@ -12,12 +12,12 @@ export default function ServiceLinks() {
   ];
 
   return (
-    <p className="mt-6 text-sm text-[#cfbca7]">
+    <p className="mt-6 text-sm text-c-cfbca7">
       {t('site.serviceLinksLabel')}{' '}
       {services.map((service, index) => (
         <React.Fragment key={service.path}>
           {index > 0 && <span aria-hidden="true"> · </span>}
-          <Link to={service.path} className="text-[#f6f0e8] underline decoration-[#cfbca7]/50 underline-offset-4 hover:decoration-[#f6f0e8]">{service.label}</Link>
+          <Link to={service.path} className="text-c-f6f0e8 underline decoration-c-cfbca7/50 underline-offset-4 hover:decoration-c-f6f0e8">{service.label}</Link>
         </React.Fragment>
       ))}
     </p>

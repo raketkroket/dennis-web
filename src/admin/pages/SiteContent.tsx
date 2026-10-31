@@ -84,7 +84,7 @@ export default function SiteContent() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Website aanpassen" description="Pas de teksten op de website aan. Wat u hier niet wijzigt, blijft de huidige tekst. Engelse teksten mag u leeg laten." />
+      <PageHeader title="Teksten" description="Pas de teksten op de website aan. Wat u hier niet wijzigt, blijft de huidige tekst. Engelse teksten mag u leeg laten." />
       <div className="-mx-4 overflow-x-auto px-4">
         <div className="flex min-w-max gap-2" role="tablist" aria-label="Onderdeel van de website">
           {[...contentSections.map((candidate) => ({ id: candidate.id, title: candidate.title })), { id: 'faq', title: 'Veelgestelde vragen' }].map((candidate) => (

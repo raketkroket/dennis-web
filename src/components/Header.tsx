@@ -56,9 +56,9 @@ export default function Header() {
   return (
     <>
     {/* First stop for keyboard users: straight past the navigation. */}
-    <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-[#231A12] focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-[#F6F0E8]">{t('site.skipToContent')}</a>
+    <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-c-231a12 focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-c-f6f0e8">{t('site.skipToContent')}</a>
     <header
-      className={`fixed inset-x-0 top-0 z-40 h-[74px] border-b backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled ? 'border-[#5c5147]/22 bg-[#eae2d6]/90 shadow-[0_10px_26px_rgba(29,23,18,0.1)]' : 'border-[#5c5147]/10 bg-[#eae2d6]/60'}`}
+      className={`fixed inset-x-0 top-0 z-40 h-[74px] border-b backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled ? 'border-c-5c5147/22 bg-c-eae2d6/90 shadow-[0_10px_26px_rgba(29,23,18,0.1)]' : 'border-c-5c5147/10 bg-c-eae2d6/60'}`}
     >
       <div className="mx-auto h-full max-w-[1728px] px-[clamp(1rem,2vw,3rem)]">
         <div className="grid h-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 min-[1280px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1280px]:gap-[clamp(1.5rem,2.5vw,4rem)]">
@@ -78,12 +78,12 @@ export default function Header() {
                   key={link.path}
                   to={link.path}
                   className={`group relative whitespace-nowrap text-[clamp(0.7rem,0.72vw,0.78rem)] font-medium uppercase tracking-[0.1em] transition-colors duration-200 ${
-                    isActive ? 'text-[#12100d]' : 'text-[#4a4037] hover:text-[#12100d]'
+                    isActive ? 'text-c-12100d' : 'text-c-4a4037 hover:text-c-12100d'
                   }`}
                 >
                   {link.label}
                   <span
-                    className={`absolute -bottom-2 left-0 h-px bg-[#12100d] transition-all duration-300 ${
+                    className={`absolute -bottom-2 left-0 h-px bg-c-12100d transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   />
@@ -99,7 +99,7 @@ export default function Header() {
               href={`https://wa.me/${business.whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-[#4a4037] hover:text-[#12100d] transition-colors duration-200"
+              className="flex items-center gap-2 text-sm text-c-4a4037 hover:text-c-12100d transition-colors duration-200"
               aria-label={t('common.whatsappDenra')}
             >
               <MessageCircle size={16} />
@@ -123,7 +123,7 @@ export default function Header() {
               <span className="hidden sm:inline">{t('common.calculatePrice')}</span>
             </Link>
             <button
-              className="flex h-11 w-11 shrink-0 items-center justify-center border border-[#5c5147]/20 text-[#12100d] transition-colors duration-200 hover:bg-[#231A12] hover:text-[#f6f0e8]"
+              className="flex h-11 w-11 shrink-0 items-center justify-center border border-c-5c5147/20 text-c-12100d transition-colors duration-200 hover:bg-c-231a12 hover:text-c-f6f0e8"
               onClick={() => setMobileOpen((isOpen) => !isOpen)}
               aria-label={mobileOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={mobileOpen}
@@ -145,7 +145,7 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-0 top-[74px] z-50 h-[calc(100dvh-74px)] overflow-y-auto overscroll-contain border-t border-[#cbb9a5]/50 bg-[#f6f0e8] shadow-[0_18px_36px_rgba(35,26,18,0.16)] min-[1280px]:hidden"
+              className="fixed inset-x-0 top-[74px] z-50 h-[calc(100dvh-74px)] overflow-y-auto overscroll-contain border-t border-c-cbb9a5/50 bg-c-f6f0e8 shadow-[0_18px_36px_rgba(35,26,18,0.16)] min-[1280px]:hidden"
               role="dialog"
               aria-modal="true"
               aria-label={t('nav.menu')}
@@ -157,8 +157,8 @@ export default function Header() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`flex min-h-12 items-center whitespace-nowrap border-b border-[#cbb9a5]/30 py-2 text-xl font-serif font-medium transition-colors duration-200 ${
-                        isActive ? 'text-[#12100d]' : 'text-[#4f4338] hover:text-[#12100d]'
+                    className={`flex min-h-12 items-center whitespace-nowrap border-b border-c-cbb9a5/30 py-2 text-xl font-serif font-medium transition-colors duration-200 ${
+                        isActive ? 'text-c-12100d' : 'text-c-4f4338 hover:text-c-12100d'
                     }`}
                   >
                     {link.label}
@@ -166,7 +166,7 @@ export default function Header() {
                 );
               })}
               <div className="mt-auto pt-8 flex flex-col gap-3">
-                <div className="flex min-h-11 items-center justify-between border-y border-[#cbb9a5]/50 py-3">
+                <div className="flex min-h-11 items-center justify-between border-y border-c-cbb9a5/50 py-3">
                   <span className="denra-label">{t('common.language')}</span>
                   <LanguageSwitcher />
                 </div>

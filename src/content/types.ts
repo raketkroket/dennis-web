@@ -35,10 +35,19 @@ export interface Project {
 
 export type TextOverrides = Record<string, { nl: string; en: string }>;
 
+/** A photo Dennis chose for a fixed place on a page (Uitstraling → Foto's). */
+export interface PagePhoto {
+  image: ResponsiveImage;
+  altNl: string;
+  altEn: string;
+}
+
 export interface SiteContent {
   business: BusinessSettings;
   projects: Project[];
   faqs: Faq[];
   texts: TextOverrides;
   calculator: CalculatorConfig;
+  /** Chosen photos by slot (see src/content/pagePhotos.ts). */
+  pagePhotos: Record<string, PagePhoto>;
 }

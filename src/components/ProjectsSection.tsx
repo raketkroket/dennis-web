@@ -32,7 +32,7 @@ export default function ProjectsSection() {
               <div className="denra-line" />
               <span className="denra-label">Recente projecten</span>
             </div>
-            <h2 id="projecten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-[#1d1712] leading-tight">
+            <h2 id="projecten-heading" className="font-serif text-4xl md:text-5xl font-semibold text-c-1d1712 leading-tight">
               Onze gerealiseerde<br />projecten
             </h2>
           </m.div>
@@ -44,7 +44,7 @@ export default function ProjectsSection() {
           >
             <Link
               to="/projecten"
-                className="inline-flex items-center gap-2 text-sm font-medium text-[#1d1712] border border-[#5c5147]/18 px-6 py-3 rounded-sm tracking-[0.16em] uppercase hover:bg-[#d8d0c4] transition-all duration-200 whitespace-nowrap"
+                className="inline-flex items-center gap-2 text-sm font-medium text-c-1d1712 border border-c-5c5147/18 px-6 py-3 rounded-sm tracking-[0.16em] uppercase hover:bg-c-d8d0c4 transition-all duration-200 whitespace-nowrap"
             >
               Bekijk alle projecten
               <ArrowRight size={16} />
@@ -63,7 +63,7 @@ export default function ProjectsSection() {
               className="group cursor-pointer"
             >
               <Link to="/projecten" className="block h-full">
-                <div className="relative overflow-hidden rounded-[18px] aspect-[4/3] mb-4 border border-[#d9cdb8] bg-[#efe6dc] shadow-[0_12px_30px_rgba(29,23,18,0.03)]">
+                <div className="relative overflow-hidden rounded-[18px] aspect-[4/3] mb-4 border border-c-d9cdb8 bg-c-efe6dc shadow-[0_12px_30px_rgba(29,23,18,0.03)]">
                   <img loading="lazy" decoding="async"
                     src={project.image}
                     srcSet={project.srcSet}
@@ -73,15 +73,15 @@ export default function ProjectsSection() {
                     height={600}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
-                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.18em] uppercase bg-[#f7f1ea]/90 text-[#3c342c] px-3 py-1.5 rounded-sm font-medium">
+                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.18em] uppercase bg-c-f7f1ea/90 text-c-3c342c px-3 py-1.5 rounded-sm font-medium">
                     {project.tag}
                   </span>
                 </div>
                 <div className="px-1">
-                  <h3 className="font-serif text-xl md:text-[1.6rem] font-semibold text-[#1d1712] mb-1 leading-tight group-hover:text-[#3c342c] transition-colors duration-200">
+                  <h3 className="font-serif text-xl md:text-[1.6rem] font-semibold text-c-1d1712 mb-1 leading-tight group-hover:text-c-3c342c transition-colors duration-200">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-[#5f544a] leading-relaxed">{project.category}</p>
+                  <p className="text-sm text-c-5f544a leading-relaxed">{project.category}</p>
                 </div>
               </Link>
             </m.div>

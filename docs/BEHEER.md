@@ -4,9 +4,18 @@ Ga naar **denrabadkamers.nl/admin** en log in met uw e-mailadres en wachtwoord. 
 
 Wijzigingen staan direct op de website zodra u op **Opslaan** drukt. Vergeet u op te slaan en wilt u de pagina verlaten, dan vraagt de website eerst of u dat zeker weet.
 
+Klaar met aanpassen? Klik links onderin op **Website bijwerken**. Na ongeveer twee minuten staan uw wijzigingen vast in de pagina's: sneller voor bezoekers, en zo leest Google ze ook.
+
+Een uitgebreide handleiding met afbeeldingen staat in `docs/Handleiding-beheer-Denra.pdf`.
+
 ## Overzicht
 
 De startpagina van het beheer. U ziet hoeveel nieuwe aanvragen en reviews op u wachten.
+
+## Uitstraling
+
+- **Kleuren**: kies een van de zes kleurensets. Met **Eerst bekijken** ziet u de website in die kleuren zonder iets op te slaan. **Warm zand** is de oorspronkelijke uitstraling.
+- **Foto's op de pagina's**: kies voor elke vaste plek (zoals de grote foto bovenaan een pagina) een foto uit de fotobibliotheek, of upload een nieuwe. Met **Standaard** komt de oorspronkelijke foto terug.
 
 ## Projecten
 
@@ -26,13 +35,15 @@ Alle foto's op één plek. Upload hier meerdere foto's tegelijk; ze worden autom
 
 Reviews die klanten via de website sturen, verschijnen pas nadat u op **Publiceren op de website** drukt. U kunt een review ook weer van de website halen. De knoppen in de e-mail die u bij elke review krijgt, blijven gewoon werken.
 
+De reviews van de vorige website staan onderaan. Die kunt u niet aanpassen, maar wel **verbergen** en later weer tonen.
+
 ## Aanvragen
 
 Elke offerteaanvraag via de website staat hier, ook als een e-mail niet aankomt. U ziet de gegevens van de klant, het bericht en de prijsberekening. Met de knoppen belt, WhatsAppt of mailt u de klant direct. Houd met de **status** bij hoe ver u bent, en schrijf eigen notities die alleen u ziet.
 
-## Website aanpassen
+## Teksten
 
-Pas hier de teksten van de homepage, de dienstenpagina's, Over ons en Contact aan, en de **veelgestelde vragen** per pagina. De prijzen op de badkamer- en calculatorpagina komen rechtstreeks uit **Calculator en prijzen**; pas ze daar aan.
+Pas hier de teksten van de homepage, de dienstenpagina's, de kostenpagina, de pagina's voor Almere en Amsterdam, Over ons en Contact aan, en de **veelgestelde vragen** per pagina. Staat er {price} of {area} in een tekst, laat dat dan staan: daar vult de website zelf de prijs en oppervlakte uit de calculator in. De prijzen op de badkamer- en calculatorpagina komen rechtstreeks uit **Calculator en prijzen**; pas ze daar aan.
 
 - Links staat de Nederlandse tekst, rechts de Engelse. Laat u de Engelse tekst leeg, dan ziet een Engelstalige bezoeker uw Nederlandse tekst.
 - Heeft u de Nederlandse tekst aangepast maar de Engelse niet, dan krijgt u een melding.

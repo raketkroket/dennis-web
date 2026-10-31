@@ -12,10 +12,14 @@ interface PhotoPickerProps {
   exclude: string[];
   onClose: () => void;
   onPick: (photos: LibraryPhoto[]) => void;
+  /** Choose exactly one photo (for a fixed place on a page). */
+  single?: boolean;
+  title?: string;
+  actionLabel?: string;
 }
 
 /** Dialog for adding library photos (or fresh uploads) to a project. */
-export default function PhotoPicker({ open, exclude, onClose, onPick }: PhotoPickerProps) {
+export default function PhotoPicker({ open, exclude, onClose, onPick, single = false, title = 'Foto’s toevoegen', actionLabel = 'Toevoegen aan project' }: PhotoPickerProps) {
   const client = useAdminClient();
   const [photos, setPhotos] = useState<LibraryPhoto[] | null>(null);
   const [error, setError] = useState('');
@@ -28,6 +32,7 @@ export default function PhotoPicker({ open, exclude, onClose, onPick }: PhotoPic
   useEffect(() => {
     if (!open) return undefined;
     setSelected([]);
+    setFilter(single ? 'all' : 'unused');
     listLibrary(client).then(setPhotos).catch((loadError) => setError(friendlyError(loadError)));
     const opener = document.activeElement as HTMLElement | null;
     closeRef.current?.focus();
@@ -40,24 +45,24 @@ export default function PhotoPicker({ open, exclude, onClose, onPick }: PhotoPic
       document.body.style.overflow = overflow;
       opener?.focus();
     };
-  }, [open, client]);
+  }, [open, client, single]);
 
   if (!open) return null;
   const available = (photos ?? []).filter((photo) => !exclude.includes(photo.id) && photo.image && (filter === 'all' || photo.usedIn.length === 0));
-  const toggle = (id: string) => setSelected((current) => (current.includes(id) ? current.filter((candidate) => candidate !== id) : [...current, id]));
+  const toggle = (id: string) => setSelected((current) => (single ? [id] : current.includes(id) ? current.filter((candidate) => candidate !== id) : [...current, id]));
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-denra-night/60 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="picker-title">
       <div className="flex max-h-[92vh] w-full max-w-4xl flex-col bg-denra-ivory">
         <div className="flex items-center justify-between gap-4 border-b border-denra-line px-5 py-4">
-          <h2 id="picker-title" className="font-serif text-2xl">Foto’s toevoegen</h2>
+          <h2 id="picker-title" className="font-serif text-2xl">{title}</h2>
           <button ref={closeRef} type="button" onClick={onClose} className="flex h-12 items-center gap-2 border border-denra-ink/20 px-4"><X size={18} aria-hidden="true" />Sluiten</button>
         </div>
         <div className="overflow-y-auto px-5 py-5">
           <PhotoUploader onUploaded={(media) => {
             const fresh = media.map((row) => ({ ...row, image: mediaImage(row), usedIn: [] }));
             setPhotos((current) => [...fresh, ...(current ?? [])]);
-            setSelected((current) => [...current, ...fresh.map((photo) => photo.id)]);
+            setSelected((current) => (single ? fresh.slice(0, 1).map((photo) => photo.id) : [...current, ...fresh.map((photo) => photo.id)]));
           }} />
           <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-denra-line pt-5">
             <span className="mr-2 text-[15px] font-medium">Uit de fotobibliotheek:</span>
@@ -88,7 +93,7 @@ export default function PhotoPicker({ open, exclude, onClose, onPick }: PhotoPic
         <div className="flex items-center justify-between gap-4 border-t border-denra-line px-5 py-4">
           <p className="text-[15px] text-denra-muted">{selected.length} geselecteerd</p>
           <button type="button" disabled={!selected.length} onClick={() => { onPick((photos ?? []).filter((photo) => selected.includes(photo.id))); onClose(); }} className="btn-primary min-h-12">
-            Toevoegen aan project
+            {actionLabel}
           </button>
         </div>
       </div>

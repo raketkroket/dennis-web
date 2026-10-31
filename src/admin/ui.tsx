@@ -122,13 +122,13 @@ export function StatusBadge({ status }: { status: string }) {
   const map: Record<string, [string, string]> = {
     published: ['Zichtbaar', 'bg-[#E4EFE5] text-[#2E4A32]'],
     hidden: ['Verborgen', 'bg-denra-stone text-denra-muted'],
-    archived: ['Gearchiveerd', 'bg-[#EDE7E0] text-[#6B5D50]'],
+    archived: ['Gearchiveerd', 'bg-c-ede7e0 text-c-6b5d50'],
     pending: ['Te beoordelen', 'bg-[#FBF3E4] text-[#5E4419]'],
     approved: ['Gepubliceerd', 'bg-[#E4EFE5] text-[#2E4A32]'],
     deleted: ['Verwijderd', 'bg-[#FBEDEB] text-[#6F2620]'],
     nieuw: ['Nieuw', 'bg-[#FBF3E4] text-[#5E4419]'],
-    in_behandeling: ['In behandeling', 'bg-[#E6EEF6] text-[#27405A]'],
-    offerte_verstuurd: ['Offerte verstuurd', 'bg-[#EEE8F5] text-[#43325E]'],
+    in_behandeling: ['In behandeling', 'bg-c-e6eef6 text-c-27405a'],
+    offerte_verstuurd: ['Offerte verstuurd', 'bg-c-eee8f5 text-c-43325e'],
     afgerond: ['Afgerond', 'bg-[#E4EFE5] text-[#2E4A32]'],
     gearchiveerd: ['Gearchiveerd', 'bg-denra-stone text-denra-muted'],
   };
@@ -138,7 +138,7 @@ export function StatusBadge({ status }: { status: string }) {
 
 // ── Form fields ─────────────────────────────────────────────────────────
 
-const inputClass = 'block w-full min-w-0 rounded-[2px] border border-denra-ink/25 bg-white px-4 py-3 text-[17px] text-denra-ink placeholder:text-[#9A8E82] hover:border-denra-ink/45 focus:border-denra-ink focus:outline-none focus:ring-2 focus:ring-denra-bronze/25 aria-[invalid=true]:border-[#A33B32]';
+const inputClass = 'block w-full min-w-0 rounded-[2px] border border-denra-ink/25 bg-white px-4 py-3 text-[17px] text-denra-ink placeholder:text-c-9a8e82 hover:border-denra-ink/45 focus:border-denra-ink focus:outline-none focus:ring-2 focus:ring-denra-bronze/25 aria-[invalid=true]:border-[#A33B32]';
 
 interface FieldShellProps {
   label: string;
@@ -244,7 +244,7 @@ export function ChoiceGroup<T extends string>({ label, value, options, onChange,
       <div className="grid gap-2 sm:grid-cols-3">
         {options.map((option) => (
           <label key={option.value} className={`flex min-h-14 cursor-pointer items-start gap-3 border px-4 py-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-denra-bronze ${value === option.value ? 'border-denra-ink bg-white ring-1 ring-denra-ink' : 'border-denra-ink/20 bg-white/60 hover:border-denra-ink/50'}`}>
-            <input type="radio" name={name} value={option.value} checked={value === option.value} onChange={() => onChange(option.value)} className="mt-1 h-4 w-4 accent-[#231A12]" />
+            <input type="radio" name={name} value={option.value} checked={value === option.value} onChange={() => onChange(option.value)} className="mt-1 h-4 w-4 accent-c-231a12" />
             <span>
               <span className="block text-[16px] font-medium">{option.label}</span>
               {option.description && <span className="block text-[13px] text-denra-muted">{option.description}</span>}

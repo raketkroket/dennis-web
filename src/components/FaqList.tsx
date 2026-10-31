@@ -18,21 +18,21 @@ export default function FaqList({ pages, id }: { pages: FaqPage[]; id: string })
   if (!items.length) return null;
 
   return (
-    <section className="py-20 bg-[#faf6f0]" aria-labelledby={`${id}-heading`}>
+    <section className="py-20 bg-c-faf6f0" aria-labelledby={`${id}-heading`}>
       <div className="max-w-3xl mx-auto px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-4">
           <div className="denra-line" />
           <span className="denra-label">{t('site.faqLabel')}</span>
         </div>
-        <h2 id={`${id}-heading`} className="font-serif text-4xl font-semibold text-[#231A12] mb-8">{t('site.faqTitle')}</h2>
-        <div className="divide-y divide-[#cfbca7]/55 border-y border-[#cfbca7]/55">
+        <h2 id={`${id}-heading`} className="font-serif text-4xl font-semibold text-c-231a12 mb-8">{t('site.faqTitle')}</h2>
+        <div className="divide-y divide-c-cfbca7/55 border-y border-c-cfbca7/55">
           {items.map((faq) => (
             <details key={faq.id} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 font-serif text-xl font-semibold text-[#231A12] [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 font-serif text-xl font-semibold text-c-231a12 [&::-webkit-details-marker]:hidden">
                 <h3 className="font-serif text-xl font-semibold">{pick(faq.questionNl, faq.questionEn)}</h3>
-                <span aria-hidden="true" className="mt-1 text-[#7a6552] transition-transform duration-200 group-open:rotate-45">+</span>
+                <span aria-hidden="true" className="mt-1 text-c-7a6552 transition-transform duration-200 group-open:rotate-45">+</span>
               </summary>
-              <p className="mt-3 text-[#6B5D50] leading-relaxed">{pick(faq.answerNl, faq.answerEn)}</p>
+              <p className="mt-3 text-c-6b5d50 leading-relaxed">{pick(faq.answerNl, faq.answerEn)}</p>
             </details>
           ))}
         </div>

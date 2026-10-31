@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Star } from 'lucide-react';
+import { Eye, EyeOff, Star } from 'lucide-react';
+import { hiddenReviewsKey, parseHiddenReviews } from '../../hooks/usePublishedReviews';
 import { reviews as builtInReviews } from '../../data/reviews';
 import { useAdminClient } from '../auth';
 import { formatDate, friendlyError, LoadingBlock, Notice, PageHeader, StatusBadge } from '../ui';
@@ -29,6 +30,23 @@ export default function Reviews() {
   const [tab, setTab] = useState<ReviewRow['status']>('pending');
   const [message, setMessage] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [hiddenBuiltIn, setHiddenBuiltIn] = useState<string[]>([]);
+
+  useEffect(() => {
+    client.from('site_content').select('value_nl').eq('key', hiddenReviewsKey).maybeSingle().then(({ data }) => setHiddenBuiltIn(parseHiddenReviews(data?.value_nl)));
+  }, [client]);
+
+  const toggleBuiltIn = async (id: string, name: string) => {
+    const next = hiddenBuiltIn.includes(id) ? hiddenBuiltIn.filter((candidate) => candidate !== id) : [...hiddenBuiltIn, id];
+    setBusyId(id);
+    const { error } = next.length
+      ? await client.from('site_content').upsert({ key: hiddenReviewsKey, value_nl: next.join(','), value_en: '' })
+      : await client.from('site_content').delete().eq('key', hiddenReviewsKey);
+    setBusyId(null);
+    if (error) return setMessage({ tone: 'error', text: friendlyError(error) });
+    setHiddenBuiltIn(next);
+    setMessage({ tone: 'success', text: next.includes(id) ? `De review van ${name} staat niet meer op de website.` : `De review van ${name} staat weer op de website.` });
+  };
 
   const load = useCallback(async () => {
     const { data, error } = await client.from('reviews').select('id, name, email, city, rating, project, text, status, created_at, approved_at').order('created_at', { ascending: false });
@@ -88,9 +106,19 @@ export default function Reviews() {
 
       <section className="border-t border-denra-line pt-8" aria-labelledby="builtin-reviews">
         <h2 id="builtin-reviews" className="font-serif text-2xl">Vaste reviews ({builtInReviews.length})</h2>
-        <p className="mt-2 max-w-2xl text-denra-muted">Deze reviews stonden al op de vorige website en zijn vast in de code opgenomen. Ze worden altijd getoond. Wilt u er een aanpassen of weghalen, vraag dat dan aan de websitebouwer.</p>
+        <p className="mt-2 max-w-2xl text-denra-muted">Deze reviews stonden al op de vorige website. U kunt ze niet aanpassen, maar wel van de website halen en later weer tonen.</p>
         <ul className="mt-4 divide-y divide-denra-line border-y border-denra-line text-[15px]">
-          {builtInReviews.map((review) => <li key={review.id} className="flex justify-between gap-4 py-2.5"><span>{review.name}{review.city ? `, ${review.city}` : ''} – {review.project}</span><span className="shrink-0 text-denra-muted">{review.date}</span></li>)}
+          {builtInReviews.map((review) => {
+            const hidden = hiddenBuiltIn.includes(review.id);
+            return (
+              <li key={review.id} className={`flex flex-wrap items-center justify-between gap-3 py-2.5 ${hidden ? 'text-denra-muted' : ''}`}>
+                <span className="min-w-0">{review.name}{review.city ? `, ${review.city}` : ''} – {review.project} <span className="text-denra-muted">· {review.rating}/5 · {review.date}</span>{hidden && <span className="ml-2 bg-denra-stone px-2 py-0.5 text-[12px]">Verborgen</span>}</span>
+                <button type="button" disabled={busyId === review.id} onClick={() => toggleBuiltIn(review.id, review.name)} className="inline-flex min-h-10 items-center gap-2 border border-denra-ink/20 px-3 text-[14px] text-denra-ink hover:bg-denra-stone">
+                  {hidden ? <Eye size={16} aria-hidden="true" /> : <EyeOff size={16} aria-hidden="true" />}{hidden ? 'Weer tonen' : 'Verbergen'}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>

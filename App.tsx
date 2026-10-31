@@ -4,13 +4,16 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import './styles.css';
 import { LanguageProvider } from './src/i18n/LanguageProvider';
 import { SiteContentProvider } from './src/content/SiteContentProvider';
+import type { SiteContent } from './src/content/types';
 
 import Home from './src/pages/Home';
 import NotFound from './src/pages/NotFound';
 import LocalServicePage from './src/pages/LocalServicePage';
-import { useLanguage } from './src/i18n/useLanguage';
 import { canonicalUrl, metaFor } from './src/seo/pages';
 import { trackLinkClick } from './src/lib/analytics';
+import { useSiteContent } from './src/content/SiteContentProvider';
+import { useHasMounted } from './src/lib/hydration';
+import { defaultThemeId, isThemeId, themeContentKey, themeStylesheet } from './src/lib/theme';
 
 // Pages load as separate files. Before React takes over a prerendered page,
 // index.tsx loads that page's file first (preloadPage), so the whole page is
@@ -58,107 +61,13 @@ export const preloadPage = (pathname: string) => pagesByPath[pathname.replace(/\
 
 const AdminApp = lazy(() => import('./src/admin/AdminApp'));
 
+// The city pages; their texts are in the translations (localBadkamerAlmere and
+// so on), so Dennis can change them in the admin like any other text.
 const localPages = {
-  nl: {
-  badkamerAlmere: {
-    city: 'Almere',
-    serviceType: 'badkamer' as const,
-    title: 'Badkamer renovatie in Almere',
-    intro: 'Denra Badkamers verzorgt complete badkamerrenovaties in Almere. Van sloopwerk, leidingwerk en tegelwerk tot sanitair, afwerking en luxe details: wij zorgen voor een badkamer die zowel mooi als functioneel is.',
-    bullets: [
-      'Complete renovatie, van sloop tot afwerking',
-      'Een oplossing op maat voor kleine en grote badkamers',
-      'Vaste communicatie, duidelijke planning en een transparante offerte',
-      'Luxe materialen, moderne afwerkingen en duurzame kwaliteit',
-      'Tegelwerk, vloerverwarming, verlaagd plafond en nisjes op maat',
-      'Vakkundige uitvoering door een specialist in badkamerrenovaties',
-    ],
-    faq: [
-      {
-        question: 'Wat kost een badkamerrenovatie in Almere?',
-        answer: 'De prijs hangt af van de omvang, het sanitair, de afwerking en het benodigde werk zoals leidingwerk of verlaagde plafonds. Wij geven vooraf een duidelijke, heldere offerte op maat.',
-      },
-      {
-        question: 'Hoe lang duurt een badkamerrenovatie?',
-        answer: 'Voor een complete badkamerrenovatie in Almere is vaak een projectduur van enkele weken nodig, afhankelijk van de omvang, materiaalselectie en eventuele technische aanpassingen.',
-      },
-      {
-        question: 'Krijg ik een complete badkamer van A tot Z?',
-        answer: 'Ja. Wij verzorgen het volledige traject: sloopwerk, leidingwerk, tegelwerk, sanitair, afwerking en styling, zodat u één aanspreekpunt heeft.',
-      },
-    ],
-  },
-  wcAlmere: {
-    city: 'Almere',
-    serviceType: 'wc' as const,
-    title: 'WC-renovatie in Almere',
-    intro: 'Bij Denra Badkamers maken we van uw WC of toilet een nette, stijlvolle en functionele ruimte. Wij verzorgen complete WC-renovaties in Almere, van sloopwerk en tegelwerk tot sanitair en afwerking.',
-    bullets: [
-      'Een nieuwe uitstraling en meer comfort',
-      'Toilet renoveren of verbouwen met duurzame materialen',
-      'Professionele montage van hangtoilet, inbouwreservoir en sanitair',
-      'Tegelwerk, stucwerk en afwerking zonder onnodige complicaties',
-      'Ruimtebesparende oplossingen voor kleine en compacte toiletten',
-      'Vaste prijs en duidelijke planning van begin tot eind',
-    ],
-    faq: [
-      {
-        question: 'Wat kost een WC renovatie in Almere?',
-        answer: 'De kosten verschillen per keuze aan tegelwerk, sanitair, leidingwerk en afwerking. Wij geven u graag een concrete indicatie op basis van uw ruimte en wensen.',
-      },
-      {
-        question: 'Kan ik een kleine WC laten renoveren?',
-        answer: 'Ja. Veel kleine toiletten kunnen prachtig worden opgewaardeerd met slimme materialen, een compacte indeling en een luxe uitstraling zonder grote verbouwing.',
-      },
-      {
-        question: 'Kunnen jullie ook mijn toilet verbouwen?',
-        answer: 'Ja, wij verzorgen ook complete toiletverbouwingen, inclusief leidingwerk, afwerking en het plaatsen van het sanitair.',
-      },
-    ],
-  },
-  wcAmsterdam: {
-    city: 'Amsterdam',
-    serviceType: 'wc' as const,
-    title: 'WC-renovatie in Amsterdam',
-    intro: 'Bij Denra Badkamers maken we van uw WC of toilet een nette, stijlvolle en functionele ruimte. Wij verzorgen complete WC-renovaties in Amsterdam, van sloopwerk en tegelwerk tot sanitair en afwerking.',
-    bullets: ['Een nieuwe uitstraling en meer comfort', 'Toilet renoveren of verbouwen met duurzame materialen', 'Professionele montage van hangtoilet, inbouwreservoir en sanitair', 'Tegelwerk, stucwerk en afwerking zonder onnodige complicaties', 'Ruimtebesparende oplossingen voor kleine en compacte toiletten', 'Vaste prijs en duidelijke planning van begin tot eind'],
-    faq: [{ question: 'Wat kost een WC renovatie in Amsterdam?', answer: 'De kosten verschillen per keuze aan tegelwerk, sanitair, leidingwerk en afwerking. Wij geven u graag een concrete indicatie op basis van uw ruimte en wensen.' }, { question: 'Kan ik een kleine WC laten renoveren?', answer: 'Ja. Veel kleine toiletten kunnen prachtig worden opgewaardeerd met slimme materialen, een compacte indeling en een luxe uitstraling zonder grote verbouwing.' }, { question: 'Kunnen jullie ook mijn toilet verbouwen?', answer: 'Ja, wij verzorgen ook complete toiletverbouwingen, inclusief leidingwerk, afwerking en het plaatsen van het sanitair.' }],
-  },
-  badkamerAmsterdam: {
-    city: 'Amsterdam',
-    serviceType: 'badkamer' as const,
-    title: 'Badkamer renovatie in Amsterdam',
-    intro: 'Denra Badkamers renoveert badkamers in Amsterdam van sloop en leidingwerk tot tegelwerk, sanitair en een luxe afwerking. U heeft één aanspreekpunt en een duidelijke planning, van de opname tot de oplevering.',
-    bullets: [
-      'Moderne en luxe ontwerpen, afgestemd op uw woning',
-      'Aangepaste badkamerrenovatie voor kleine en grotere ruimtes',
-      'Alles onder één dak: sloopwerk, tegelwerk, sanitair en afwerking',
-      'Zorgvuldige uitvoering met oog voor detail en praktische indeling',
-      'Mogelijkheid voor inloopdouche, bad, nisjes en verlaagd plafond',
-      'Helder advies, vaste communicatielijnen en duidelijke offerte',
-    ],
-    faq: [
-      {
-        question: 'Wat is inbegrepen bij een complete badkamerrenovatie in Amsterdam?',
-        answer: 'Bij een complete badkamerrenovatie verzorgen wij het werk van begin tot eind: sloop, leidingwerk, vloerafwerking, tegelwerk, sanitair en de laatste details.',
-      },
-      {
-        question: 'Kan ik mijn badkamer in Amsterdam ook laten verbouwen?',
-        answer: 'Ja. Wij helpen bij het plannen en uitvoeren van een volledige badkamer verbouwing, inclusief het aanpassen van de ruimte aan uw wensen en stijl.',
-      },
-      {
-        question: 'Hoe krijg ik een offerte voor badkamer renovatie?',
-        answer: 'U kunt eenvoudig contact opnemen voor een vrijblijvend gesprek. Daarna geven wij u een duidelijke offerte op basis van uw wensen en de bestaande ruimte.',
-      },
-    ],
-  },
-  },
-  en: {
-    badkamerAlmere: { city: 'Almere', serviceType: 'badkamer' as const, title: 'Bathroom renovation in Almere', intro: 'Denra Badkamers delivers complete bathroom renovations in Almere. From demolition, plumbing and tiling to sanitary ware, finishing and refined details: we create a bathroom that is both beautiful and functional.', bullets: ['Complete bathroom renovation in Almere, from demolition to finishing', 'Tailored solutions for small and large bathrooms', 'Consistent communication, clear planning and a transparent quote', 'Luxury materials, contemporary finishes and lasting quality', 'Tiling, underfloor heating, lowered ceilings and bespoke niches', 'Expert work by a bathroom-renovation specialist'], faq: [{ question: 'How much does a bathroom renovation in Almere cost?', answer: 'The price depends on the scale, sanitary ware, finishing and required work such as plumbing or lowered ceilings. We provide a clear, tailored quote in advance.' }, { question: 'How long does a bathroom renovation take?', answer: 'A complete bathroom renovation in Almere often takes several weeks, depending on the scope, material selection and any technical alterations.' }, { question: 'Will I receive a complete bathroom from start to finish?', answer: 'Yes. We manage the complete process: demolition, plumbing, tiling, sanitary ware, finishing and styling, so you have one point of contact.' }] },
-    wcAlmere: { city: 'Almere', serviceType: 'wc' as const, title: 'Toilet renovation in Almere', intro: 'At Denra Badkamers, we turn your toilet into a neat, stylish and functional room. We deliver complete toilet renovations in Almere, from demolition and tiling to sanitary ware and finishing.', bullets: ['Toilet renovation in Almere for a new look and greater comfort', 'Toilet refurbishment with durable materials', 'Professional installation of wall-hung toilets, concealed cisterns and sanitary ware', 'Tiling, plastering and finishing without unnecessary complications', 'Space-saving solutions for small, compact toilets', 'A fixed price and clear planning from start to finish'], faq: [{ question: 'How much does a toilet renovation in Almere cost?', answer: 'Costs vary according to your choices of tiling, sanitary ware, plumbing and finishing. We are happy to provide a specific estimate based on your room and requirements.' }, { question: 'Can I renovate a small toilet?', answer: 'Yes. Many small toilets can be transformed beautifully with smart materials, a compact layout and a refined look, without major construction work.' }, { question: 'Do you also carry out full toilet refurbishments?', answer: 'Yes, we also manage complete toilet refurbishments and renovations, including plumbing, finishing and sanitary-ware installation.' }] },
-    wcAmsterdam: { city: 'Amsterdam', serviceType: 'wc' as const, title: 'Toilet renovation in Amsterdam', intro: 'At Denra Badkamers, we turn your toilet into a neat, stylish and functional room. We deliver complete toilet renovations in Amsterdam, from demolition and tiling to sanitary ware and finishing.', bullets: ['Toilet renovation in Amsterdam for a new look and greater comfort', 'Toilet refurbishment with durable materials', 'Professional installation of wall-hung toilets, concealed cisterns and sanitary ware', 'Tiling, plastering and finishing without unnecessary complications', 'Space-saving solutions for small, compact toilets', 'A fixed price and clear planning from start to finish'], faq: [{ question: 'How much does a toilet renovation in Amsterdam cost?', answer: 'Costs vary according to your choices of tiling, sanitary ware, plumbing and finishing. We are happy to provide a specific estimate based on your room and requirements.' }, { question: 'Can I renovate a small toilet?', answer: 'Yes. Many small toilets can be transformed beautifully with smart materials, a compact layout and a refined look, without major construction work.' }, { question: 'Do you also carry out full toilet refurbishments?', answer: 'Yes, we also manage complete toilet refurbishments and renovations, including plumbing, finishing and sanitary-ware installation.' }] },
-    badkamerAmsterdam: { city: 'Amsterdam', serviceType: 'badkamer' as const, title: 'Bathroom renovation in Amsterdam', intro: 'Denra Badkamers renovates bathrooms in Amsterdam, from demolition and plumbing to tiling, sanitary ware and a refined finish. You have one point of contact and a clear schedule, from the site visit to the handover.', bullets: ['Bathroom renovation in Amsterdam for contemporary, refined designs', 'Tailored bathroom renovation for small and larger rooms', 'Everything under one roof: demolition, tiling, sanitary ware and finishing', 'Careful execution with an eye for detail and practical layouts', 'Options for walk-in showers, baths, niches and lowered ceilings', 'Clear advice, consistent communication and a transparent quote'], faq: [{ question: 'What is included in a complete bathroom renovation in Amsterdam?', answer: 'With a complete bathroom renovation, we manage the work from start to finish: demolition, plumbing, floor finishing, tiling, sanitary ware and the final details.' }, { question: 'Can I have my bathroom remodelled in Amsterdam?', answer: 'Yes. We help plan and carry out a complete bathroom remodel, including adapting the room to your needs and style.' }, { question: 'How can I get a quote for a bathroom renovation?', answer: 'You can easily get in touch for a no-obligation consultation. We then provide a clear quote based on your requirements and the existing room.' }] },
-  },
+  badkamerAlmere: { city: 'Almere', serviceType: 'badkamer' as const, textKey: 'localBadkamerAlmere' },
+  wcAlmere: { city: 'Almere', serviceType: 'wc' as const, textKey: 'localWcAlmere' },
+  wcAmsterdam: { city: 'Amsterdam', serviceType: 'wc' as const, textKey: 'localWcAmsterdam' },
+  badkamerAmsterdam: { city: 'Amsterdam', serviceType: 'badkamer' as const, textKey: 'localBadkamerAmsterdam' },
 };
 
 // The animation features load as a separate file after the page is shown.
@@ -181,6 +90,18 @@ function RouteMeta() {
   return null;
 }
 
+// The colour scheme chosen in the admin (Uitstraling). "?kleur=<scheme>" in
+// the address previews a scheme without saving it.
+function ThemeStyle() {
+  const { texts } = useSiteContent();
+  const hasMounted = useHasMounted();
+  const preview = hasMounted ? new URLSearchParams(window.location.search).get('kleur') : null;
+  const chosen = texts[themeContentKey]?.nl;
+  const id = isThemeId(preview) ? preview : isThemeId(chosen) ? chosen : defaultThemeId;
+  const css = themeStylesheet(id);
+  return css ? <style>{css}</style> : null;
+}
+
 // Phone, e-mail, WhatsApp and call-to-action clicks, for the whole site.
 function TrackClicks() {
   React.useEffect(() => {
@@ -200,17 +121,17 @@ function ScrollToTop() {
 }
 
 const PageLoader = () => (
-  <div className="min-h-screen bg-[#F5EFE6] flex items-center justify-center">
-    <div className="w-8 h-8 border border-[#8E7A68]/20 border-t-[#231A12] rounded-full animate-spin" />
+  <div className="min-h-screen bg-c-f5efe6 flex items-center justify-center">
+    <div className="w-8 h-8 border border-c-8e7a68/20 border-t-c-231a12 rounded-full animate-spin" />
   </div>
 );
 
 const AppRoutes = () => {
-  const { language } = useLanguage();
-  const pages = localPages[language];
+  const pages = localPages;
 
   return (
     <>
+        <ThemeStyle />
         <ScrollToTop />
         <RouteMeta />
         <TrackClicks />
@@ -242,13 +163,15 @@ const AppRoutes = () => {
 
 // The router is added by the entry file: BrowserRouter in the browser,
 // StaticRouter when the build writes the HTML for each page.
-const App: React.FC = () => {
+// initialContent: Dennis's content as it was baked into the page at build
+// time (scripts/prerender.mjs), so the page and React start from the same text.
+const App: React.FC<{ initialContent?: SiteContent | null }> = ({ initialContent }) => {
   return (
     <div className="denra-root">
       <LazyMotion features={loadMotionFeatures}>
         {/* Visitors who ask for less motion get fades without movement. */}
         <MotionConfig reducedMotion="user">
-        <SiteContentProvider>
+        <SiteContentProvider initialContent={initialContent ?? null}>
           <LanguageProvider>
             <AppRoutes />
           </LanguageProvider>

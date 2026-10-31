@@ -25,6 +25,7 @@ Both new migrations can safely be run more than once.
 | `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | server | E-mail delivery. |
 | `QUOTE_RECIPIENT_EMAIL`, `REVIEW_RECIPIENT_EMAIL` | server | Inboxes for quote requests and review moderation. |
 | `PUBLIC_SITE_URL` | server | Used in e-mail links. |
+| `VERCEL_DEPLOY_HOOK_URL` | server only | Lets the admin's **Website bijwerken** button start a new build (Vercel → Project → Settings → Git → Deploy Hooks, branch `main`). The build reads the admin content and bakes it into every page; without it, changes still show but only after the page loads. |
 
 ## 3. Give Dennis an admin account
 
