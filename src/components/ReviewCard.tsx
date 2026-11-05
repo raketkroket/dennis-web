@@ -58,7 +58,7 @@ export default function ReviewCard({ review, featured = false, compact = false }
         <div className="flex items-center gap-1 text-c-8b6b45" role="img" aria-label={`${review.rating} ${t('shared.outOfFiveStars')}`}>
           {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={15} fill={star <= review.rating ? 'currentColor' : 'none'} strokeWidth={1.6} />)}
         </div>
-        <time className="shrink-0 text-[10px] font-medium uppercase tracking-[0.16em] text-c-8a7a6a">{review.date}</time>
+        <time className="shrink-0 text-[10px] font-medium uppercase tracking-[0.16em] text-c-8a7a6a">{review.date.replace(/^\d{1,2}\s+/, '')}</time>
       </div>
       <p className="mt-6 border-l border-c-bdaa95/80 pl-3 text-[10px] font-semibold uppercase tracking-[0.15em] leading-relaxed text-c-6b5d50">{review.project}</p>
       <div className={`relative mt-5 ${featured ? 'md:mt-7' : ''}`}>

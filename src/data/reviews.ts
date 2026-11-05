@@ -116,6 +116,17 @@ function reviewTimestamp({ id, date }: Review): number {
   return Date.UTC(Number(year), monthNumbers[month], Number(day));
 }
 
+const dutchMonths = Object.keys(monthNumbers);
+
+/** A review's date as YYYY-MM-DD, e.g. for a date field in the admin. */
+export const reviewIsoDate = (review: Review) => new Date(reviewTimestamp(review)).toISOString().slice(0, 10);
+
+/** "2026-10-31" → "31 oktober 2026", the format of the review dates above. */
+export function dutchReviewDate(iso: string): string {
+  const [year, month, day] = iso.split('-').map(Number);
+  return `${day} ${dutchMonths[month - 1]} ${year}`;
+}
+
 const byNewestThenId = (first: { timestamp: number; review: Review }, second: { timestamp: number; review: Review }) =>
   second.timestamp - first.timestamp || first.review.id.localeCompare(second.review.id);
 
