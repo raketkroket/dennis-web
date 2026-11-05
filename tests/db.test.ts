@@ -140,6 +140,14 @@ test('the admin can reorder projects, moderate reviews and handle requests', asy
   await rejects('authenticated', adminId, `update public.reviews set text = 'Aangepaste tekst van de klant'`);
 });
 
+test('a review can carry the date of the work, not before 2010', async () => {
+  await db.query(`update public.reviews set work_date = '2025-06-14' where name = 'Anna'`);
+  assert.deepEqual(await rows('anon', null, `select work_date::text from public.reviews`), [{ work_date: '2025-06-14' }]);
+  await assert.rejects(db.query(`update public.reviews set work_date = '2009-12-31' where name = 'Anna'`));
+  await rejects('authenticated', adminId, `update public.reviews set work_date = '2024-01-01'`);
+  await db.query(`update public.reviews set work_date = null where name = 'Anna'`);
+});
+
 test('the admin can save the calculator, and broken price lists are refused', async () => {
   const config = {
     rooms: [{ room_type: 'wc', label_nl: 'WC', base_price: 4000, included_area: 2, tiers: [{ from_area: 2, rate_per_m2: 850 }] }],

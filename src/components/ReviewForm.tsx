@@ -23,7 +23,7 @@ export default function ReviewForm() {
     try {
       const response = await fetch('/api/review', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: fields.get('name'), email: fields.get('email'), city: fields.get('city'), project: fields.get('project'), rating: Number(fields.get('rating')), text: fields.get('text'), website: fields.get('website'), consent: fields.get('consent') === 'on' }),
+        body: JSON.stringify({ name: fields.get('name'), email: fields.get('email'), city: fields.get('city'), project: fields.get('project'), rating: Number(fields.get('rating')), text: fields.get('text'), workDate: fields.get('workDate') || undefined, website: fields.get('website'), consent: fields.get('consent') === 'on' }),
       });
       const result = await response.json().catch(() => null) as { success?: boolean; code?: string } | null;
       if (!response.ok || !result?.success) {
@@ -58,6 +58,7 @@ export default function ReviewForm() {
             <label className={labelClass}>{copy('E-mailadres', 'Email')}<input name="email" placeholder="uw@email.nl" type="email" autoComplete="email" required maxLength={254} className={fieldClass} /></label>
             <label className={labelClass}>{copy('Plaats', 'City')}<input name="city" placeholder={copy('Uw woonplaats', 'Your city')} autoComplete="address-level2" required minLength={2} maxLength={100} className={fieldClass} /></label>
             <label className={labelClass}>{copy('Project', 'Project')}<select name="project" className={fieldClass}>{['Badkamer', 'Toilet', 'Renovatie', 'Aanbouw'].map((p, i) => <option key={p} value={p}>{en ? ['Bathroom', 'Toilet', 'Renovation', 'Extension'][i] : p}</option>)}</select></label>
+            <label className={`${labelClass} sm:col-span-2`}>{copy('Wanneer was de klus?', 'When was the work done?')} <span className="font-normal text-c-7a6552">{copy('(optioneel)', '(optional)')}</span><input name="workDate" type="date" min="2010-01-01" className={`${fieldClass} sm:max-w-xs`} /></label>
             <fieldset className="sm:col-span-2">
               <legend className={labelClass}>{copy('Uw beoordeling', 'Your rating')}</legend>
               <div className="mt-2 flex items-center gap-1">{[1, 2, 3, 4, 5].map(n => <label key={n} className="relative flex h-11 w-11 cursor-pointer items-center justify-center text-c-8b6b45">

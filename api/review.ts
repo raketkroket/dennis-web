@@ -11,6 +11,11 @@ export const reviewSchema = z.object({
   project: z.enum(['Badkamer', 'Toilet', 'Renovatie', 'Aanbouw']),
   rating: z.number().int().min(1).max(5),
   text: z.string().trim().min(20).max(3000),
+  // When the work was done (optional): not before 2010 and not in the future.
+  workDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+    .refine((value) => !Number.isNaN(Date.parse(value)) && value >= '2010-01-01' && value <= new Date().toISOString().slice(0, 10))
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
   consent: z.literal(true),
   website: z.string().max(0).optional(),
 });
@@ -40,6 +45,7 @@ function reviewEmail(data: ReviewSubmission, approveUrl: string, deleteUrl: stri
     ['Plaats', data.city],
     ['Project', data.project],
     ['Score', `${data.rating}/5`],
+    ...(data.workDate ? [['Datum klus', new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(data.workDate))]] : []),
   ].map(([label, value]) => `<tr><td style="padding:6px 16px 6px 0;color:#6B5D50;">${label}</td><td style="padding:6px 0;color:#231A12;font-weight:600;">${escapeHtml(value)}</td></tr>`).join('');
 
   return `<!doctype html><html lang="nl"><body style="margin:0;padding:24px;background:#f4efe8;font-family:Arial,sans-serif;color:#231A12;"><table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr><td align="center"><table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:640px;background:#faf6f0;border:1px solid #cfbca7;"><tr><td style="padding:32px;"><p style="margin:0 0 8px;font-size:12px;letter-spacing:1.5px;color:#7a6552;font-weight:700;">REVIEW TER BEOORDELING</p><h1 style="margin:0 0 24px;font-family:Georgia,serif;font-size:28px;">${escapeHtml(data.name)}</h1><table width="100%" cellpadding="0" cellspacing="0" role="presentation">${details}</table><p style="margin:24px 0;line-height:1.6;color:#6B5D50;">${escapeHtml(data.text).replace(/\n/g, '<br>')}</p><p style="margin:0 0 20px;font-size:13px;line-height:1.5;color:#6B5D50;">Kies een actie. De volgende pagina vraagt nog om bevestiging; alleen het openen van deze e-mail verandert niets.</p><p style="margin:0 0 12px;"><a href="${escapeHtml(approveUrl)}" style="display:inline-block;padding:13px 20px;background:#231A12;color:#f6f0e8;text-decoration:none;font-weight:700;">Review goedkeuren</a></p><p style="margin:0;"><a href="${escapeHtml(deleteUrl)}" style="display:inline-block;padding:13px 20px;border:1px solid #a33b32;color:#a33b32;text-decoration:none;font-weight:700;">Review verwijderen</a></p></td></tr></table></td></tr></table></body></html>`;
@@ -56,7 +62,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     try {
       const { data, error } = await reviewClient()
         .from('reviews')
-        .select('id, name, city, rating, project, text, created_at')
+        .select('id, name, city, rating, project, text, created_at, work_date')
         .eq('status', 'approved')
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -69,7 +75,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
           rating: review.rating,
           project: review.project,
           text: review.text,
-          createdAt: review.created_at,
+          // The date the customer gave for the work, otherwise the day it was sent.
+          createdAt: review.work_date ? `${review.work_date}T12:00:00Z` : review.created_at,
         })),
       });
     } catch (error) {
@@ -108,6 +115,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
         project: data.project,
         rating: data.rating,
         text: data.text,
+        work_date: data.workDate ?? null,
         action_token_hash: actionTokenHash(actionToken),
       })
       .select('id')
